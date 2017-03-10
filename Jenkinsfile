@@ -8,10 +8,11 @@ node('mr-0xc2'){
                 def SPARKTGZ="${SPARK}.tgz"
                 sh "wget http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz"
                 echo 'Preparation done'  
-                withEnv(["SPARK_HOME=cd ${SPARK};pwd","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client',R_LIBS_USER=${env.WORKSPACE}/Rlibrary,HDP_VERSION="${hdpVersion}""]){
+                withEnv(["SPARK_HOME=cd ${SPARK};pwd","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client',R_LIBS_USER=${env.WORKSPACE}/Rlibrary,HDP_VERSION=${hdpVersion}"]){
                         sh"""echo ${env.BRANCH_NAME}
                              echo ${env.SPARK_HOME}
                              echo ${env.HADOOP_CONF_DIR}
+                             echo ${env.HDP_VERSION}
                              mkdir -p ${env.WORKSPACE}/Rlibrary
 
                         """
