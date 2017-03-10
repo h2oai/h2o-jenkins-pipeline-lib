@@ -1,3 +1,7 @@
+#!/usr/bin/groovy
+
+@Library('github.com/h2oai/h2o-jenkins-pipeline-library@master')
+
 node{
         stage 'Preparation'
                 git url: 'https://github.com/h2oai/sparkling-water.git'
