@@ -14,6 +14,21 @@ node('mr-0xc2'){
                              echo ${env.HADOOP_CONF_DIR}
                              echo ${env.HDP_VERSION}
                              mkdir -p ${env.WORKSPACE}/Rlibrary
+                             cat <<EOF > $SPARK_HOME/conf/spark-defaults.conf
+                                                spark.driver.extraJavaOptions -Dhdp.version="$HDP_VERSION"
+                                                spark.yarn.am.extraJavaOptions -Dhdp.version="$HDP_VERSION"
+                                                spark.executor.extraJavaOptions -Dhdp.version="$HDP_VERSION"
+                                      EOF
+                             cat <<EOF > $SPARK_HOME/conf/java-opts
+                                        -Dhdp.version="$HDP_VERSION"
+                                      EOF
+                                // Download necessarry citibike-nyc files
+                                mkdir -p ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/
+                                echo 'Created citibike directory"
+                                //for f in 2013-07.csv 2013-08.csv 2013-09.csv 2013-10.csv 2013-11.csv 2013-12.csv 31081_New_York_City__Hourly_2013.csv
+                                 //       do
+                                //        cp /home/0xdiag/bigdata/laptop//citibike-nyc/$f $WORKSPACE/examples/bigdata/laptop/citibike-nyc/$f
+                                //done
 
                         """
                         
