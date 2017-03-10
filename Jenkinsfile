@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 
-node{
+node('mr-0xc2'){
         stage 'Preparation'
                 git url: 'https://github.com/h2oai/sparkling-water.git'
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
