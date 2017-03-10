@@ -9,7 +9,10 @@ node('mr-0xc2'){
                 sh "wget http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz"
                 echo 'Preparation done'  
                 withEnv(["SPARK_HOME=${SPARK}"]){
-                        sh"echo ${env.BRANCH_NAME}"
+                        sh"""echo ${env.BRANCH_NAME}
+                             echo ${env.SPARK_HOME}           
+                        """
+                        
                 }
 
         stage'QA: build & lint'
