@@ -8,9 +8,10 @@ node('mr-0xc2'){
                 def SPARKTGZ="${SPARK}.tgz"
                 sh "wget http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz"
                 echo 'Preparation done'  
-                withEnv(["SPARK_HOME=${SPARK}"]){
+                withEnv(["SPARK_HOME=cd ${SPARK};pwd","HADOOP_CONF_DIR=/etc/hadoop/conf"]){
                         sh"""echo ${env.BRANCH_NAME}
-                             echo ${env.SPARK_HOME}           
+                             echo ${env.SPARK_HOME}
+                             echo ${env.HADOOP_CONF_DIR}
                         """
                         
                 }
