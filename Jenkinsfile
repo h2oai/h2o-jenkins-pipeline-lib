@@ -7,7 +7,7 @@ node('mr-0xc2'){
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
                 sh"""
                 if [ ! -d "${SPARK}" ]; then
-                        wget "http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz
+                        wget "http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz"
                         echo "Extracting spark JAR"
                         sh "tar zxvf ${SPARK}.tgz"
                 fi
