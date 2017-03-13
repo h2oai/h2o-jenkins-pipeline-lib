@@ -17,7 +17,7 @@ node('mr-0xc2'){
         stage'QA: build & lint'
           
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
-                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl"]
+                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
                        ){
                         sh"""
                                 mkdir -p ${env.WORKSPACE}/Rlibrary
@@ -40,7 +40,9 @@ node('mr-0xc2'){
                                 # Download h2o-python client, save it in private directory
                                 # and export variable H2O_PYTHON_WHEEL driving building of pysparkling package
                                 mkdir -p ${env.WORKSPACE}/private/
-                                curl `./gradlew -q printH2OWheelPackage ` > ${env.WORKSPACE}/private/h2o.whl   
+                                curl `./gradlew -q printH2OWheelPackage ` > ${env.WORKSPACE}/private/h2o.whl  
+                                ./gradlew -q extendJar -PdownloadH2O=$driverHadoopVersion      
+                                 
 
                         """                        
                 }
@@ -48,7 +50,7 @@ node('mr-0xc2'){
         stage'QA:Unit tests'
         
                  withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
-                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl"]
+                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
                        ){
                  sh """
                                 # Build, run regular tests
@@ -67,7 +69,7 @@ node('mr-0xc2'){
         stage'QA:Integration tests'
         
                  withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
-                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl"]
+                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
                        ){
                  sh """   
            
@@ -83,7 +85,7 @@ node('mr-0xc2'){
         
         stag'QA:Integration test- pySparkling'
                  withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
-                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl"]
+                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
                        ){        
                 sh"""
                         #
