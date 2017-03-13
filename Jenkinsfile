@@ -25,11 +25,7 @@ node('mr-0xc2'){
                                 // Download necessarry citibike-nyc files
                                 mkdir -p ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/
                                 echo 'Created citibike directory"
-                                //for f in 2013-07.csv 2013-08.csv 2013-09.csv 2013-10.csv 2013-11.csv 2013-12.csv 31081_New_York_City__Hourly_2013.csv
-                                 //       do
-                                //        cp /home/0xdiag/bigdata/laptop//citibike-nyc/$f $WORKSPACE/examples/bigdata/laptop/citibike-nyc/$f
-                                //done
-
+                           
                         """
                         
                 }
