@@ -78,5 +78,28 @@ node('mr-0xc2'){
                 """
                  }
         
+        stag'QA:Integration test- pySparkling'
+                 withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
+                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl"]
+                       ){        
+                sh"""
+                        #
+                        # Run pySparkling integration tests on top of YARN
+                        #
+                        if [ "$runPySparklingIntegTests" = "true" -a "$startH2OClusterOnYarn" = "true" ]; then 
+                                ${env.WORKSPACE}/gradlew integTestPython -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check
+                                # manually create empty test-result/empty.xml file so Publish JUnit test result report does not fail when only pySparkling integration tests parameter has been selected
+                                mkdir -p py/build/test-result
+                                touch py/build/test-result/empty.xml
+                        fi 
+                        if [ "$runPySparklingIntegTests" = "true" -a "$startH2OClusterOnYarn" = "false" ]; then 
+                                ${env.WORKSPACE}/gradlew integTestPython -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check
+                                # manually create empty test-result/empty.xml file so Publish JUnit test result report does not fail when only pySparkling integration tests parameter has been selected
+                                mkdir -p py/build/test-result
+                                touch py/build/test-result/empty.xml
+                        fi 
+                  """
+                 }
+        
         
 }
