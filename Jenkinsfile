@@ -49,13 +49,13 @@ node('mr-0xc2'){
                        ){
                  sh """
                                 # Build, run regular tests
-                                if [ "$runBuildTests" == "true" ]; then
+                                if [ "$runBuildTests" = "true" ]; then
                                         ${env.WORKSPACE}/gradlew clean build -PbackendMode=${backendMode} 
                                 else
                                         ${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode} 
                                 fi
 
-                                if [ "$runScriptTests" == "true" ]; then 
+                                if [ "$runScriptTests" = "true" ]; then 
                                         ${env.WORKSPACE}/gradlew scriptTest -PbackendMode=${backendMode} 
                                 fi  
                         """
