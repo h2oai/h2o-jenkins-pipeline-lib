@@ -14,12 +14,12 @@ node('mr-0xc2'){
                              echo ${env.HADOOP_CONF_DIR}
                              echo ${env.HDP_VERSION}
                              mkdir -p ${env.WORKSPACE}/Rlibrary
-                             cat <<EOF > $SPARK_HOME/conf/spark-defaults.conf
+                             cat <<EOF > ${env.SPARK_HOME}/conf/spark-defaults.conf
                              spark.driver.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"
                              spark.yarn.am.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"
                              spark.executor.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"
                              EOF
-                             //cat <<EOF > $SPARK_HOME/conf/java-opts
+                             //cat <<EOF > ${env.SPARK_HOME}/conf/java-opts
                                // -Dhdp.version="${env.HDP_VERSION}"
                                  //     EOF
                                 // Download necessarry citibike-nyc files
