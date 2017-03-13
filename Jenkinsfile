@@ -44,7 +44,7 @@ node('mr-0xc2'){
 
                                 // Download h2o-python client, save it in private directory
                                 // and export variable H2O_PYTHON_WHEEL driving building of pysparkling package
-                                mkdir -p ${env.WORKSPACE}/private/
+                                //mkdir -p ${env.WORKSPACE}/private/
                                 //curl $(./gradlew -q printH2OWheelPackage) > ${env.WORKSPACE}/private/h2o.whl
                                 //export H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl
                                 //export H2O_EXTENDED_JAR=$(./gradlew -q extendJar -PdownloadH2O=${driverHadoopVersion})
