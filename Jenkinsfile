@@ -61,4 +61,21 @@ node('mr-0xc2'){
                         """
                  }
         
+        stage'QA:Integration tests"
+        
+                 withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
+                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl"]
+                       ){
+                 sh """   
+                        if [ "$runIntegTests" == "true" && "$startH2OClusterOnYarn" == "true"]; then 
+                                ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=$MASTER -PsparkHome=$SPARK_HOME -x check -x :sparkling-water-py:integTest
+                        fi 
+                        if [ "$runIntegTests" == "true" && "$startH2OClusterOnYarn" == "false"]; then 
+                                ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=$MASTER -PsparkHome=$SPARK_HOME -x check -x :sparkling-water-py:integTest
+                        fi
+
+                """
+                 }
+        
+        
 }
