@@ -60,6 +60,15 @@ node('mr-0xc2'){
                                 if [ "$runScriptTests" == "true" ]; then 
                                         ${env.WORKSPACE}/gradlew scriptTest -PbackendMode=${backendMode} 
                                 fi
+
+
+                                if [ "$startH2OClusterOnYarn" == "true" ]; then
+                                        START_CLUSTER_ON_YARN="-PstartH2OClusterOnYarn"
+                                else
+                                        START_CLUSTER_ON_YARN=""
+                                fi
+                                echo "START_CLUSTER_ON_YARN****"
+                                echo ${START_CLUSTER_ON_YARN}
                                 
  
                         """
