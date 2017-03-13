@@ -7,6 +7,7 @@ node('mr-0xc2'){
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
                 def SPARKTGZ="${SPARK}.tgz"
                 sh "wget http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz"
+                tar zxvf ${SPARKTGZ}
                 echo 'Preparation done'  
                 withEnv(["SPARK_HOME=cd ${SPARK};pwd","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client',R_LIBS_USER=${env.WORKSPACE}/Rlibrary,HDP_VERSION=${hdpVersion}"]){
                         sh"""echo "SPARK:"
