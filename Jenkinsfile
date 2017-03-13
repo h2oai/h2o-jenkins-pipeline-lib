@@ -10,7 +10,7 @@ node('mr-0xc2'){
                         wget http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz                   
                 fi
                 echo "Extracting spark JAR"
-                tar zxvf "${SPARK}".tgz
+                tar zxvf ${SPARK}.tgz
                 H2O_EXTENDED_JAR=$(`./gradlew -q extendJar -PdownloadH2O=$driverHadoopVersion`)
                 echo"H2O_EXTENDED_JAR"
                 sh"""
