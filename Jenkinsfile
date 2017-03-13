@@ -10,25 +10,19 @@ node('mr-0xc2'){
                 echo 'Preparation done'  
                 withEnv(["SPARK_HOME=cd ${SPARK};pwd","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client',R_LIBS_USER=${env.WORKSPACE}/Rlibrary,HDP_VERSION=${hdpVersion}"]){
                         sh"""echo "SPARK:"
-                                echo ${env.SPARK}
+                                echo ${SPARK}
                                 echo "Branch name:"
-                             echo ${env.BRANCH_NAME}
-                        echo "Spark home:"
-                             echo ${env.SPARK_HOME}
-                             echo ${env.HADOOP_CONF_DIR}
-                             echo ${env.HDP_VERSION}
-                             mkdir -p ${env.WORKSPACE}/Rlibrary
-                             cat <<EOF > ${env.SPARK_HOME}/conf/spark-defaults.conf
-                             spark.driver.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"
-                             spark.yarn.am.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"
-                             spark.executor.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"
-                             EOF
-                             //cat <<EOF > ${env.SPARK_HOME}/conf/java-opts
-                               // -Dhdp.version="${env.HDP_VERSION}"
-                                 //     EOF
-                                // Download necessarry citibike-nyc files
-                                mkdir -p ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/
-                                echo 'Created citibike directory"
+                                echo ${env.BRANCH_NAME}
+                                echo "Spark home:"
+                                 echo ${env.SPARK_HOME}
+                                 echo ${env.HADOOP_CONF_DIR}
+                                 echo ${env.HDP_VERSION}
+                                 mkdir -p ${env.WORKSPACE}/Rlibrary
+                                 cat <<EOF > ${env.SPARK_HOME}/conf/spark-defaults.conf
+                                 spark.driver.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"
+                                 spark.yarn.am.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"
+                                 spark.executor.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"
+                                 EOF
                            
                         """
                         
