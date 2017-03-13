@@ -9,7 +9,7 @@ node('mr-0xc2'){
                 if [ ! -d "${SPARK}" ]; then
                         wget "http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz"
                         echo "Extracting spark JAR"
-                        sh "tar zxvf ${SPARK}.tgz"
+                        tar zxvf ${SPARK}.tgz
                 fi
                 sh"""
                 echo 'Preparation done'  
