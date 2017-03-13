@@ -55,8 +55,11 @@ node('mr-0xc2'){
                                 # Download h2o-python client, save it in private directory
                                 # and export variable H2O_PYTHON_WHEEL driving building of pysparkling package
                                 mkdir -p ${env.WORKSPACE}/private/
+
+                                echo "workspace******"
+                                echo ${env.WORKSPACE}
         
-                                curl \$(./gradlew -q printH2OWheelPackage) > ${env.WORKSPACE}/private/h2o.whl
+                                #curl \$(./gradlew -q printH2OWheelPackage) > ${env.WORKSPACE}/private/h2o.whl
                      
 
                            
