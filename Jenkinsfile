@@ -61,7 +61,7 @@ node('mr-0xc2'){
                         """
                  }
         
-        stage'QA:Integration tests"
+        stage'QA:Integration tests'
         
                  withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl"]
