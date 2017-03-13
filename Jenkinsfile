@@ -42,18 +42,10 @@ node('mr-0xc2'){
                                 cp /home/0xdiag/bigdata/laptop//citibike-nyc/31081_New_York_City__Hourly_2013.csv ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/31081_New_York_City__Hourly_2013.csv
 
 
-                                // Download h2o-python client, save it in private directory
-                                // and export variable H2O_PYTHON_WHEEL driving building of pysparkling package
-                                //mkdir -p ${env.WORKSPACE}/private/
-                                //curl $(./gradlew -q printH2OWheelPackage) > ${env.WORKSPACE}/private/h2o.whl
-                                //export H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl
-                                //export H2O_EXTENDED_JAR=$(./gradlew -q extendJar -PdownloadH2O=${driverHadoopVersion})
-
-                                //if [ "${startH2OClusterOnYarn}" == "true" ]; then
-                                //export START_CLUSTER_ON_YARN=
-                                //else
-                                //export START_CLUSTER_ON_YARN=""
-                                //fi
+                                # Download h2o-python client, save it in private directory
+                                # and export variable H2O_PYTHON_WHEEL driving building of pysparkling package
+                                mkdir -p ${env.WORKSPACE}/private/
+                     
 
                            
                         """
