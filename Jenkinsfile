@@ -11,8 +11,8 @@ node('mr-0xc2'){
                 sh "tar zxvf ${SPARKTGZ}"
                 echo 'Preparation done'  
         
-                withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client',R_LIBS_USER=${env.WORKSPACE}/Rlibrary,HDP_VERSION=${hdpVersion},driverHadoopVersion=${driverHadoopVersion},startH2OClusterOnYarn=${startH2OClusterOnYarn}"]
-                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=$(./gradlew -q extendJar -PdownloadH2O=${driverHadoopVersion})"
+                withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}"
+                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=$(./gradlew -q extendJar -PdownloadH2O=${driverHadoopVersion})"]
                        ){
                         sh"""echo "SPARK:*****"
                                 echo ${SPARK}
