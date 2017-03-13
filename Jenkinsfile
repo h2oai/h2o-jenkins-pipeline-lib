@@ -56,7 +56,7 @@ node('mr-0xc2'){
                                 # and export variable H2O_PYTHON_WHEEL driving building of pysparkling package
                                 mkdir -p ${env.WORKSPACE}/private/
         
-                                curl $(./gradlew -q printH2OWheelPackage) > ${env.WORKSPACE}/private/h2o.whl
+                                curl \$(./gradlew -q printH2OWheelPackage) > ${env.WORKSPACE}/private/h2o.whl
                      
 
                            
