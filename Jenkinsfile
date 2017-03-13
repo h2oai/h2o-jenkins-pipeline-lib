@@ -5,10 +5,14 @@ node('mr-0xc2'){
                 
                 git url: 'https://github.com/h2oai/sparkling-water.git'
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
-                def SPARKTGZ="${SPARK}.tgz"
-                sh "wget http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz"
-                echo "Extracting spark JAR"
-                sh "tar zxvf ${SPARKTGZ}"
+                sh"""
+                if [ ! -d "${SPARK}" ]; then
+                        def SPARKTGZ="${SPARK}.tgz"
+                        sh "wget http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz"
+                        echo "Extracting spark JAR"
+                        sh "tar zxvf ${SPARKTGZ}"
+                fi
+                sh"""
                 echo 'Preparation done'  
 
         stage'QA: build & lint'
