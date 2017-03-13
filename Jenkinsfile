@@ -4,13 +4,16 @@ node('mr-0xc2'){
         stage 'Preparation'
                 
                 git url: 'https://github.com/h2oai/sparkling-water.git'
+                dumpEnvironment
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
                 def SPARKTGZ="${SPARK}.tgz"
                 sh "wget http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz"
                 echo "Extracting spark JAR"
                 sh "tar zxvf ${SPARKTGZ}"
                 echo 'Preparation done'  
-                
+
+        stage'QA: build & lint'
+          
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl"]
                        ){
@@ -65,7 +68,6 @@ node('mr-0xc2'){
                         
                 }
 
-        stage'QA: build & lint'
             echo 'Testing again'
         
 }
