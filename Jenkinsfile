@@ -25,6 +25,19 @@ node('mr-0xc2'){
                                  spark.yarn.am.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"
                                  spark.executor.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"
                                  EOF
+
+                                cat <<EOF > ${env.SPARK_HOME}/conf/java-opts
+                                -Dhdp.version="${env.HDP_VERSION}"
+                                EOF
+
+                                mkdir -p ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/
+                                for f in 2013-07.csv 2013-08.csv 2013-09.csv 2013-10.csv 2013-11.csv 2013-12.csv 31081_New_York_City__Hourly_2013.csv
+                                do
+                                        echo "f******"
+                                        echo $f
+                                        cp /home/0xdiag/bigdata/laptop//citibike-nyc/$f ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/$f
+                                done
+
                            
                         """
                         
