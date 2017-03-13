@@ -10,12 +10,6 @@ node('mr-0xc2'){
                 echo "Extracting spark JAR"
                 sh "tar zxvf ${SPARKTGZ}"
                 echo 'Preparation done'  
-                sh"""
-                if [ "${startH2OClusterOnYarn}" == "true" ]; then
-                def START_CLUSTER_ON_YARN="-PstartH2OClusterOnYarn"
-                else
-                def START_CLUSTER_ON_YARN=""
-                fi"""
                 
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl"]
@@ -58,13 +52,13 @@ node('mr-0xc2'){
                                 # Build, run regular tests
                                 #
                                 if [ "$runBuildTests" == "true" ]; then
-                                $WORKSPACE/gradlew clean build -PbackendMode=${backendMode} 
+                                        ${env.WORKSPACE}/gradlew clean build -PbackendMode=${backendMode} 
                                 else
-                                $WORKSPACE/gradlew clean build -x check -PbackendMode=${backendMode} 
+                                        ${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode} 
                                 fi
 
                                 if [ "$runScriptTests" == "true" ]; then 
-                                $WORKSPACE/gradlew scriptTest -PbackendMode=${backendMode} 
+                                        ${env.WORKSPACE}/gradlew scriptTest -PbackendMode=${backendMode} 
                                 fi
                                 
  
