@@ -18,10 +18,10 @@ node('mr-0xc2'){
                              spark.driver.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"
                              spark.yarn.am.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"
                              spark.executor.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"
-                                      EOF
-                             cat <<EOF > $SPARK_HOME/conf/java-opts
-                                -Dhdp.version="${env.HDP_VERSION}"
-                                      EOF
+                             EOF
+                             //cat <<EOF > $SPARK_HOME/conf/java-opts
+                               // -Dhdp.version="${env.HDP_VERSION}"
+                                 //     EOF
                                 // Download necessarry citibike-nyc files
                                 mkdir -p ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/
                                 echo 'Created citibike directory"
