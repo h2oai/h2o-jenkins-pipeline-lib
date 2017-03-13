@@ -10,7 +10,17 @@ node('mr-0xc2'){
                 echo "Extracting spark JAR"
                 sh "tar zxvf ${SPARKTGZ}"
                 echo 'Preparation done'  
-        
+                sh"""
+                if [ "${startH2OClusterOnYarn}" == "true" ]; then
+                START_CLUSTER_ON_YARN="-PstartH2OClusterOnYarn"
+                else
+                START_CLUSTER_ON_YARN=""
+                fi"""
+                
+                def START_CLUSTER_ON_YARN = ${START_CLUSTER_ON_YARN}
+                echo "START_CLUSTER_ON_YARN*****"
+                echo ${START_CLUSTER_ON_YARN}
+                
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl"]
                        ){
@@ -45,6 +55,8 @@ node('mr-0xc2'){
                                 # Download h2o-python client, save it in private directory
                                 # and export variable H2O_PYTHON_WHEEL driving building of pysparkling package
                                 mkdir -p ${env.WORKSPACE}/private/
+        
+                                curl $(./gradlew -q printH2OWheelPackage) > ${env.WORKSPACE}/private/h2o.whl
                      
 
                            
