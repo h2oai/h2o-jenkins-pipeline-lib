@@ -7,12 +7,10 @@ node('mr-0xc2'){
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
                 sh"""
                 if [ ! -d "${SPARK}" ]; then
-                        wget http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz                   
+                        sh wget "http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz"
+                        echo "Extracting spark JAR"
+                        sh "tar zxvf ${SPARK}.tgz"
                 fi
-                echo "Extracting spark JAR"
-                tar zxvf ${SPARK}.tgz
-                H2O_EXTENDED_JAR=$(`./gradlew -q extendJar -PdownloadH2O=$driverHadoopVersion`)
-                echo"H2O_EXTENDED_JAR"
                 sh"""
                 echo 'Preparation done'  
 
