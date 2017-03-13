@@ -17,10 +17,6 @@ node('mr-0xc2'){
                 START_CLUSTER_ON_YARN=""
                 fi"""
                 
-                def START_CLUSTER_ON_YARN = ${START_CLUSTER_ON_YARN}
-                echo "START_CLUSTER_ON_YARN*****"
-                echo ${START_CLUSTER_ON_YARN}
-                
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl"]
                        ){
