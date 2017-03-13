@@ -52,6 +52,7 @@ node('mr-0xc2'){
 
                                 echo "workspace******"
                                 echo ${env.WORKSPACE}
+                                "curl ./gradlew -q printH2OWheelPackage" > $WORKSPACE/private/h2o.whl
  
                         """
                         
