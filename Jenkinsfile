@@ -11,7 +11,9 @@ node('mr-0xc2'){
                 sh "tar zxvf ${SPARKTGZ}"
                 echo 'Preparation done'  
         
-                withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client',R_LIBS_USER=${env.WORKSPACE}/Rlibrary,HDP_VERSION=${hdpVersion}"]){
+                withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client',R_LIBS_USER=${env.WORKSPACE}/Rlibrary,HDP_VERSION=${hdpVersion},driverHadoopVersion=${driverHadoopVersion},startH2OClusterOnYarn=${startH2OClusterOnYarn}"]
+                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=$(./gradlew -q extendJar -PdownloadH2O=${driverHadoopVersion})"
+                       ){
                         sh"""echo "SPARK:*****"
                                 echo ${SPARK}
                                 echo "Spark home*****"
@@ -31,12 +33,27 @@ node('mr-0xc2'){
                                 EOF
 
                                 mkdir -p ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/
-                                for f in 2013-07.csv 2013-08.csv 2013-09.csv 2013-10.csv 2013-11.csv 2013-12.csv 31081_New_York_City__Hourly_2013.csv
-                                do
-                                        echo "f******"
-                                        echo $f
-                                        cp /home/0xdiag/bigdata/laptop//citibike-nyc/$f ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/$f
-                                done
+                                cp /home/0xdiag/bigdata/laptop//citibike-nyc/2013-07.csv ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/2013-07.csv
+                                cp /home/0xdiag/bigdata/laptop//citibike-nyc/2013-08.csv ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/2013-08.csv
+                                cp /home/0xdiag/bigdata/laptop//citibike-nyc/2013-09.csv ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/2013-09.csv
+                                cp /home/0xdiag/bigdata/laptop//citibike-nyc/2013-10.csv ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/2013-10.csv
+                                cp /home/0xdiag/bigdata/laptop//citibike-nyc/2013-11.csv ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/2013-11.csv
+                                cp /home/0xdiag/bigdata/laptop//citibike-nyc/2013-12.csv ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/2013-12.csv
+                                cp /home/0xdiag/bigdata/laptop//citibike-nyc/31081_New_York_City__Hourly_2013.csv ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/31081_New_York_City__Hourly_2013.csv
+
+
+                                // Download h2o-python client, save it in private directory
+                                // and export variable H2O_PYTHON_WHEEL driving building of pysparkling package
+                                mkdir -p ${env.WORKSPACE}/private/
+                                curl $(./gradlew -q printH2OWheelPackage) > ${env.WORKSPACE}/private/h2o.whl
+                                //export H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl
+                                //export H2O_EXTENDED_JAR=$(./gradlew -q extendJar -PdownloadH2O=${driverHadoopVersion})
+
+                                //if [ "${startH2OClusterOnYarn}" == "true" ]; then
+                                //export START_CLUSTER_ON_YARN=
+                                //else
+                                //export START_CLUSTER_ON_YARN=""
+                                //fi
 
                            
                         """
