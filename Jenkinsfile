@@ -73,12 +73,12 @@ node('mr-0xc2'){
                        ){
                  sh """   
            
-                        if [ "$runIntegTests" = "true" -a "$startH2OClusterOnYarn" = "true" ]; then 
-                                ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest
-                        fi 
-                        if [ "$runIntegTests" = "true" -a "$startH2OClusterOnYarn" = "false" ]; then 
-                                ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest
-                        fi
+                        #if [ "$runIntegTests" = "true" -a "$startH2OClusterOnYarn" = "true" ]; then 
+                        #        ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest
+                        #fi 
+                        #if [ "$runIntegTests" = "true" -a "$startH2OClusterOnYarn" = "false" ]; then 
+                        #        ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest
+                        #fi
 
                 """
                  }
