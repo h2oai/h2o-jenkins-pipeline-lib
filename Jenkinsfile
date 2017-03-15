@@ -72,6 +72,7 @@ node('mr-0xc2'){
                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
                        ){
                  sh """   
+                        echo "test"
            
                         #if [ "$runIntegTests" = "true" -a "$startH2OClusterOnYarn" = "true" ]; then 
                         #        ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest
