@@ -13,6 +13,7 @@ node('mr-0xc2'){
                 fi
                 sh"""
                 echo 'Preparation done'  
+                
 
         stage'QA: build & lint'
           
@@ -44,7 +45,9 @@ node('mr-0xc2'){
                                 ./gradlew -q extendJar -PdownloadH2O=${env.driverHadoopVersion}
                                  
 
-                        """                        
+                        """   
+                        echo 'Archiving artifacts after build'
+                        archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
                 }
 
         stage'QA:Unit tests'
@@ -64,8 +67,11 @@ node('mr-0xc2'){
                                         ${env.WORKSPACE}/gradlew scriptTest -PbackendMode=${backendMode} 
                                 fi  
                         """
+                         echo 'Archiving artifacts after Unit tests'
+                         archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
                          sh echo "Stashing the Entire repository"
                          stash name: "unit-test-stash", includes: "${env.WORKSPACE}/*"
+                         
                  }
         
         stage'QA:Integration tests'
