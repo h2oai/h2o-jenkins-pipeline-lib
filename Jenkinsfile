@@ -64,9 +64,17 @@ node('mr-0xc2'){
                                         ${env.WORKSPACE}/gradlew scriptTest -PbackendMode=${backendMode} 
                                 fi  
                         """
+                         sh echo "Stashing the Entire repository"
+                         stash name: "unit-test-stash", includes: "${env.WORKSPACE}/*"
                  }
         
         stage'QA:Integration tests'
+                
+                sh echo "Unstash the unit test"
+        
+                dir("unit-test-stash") {
+                         unstash "unit-test-stash"
+                }
         
                  withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
