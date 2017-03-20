@@ -18,7 +18,7 @@ node('mr-0xc2'){
         
         stage 'Stashing'
                 
-                stash includes: '.' , name: 'unit-test-stash'
+                stash useDefaultExcludes: false , name: 'unit-test-stash'
                 echo 'Stash successfull'
 
         stage'QA: build & lint'
