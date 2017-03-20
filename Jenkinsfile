@@ -107,12 +107,12 @@ node('mr-0xc2'){
                   sh """   		
                          echo "test"		
                     
-                         if [ "$runIntegTests" == "true" ] && [ "$startH2OClusterOnYarn" == "true" ]; then 
+                         if [[ "$runIntegTests" == "true" && "$startH2OClusterOnYarn" == "true" ]]; then 
                                 echo "Inside if 1"
                                  ${env.WORKSPACE}/unit-test-stash/gradlew integTest -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
                          fi 
 
-                         if [ "$runIntegTests" == "true" ] && [ "$startH2OClusterOnYarn" == "false" ]; then 		
+                         if [[ "$runIntegTests" == "true" && "$startH2OClusterOnYarn" == "false" ]]; then 		
                                 echo "Inside if2"
                                  ${env.WORKSPACE}/unit-test-stash/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
                          fi		
@@ -126,9 +126,9 @@ node('mr-0xc2'){
          		
         stage('QA:Integration test- pySparkling'){
                   
-                dir("unit-test-stash") {		
-                          unstash "unit-test-stash"		
-                 }
+               // dir("unit-test-stash") {		
+               //           unstash "unit-test-stash"		
+               //  }
         
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/unit-test-stash/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
                         "H2O_PYTHON_WHEEL=${env.WORKSPACE}/unit-test-stash/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/unit-test-stash/assembly-h2o/private/"]		
