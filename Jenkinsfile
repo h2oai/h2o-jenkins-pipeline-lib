@@ -14,7 +14,7 @@ node('mr-0xc2'){
                 sh"""
                 echo 'Preparation done'  
                 echo "${env.WORKSPACE}"
-                stash name: "unit-test-stash", includes: "${env.WORKSPACE}/*"
+                stash name: "unit-test-stash", includes: "${env.WORKSPACE}/README.md"
                 echo 'Stash successfull'
                 
 
