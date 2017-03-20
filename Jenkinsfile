@@ -13,6 +13,7 @@ node('mr-0xc2'){
                 fi
                 sh"""
                 echo 'Preparation done'  
+                echo "${env.WORKSPACE}"
                 stash name: "unit-test-stash", includes: "${env.WORKSPACE}/*"
                 echo 'Stash successfull'
                 
