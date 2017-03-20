@@ -107,12 +107,12 @@ node('mr-0xc2'){
                   sh """   		
                          echo "test"		
                     
-                         if [[ "$runIntegTests" == "true" && "$startH2OClusterOnYarn" == "true" ]]; then 
+                         if [[ "$runIntegTests" == true && "$startH2OClusterOnYarn" == true ]]; then 
                                 echo "Inside if 1"
                                  ${env.WORKSPACE}/unit-test-stash/gradlew integTest -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
                          fi 
 
-                         if [[ "$runIntegTests" == "true" && "$startH2OClusterOnYarn" == "false" ]]; then 		
+                         if [[ "$runIntegTests" == true && "$startH2OClusterOnYarn" == false ]]; then 		
                                 echo "Inside if2"
                                  ${env.WORKSPACE}/unit-test-stash/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
                          fi		
@@ -137,13 +137,13 @@ node('mr-0xc2'){
                          #		
                          # Run pySparkling integration tests on top of YARN		
                          #		
-                         if [ "$runPySparklingIntegTests" == "true" ] && [ "$startH2OClusterOnYarn" == "true" ]; then 		
+                         if [ "$runPySparklingIntegTests" == true ] && [ "$startH2OClusterOnYarn" == true ]; then 		
                                  ${env.WORKSPACE}/unit-test-stash/gradlew integTestPython -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check		
                                  # manually create empty test-result/empty.xml file so Publish JUnit test result report does not fail when only pySparkling integration tests parameter has been selected		
                                  mkdir -p unit-test-stash/py/build/test-result		
                                  touch unit-test-stash/py/build/test-result/empty.xml		
                          fi 		
-                         if [ "$runPySparklingIntegTests" == "true" ] && [ "$startH2OClusterOnYarn" == "false" ]; then 		
+                         if [ "$runPySparklingIntegTests" == true ] && [ "$startH2OClusterOnYarn" == false ]; then 		
                                  ${env.WORKSPACE}/unit-test-stash/gradlew integTestPython -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check		
                                  # manually create empty test-result/empty.xml file so Publish JUnit test result report does not fail when only pySparkling integration tests parameter has been selected		
                                  mkdir -p unit-test-stash/py/build/test-result		
