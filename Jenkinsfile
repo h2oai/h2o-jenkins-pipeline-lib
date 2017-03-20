@@ -69,7 +69,7 @@ node('mr-0xc2'){
                         """
                          echo 'Archiving artifacts after Unit tests'
                          archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-                         sh echo "Stashing the Entire repository"
+                         echo "Stashing the Entire repository"
                          stash name: "unit-test-stash", includes: "${env.WORKSPACE}/*"
                          
                  }
