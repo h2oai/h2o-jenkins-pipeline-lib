@@ -107,12 +107,12 @@ node('mr-0xc2'){
                   sh """   		
                          echo "test"		
                     
-                         if [ "$runIntegTests" == true && "$startH2OClusterOnYarn" == true ]; then 
+                         if [ "$runIntegTests" == true -a "$startH2OClusterOnYarn" == true ]; then 
                                 echo "Inside if 1"
                                  ${env.WORKSPACE}/unit-test-stash/gradlew integTest -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
                          fi 
 
-                         if [ "$runIntegTests" == true && "$startH2OClusterOnYarn" == false ]; then 		
+                         if [ "$runIntegTests" == true -a "$startH2OClusterOnYarn" == false ]; then 		
                                 echo "Inside if2"
                                  ${env.WORKSPACE}/unit-test-stash/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
                          fi		
