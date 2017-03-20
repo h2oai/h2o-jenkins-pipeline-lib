@@ -14,9 +14,12 @@ node('mr-0xc2'){
                 sh"""
                 echo 'Preparation done'  
                 echo "${env.WORKSPACE}"
+
+        
+        stage 'Stashing'
+                
                 stash includes: "/home/jenkins/slave_dir_from_mr-0xb1/workspace/sparkling_branch_yarn_pipeline/README.md" , name: "unit-test-stash"
                 echo 'Stash successfull'
-                
 
         stage'QA: build & lint'
           
