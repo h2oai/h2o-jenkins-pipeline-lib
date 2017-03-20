@@ -1,7 +1,7 @@
 #!/usr/bin/groovy
 
 node('mr-0xc2'){
-        stage('Preparation'){
+        stage('Git Checkout and Preparation'){
                 
                 git url: 'https://github.com/h2oai/sparkling-water.git'
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
@@ -12,14 +12,13 @@ node('mr-0xc2'){
                         tar zxvf ${SPARK}.tgz
                 fi
                 sh"""
-                echo 'Preparation done'  
-                echo "${env.WORKSPACE}"
+                echo 'Checkout and Preparation completed'  
         }
         
         stage('Stashing'){
                 
-                stash useDefaultExcludes: false , name: 'unit-test-stash'
-                echo 'Stash successfull'
+                stash useDefaultExcludes: false, name: 'unit-test-stash', includes: "${env.WORKSPACE}"
+                echo 'Stash successful'
         }
         stage('QA: build & lint'){
           
