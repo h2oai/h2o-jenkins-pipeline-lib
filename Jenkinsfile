@@ -2,7 +2,10 @@
 
 node('mr-0xc2'){
         
-        stage('Git Checkout and Preparation'){
+        stage('init'){
+                def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
+        }
+       /* stage('Git Checkout and Preparation'){
                 
                 git url: 'https://github.com/h2oai/sparkling-water.git'
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
@@ -21,7 +24,7 @@ node('mr-0xc2'){
                 stash useDefaultExcludes: false, name: 'unit-test-stash'
                 echo 'Stash successful'
         }
-
+        
         stage('QA: build & lint'){
                 
                 dir("unit-test-stash") {		
@@ -63,7 +66,7 @@ node('mr-0xc2'){
                         archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
                 }
         }
-
+        */
         stage('QA:Unit tests'){
         
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/unit-test-stash/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
@@ -71,13 +74,13 @@ node('mr-0xc2'){
                        ){
                  sh """
                                 # Build, run regular tests
-                                if [ "$runBuildTests" = "true" ]; then
-                                        echo 'runBuildTests = True'
-                                        ${env.WORKSPACE}/unit-test-stash/gradlew clean build -PbackendMode=${backendMode} 
-                                else
-                                        ${env.WORKSPACE}/unit-test-stash/gradlew clean build -x check -PbackendMode=${backendMode} 
-                                        echo 'runBuildTests = False'
-                                fi
+                                #if [ "$runBuildTests" = "true" ]; then
+                                #        echo 'runBuildTests = True'
+                                #        ${env.WORKSPACE}/unit-test-stash/gradlew clean build -PbackendMode=${backendMode} 
+                                #else
+                                #        ${env.WORKSPACE}/unit-test-stash/gradlew clean build -x check -PbackendMode=${backendMode} 
+                                #        echo 'runBuildTests = False'
+                                #fi
 
                                 if [ "$runScriptTests" = "true" ]; then 
                                         ${env.WORKSPACE}/unit-test-stash/gradlew scriptTest -PbackendMode=${backendMode} 
