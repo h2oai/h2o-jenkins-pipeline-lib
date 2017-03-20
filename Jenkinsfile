@@ -69,7 +69,7 @@ node('mr-0xc2'){
         */
         stage('QA:Unit tests'){
         
-                withEnv(["SPARK_HOME=${env.WORKSPACE}/unit-test-stash/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
+                withEnv(["SPARK_HOME=${env.WORKSPACE}/unit-test-stash/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/unit-test-stash/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/unit-test-stash/assembly-h2o/private/"]
                        ){
                  sh """
@@ -100,7 +100,7 @@ node('mr-0xc2'){
                           unstash "unit-test-stash"		
                  }		
          		
-                withEnv(["SPARK_HOME=${env.WORKSPACE}/unit-test-stash/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
+                withEnv(["SPARK_HOME=${env.WORKSPACE}/unit-test-stash/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
                         "H2O_PYTHON_WHEEL=${env.WORKSPACE}/unit-test-stash/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/unit-test-stash/assembly-h2o/private/"]		
                         ){		
                   sh """   		
@@ -127,7 +127,7 @@ node('mr-0xc2'){
                           unstash "unit-test-stash"		
                  }
         
-                withEnv(["SPARK_HOME=${env.WORKSPACE}/unit-test-stash/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
+                withEnv(["SPARK_HOME=${env.WORKSPACE}/unit-test-stash/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
                         "H2O_PYTHON_WHEEL=${env.WORKSPACE}/unit-test-stash/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/unit-test-stash/assembly-h2o/private/"]		
                         ){        		
                  sh"""		
