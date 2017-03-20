@@ -58,13 +58,16 @@ node('mr-0xc2'){
                  sh """
                                 # Build, run regular tests
                                 if [ "$runBuildTests" = "true" ]; then
+                                        echo 'runBuildTests = True'
                                         ${env.WORKSPACE}/gradlew clean build -PbackendMode=${backendMode} 
                                 else
                                         ${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode} 
+                                        echo 'runBuildTests = False'
                                 fi
 
                                 if [ "$runScriptTests" = "true" ]; then 
                                         ${env.WORKSPACE}/gradlew scriptTest -PbackendMode=${backendMode} 
+                                        echo 'runScriptTests = true'
                                 fi  
                         """
                          echo 'Archiving artifacts after Unit tests'
