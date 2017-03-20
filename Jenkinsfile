@@ -98,13 +98,14 @@ node('mr-0xc2'){
                         ){		
                   sh """   		
                          echo "test"		
-                         ${env.WORKSPACE}/unit-test-stash/gradlew integTest -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
-                         #if [ "$runIntegTests" = "true" -a "$startH2OClusterOnYarn" = "true" ]; then 		
-                         #        ${env.WORKSPACE}/unit-test-stash/gradlew integTest -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
-                         #fi 		
-                         #if [ "$runIntegTests" = "true" -a "$startH2OClusterOnYarn" = "false" ]; then 		
-                         #        ${env.WORKSPACE}/unit-test-stash/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
-                         #fi		
+                    
+                         if [ "$runIntegTests" == "true" ] && [ "$startH2OClusterOnYarn" == "true" ]; then 		
+                                 ${env.WORKSPACE}/unit-test-stash/gradlew integTest -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
+                         fi 
+
+                         if [ "$runIntegTests" == "true" ] -&& [ "$startH2OClusterOnYarn" == "false" ]; then 		
+                                 ${env.WORKSPACE}/unit-test-stash/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
+                         fi		
  		
                  """	
                         echo 'Archiving artifacts after Integration test'
@@ -126,13 +127,13 @@ node('mr-0xc2'){
                          #		
                          # Run pySparkling integration tests on top of YARN		
                          #		
-                         if [ "$runPySparklingIntegTests" = "true" -a "$startH2OClusterOnYarn" = "true" ]; then 		
+                         if [ "$runPySparklingIntegTests" = "true" ] && [ "$startH2OClusterOnYarn" = "true" ]; then 		
                                  ${env.WORKSPACE}/unit-test-stash/gradlew integTestPython -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check		
                                  # manually create empty test-result/empty.xml file so Publish JUnit test result report does not fail when only pySparkling integration tests parameter has been selected		
                                  mkdir -p unit-test-stash/py/build/test-result		
                                  touch unit-test-stash/py/build/test-result/empty.xml		
                          fi 		
-                         if [ "$runPySparklingIntegTests" = "true" -a "$startH2OClusterOnYarn" = "false" ]; then 		
+                         if [ "$runPySparklingIntegTests" = "true" ] && [ "$startH2OClusterOnYarn" = "false" ]; then 		
                                  ${env.WORKSPACE}/unit-test-stash/gradlew integTestPython -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check		
                                  # manually create empty test-result/empty.xml file so Publish JUnit test result report does not fail when only pySparkling integration tests parameter has been selected		
                                  mkdir -p unit-test-stash/py/build/test-result		
