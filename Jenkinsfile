@@ -1,32 +1,12 @@
 #!/usr/bin/groovy
 
 node('mr-0xc2'){
-        stage('Git Checkout and Preparation'){
-                
-                git url: 'https://github.com/h2oai/sparkling-water.git'
-                def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
-                sh"""
-                if [ ! -d "${SPARK}" ]; then
-                        wget "http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz"
-                        echo "Extracting spark JAR"
-                        tar zxvf ${SPARK}.tgz
-                fi
-                sh"""
-                echo 'Checkout and Preparation completed'  
-        }
-        
-        stage('Stashing'){
-                
-                stash useDefaultExcludes: false, name: 'unit-test-stash'
-                echo 'Stash successful'
-        }
+
         stage('QA: build & lint'){
                 
-                 dir("unit-test-stash") {		
-                          unstash "unit-test-stash"		
-                 }
+
           
-                withEnv(["SPARK_HOME=${env.WORKSPACE}/unit-test-stash/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
+                withEnv(["SPARK_HOME=${env.WORKSPACE}/unit-test-stash/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/unit-test-stash/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/unit-test-stash/assembly-h2o/private/"]
                        ){
                         sh"""
