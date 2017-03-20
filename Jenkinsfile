@@ -1,7 +1,7 @@
 #!/usr/bin/groovy
 
 node('mr-0xc2'){
-        stage 'Preparation'
+        stage('Preparation'){
                 
                 git url: 'https://github.com/h2oai/sparkling-water.git'
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
@@ -14,14 +14,14 @@ node('mr-0xc2'){
                 sh"""
                 echo 'Preparation done'  
                 echo "${env.WORKSPACE}"
-
+        }
         
-        stage 'Stashing'
+        stage('Stashing'){
                 
                 stash useDefaultExcludes: false , name: 'unit-test-stash'
                 echo 'Stash successfull'
-
-        stage'QA: build & lint'
+        }
+        stage('QA: build & lint'){
           
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
@@ -55,8 +55,9 @@ node('mr-0xc2'){
                         echo 'Archiving artifacts after build'
                         archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
                 }
+        }
 
-        stage'QA:Unit tests'
+        stage('QA:Unit tests'){
         
                  withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
@@ -82,7 +83,8 @@ node('mr-0xc2'){
                          stash name: "unit-test-stash", includes: "${env.WORKSPACE}/*"
                          
                  }
-          stage'QA:Integration tests'		
+        }
+        stage('QA:Integration tests'){
                  		
                  sh echo "Unstash the unit test"		
          		
@@ -107,9 +109,10 @@ node('mr-0xc2'){
                         echo 'Archiving artifacts after Integration test'
                         archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
              
-                  }		
+                  }
+        }
          		
-         stag'QA:Integration test- pySparkling'	
+        stage('QA:Integration test- pySparkling'){
                   
                 dir("unit-test-stash") {		
                           unstash "unit-test-stash"		
@@ -138,7 +141,6 @@ node('mr-0xc2'){
                            echo 'Archiving artifacts after Integration test- pySparkling'
                         archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
              
-                  }		
-         
-             
+                  }
+        }         
 }
