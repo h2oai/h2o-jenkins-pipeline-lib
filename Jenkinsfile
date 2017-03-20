@@ -17,7 +17,7 @@ node('mr-0xc2'){
         
         stage('Stashing'){
                 
-                stash useDefaultExcludes: false, name: 'unit-test-stash', includes: "${env.WORKSPACE}"
+                stash useDefaultExcludes: false, name: 'unit-test-stash'
                 echo 'Stash successful'
         }
         stage('QA: build & lint'){
