@@ -66,7 +66,7 @@ node('mr-0xc2'){
        */ //                archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
         /*        }
         }
-        */
+        
         stage('QA:Unit tests'){
         
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/unit-test-stash/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
@@ -88,17 +88,18 @@ node('mr-0xc2'){
                                 fi  
                         """
                          echo 'Archiving artifacts after Unit tests'
-                         archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+      */ //                  archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
                          
-                 }
+           /*      }
         }
+*/
         stage('QA:Integration tests'){
                  		
-                 sh echo "Unstash the unit test"		
+                 echo "Unstash the unit test"		
          		
-                 dir("unit-test-stash") {		
-                          unstash "unit-test-stash"		
-                 }		
+                 //dir("unit-test-stash") {		
+                 //         unstash "unit-test-stash"		
+                 //}		
          		
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/unit-test-stash/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
                         "H2O_PYTHON_WHEEL=${env.WORKSPACE}/unit-test-stash/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/unit-test-stash/assembly-h2o/private/"]		
@@ -106,11 +107,13 @@ node('mr-0xc2'){
                   sh """   		
                          echo "test"		
                     
-                         if [ "$runIntegTests" == "true" ] && [ "$startH2OClusterOnYarn" == "true" ]; then 		
+                         if [ "$runIntegTests" == "true" ] && [ "$startH2OClusterOnYarn" == "true" ]; then 
+                                echo "Inside if 1"
                                  ${env.WORKSPACE}/unit-test-stash/gradlew integTest -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
                          fi 
 
                          if [ "$runIntegTests" == "true" ] -&& [ "$startH2OClusterOnYarn" == "false" ]; then 		
+                                echo "Inside if2"
                                  ${env.WORKSPACE}/unit-test-stash/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
                          fi		
  		
