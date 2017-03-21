@@ -156,12 +156,13 @@ node('mr-0xc2'){
                         archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
              
                   }
-        }         
+            }  
+        }
 }
-}
+
 catch(exc){
          echo "Caught: ${exc}"
-                          echo 'Archiving artifacts after Integration test'
+                          echo 'Archiving artifacts after Integration test in catch block'
                         archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
         
 }
