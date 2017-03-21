@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 
-try{
+
 node('mr-0xc2'){
         
         stage('init'){
@@ -105,8 +105,10 @@ node('mr-0xc2'){
          		
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/unit-test-stash/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
                         "H2O_PYTHON_WHEEL=${env.WORKSPACE}/unit-test-stash/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/unit-test-stash/assembly-h2o/private/"]		
-                        ){		
-                  sh """   		
+                        ){	
+                        try{
+                                
+                        sh """   		
                          echo "test"		
                     
                          if [ "$runIntegTests" = true -a "$startH2OClusterOnYarn" = true ]; then 
@@ -119,10 +121,19 @@ node('mr-0xc2'){
                                  ${env.WORKSPACE}/unit-test-stash/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
                          fi		
  		
-                 """	
+                        """
                         echo 'Archiving artifacts after Integration test'
                         archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
              
+
+                        } catch(err){
+                        echo 'Archiving artifacts after Integration test after catch'
+                        archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+             
+                        
+                        }
+                        
+ 
                   }
         }
          		
@@ -158,12 +169,7 @@ node('mr-0xc2'){
                   }
             }  
         }
-}
 
-catch(exc){
-         echo "Caught: ${exc}"
-                          echo 'Archiving artifacts after Integration test in catch block'
-                        archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-        
-}
+
+
 
