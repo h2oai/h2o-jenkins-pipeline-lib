@@ -1,5 +1,6 @@
 #!/usr/bin/groovy
 
+try{
 node('mr-0xc2'){
         
         stage('init'){
@@ -93,6 +94,7 @@ node('mr-0xc2'){
            /*      }
         }
 */
+        
         stage('QA:Integration tests'){
                  		
                  echo "Unstash the unit test"		
@@ -156,3 +158,11 @@ node('mr-0xc2'){
                   }
         }         
 }
+}
+catch(exc){
+         echo "Caught: ${exc}"
+                          echo 'Archiving artifacts after Integration test'
+                        archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+        
+}
+
