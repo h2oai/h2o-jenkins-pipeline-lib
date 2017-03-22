@@ -92,7 +92,6 @@ node('mr-0xc2'){
                 echo 'Stash successful'
                 
                 sh "ls -ltrh ${env.WORKSPACE}"
-                sh "ls -ltrh ${env.WORKSPACE}/unit-test-stash"
                 //echo "Deleteing the original workspace after stashing the directory"
                 //sh "rm -r ${env.WORKSPACE}/*"
                 //echo "Workspace Directory deleted"
@@ -105,7 +104,8 @@ node('mr-0xc2'){
                  echo "Unstash the unit test"		
          		
                  dir("unit-test-stash") {		
-                          unstash "unit-test-stash"	
+                          unstash "unit-test-stash"
+                         sh "ls -ltrh ${env.WORKSPACE}/unit-test-stash"
                           sh """
                                 # Move the unstashed directory outside the stashed one for the environment variables to pick up properly
                                  mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
@@ -126,7 +126,7 @@ node('mr-0xc2'){
                                  fi 
         
                                  if [ "$runIntegTests" = true -a "$startH2OClusterOnYarn" = false ]; then 		
-                                         ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
+                                        # ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
                                  fi		
  		        
                                 """
