@@ -34,31 +34,34 @@ node('mr-0xc2'){
                 
 
           
-                withEnv(["SPARK_HOME=${env.WORKSPACE}/unit-test-stash/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
-                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/unit-test-stash/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/unit-test-stash/assembly-h2o/private/"]
+                withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
+                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
                        ){
                         sh"""
-                                mkdir -p ${env.WORKSPACE}/unit-test-stash/Rlibrary
+                                mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
+                                #rm -r ${env.WORKSPACE}/unit-test-stash
+
+                                mkdir -p ${env.WORKSPACE}/Rlibrary
                                 echo "spark.driver.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"" >> ${env.SPARK_HOME}/conf/spark-defaults.conf
                                 echo "spark.yarn.am.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"" >> ${env.SPARK_HOME}/conf/spark-defaults.conf
                                 echo "spark.executor.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"" >> ${env.SPARK_HOME}/conf/spark-defaults.conf
 
                                 echo "-Dhdp.version="${env.HDP_VERSION}"" >> ${env.SPARK_HOME}/conf/java-opts
 
-                                mkdir -p ${env.WORKSPACE}/unit-test-stash/examples/bigdata/laptop/citibike-nyc/
-                                cp /home/0xdiag/bigdata/laptop/citibike-nyc/2013-07.csv ${env.WORKSPACE}/unit-test-stash/examples/bigdata/laptop/citibike-nyc/2013-07.csv
-                                cp /home/0xdiag/bigdata/laptop/citibike-nyc/2013-08.csv ${env.WORKSPACE}/unit-test-stash/examples/bigdata/laptop/citibike-nyc/2013-08.csv
-                                cp /home/0xdiag/bigdata/laptop/citibike-nyc/2013-09.csv ${env.WORKSPACE}/unit-test-stash/examples/bigdata/laptop/citibike-nyc/2013-09.csv
-                                cp /home/0xdiag/bigdata/laptop/citibike-nyc/2013-10.csv ${env.WORKSPACE}/unit-test-stash/examples/bigdata/laptop/citibike-nyc/2013-10.csv
-                                cp /home/0xdiag/bigdata/laptop/citibike-nyc/2013-11.csv ${env.WORKSPACE}/unit-test-stash/examples/bigdata/laptop/citibike-nyc/2013-11.csv
-                                cp /home/0xdiag/bigdata/laptop/citibike-nyc/2013-12.csv ${env.WORKSPACE}/unit-test-stash/examples/bigdata/laptop/citibike-nyc/2013-12.csv
+                                mkdir -p ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/
+                                cp /home/0xdiag/bigdata/laptop/citibike-nyc/2013-07.csv ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/2013-07.csv
+                                cp /home/0xdiag/bigdata/laptop/citibike-nyc/2013-08.csv ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/2013-08.csv
+                                cp /home/0xdiag/bigdata/laptop/citibike-nyc/2013-09.csv ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/2013-09.csv
+                                cp /home/0xdiag/bigdata/laptop/citibike-nyc/2013-10.csv ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/2013-10.csv
+                                cp /home/0xdiag/bigdata/laptop/citibike-nyc/2013-11.csv ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/2013-11.csv
+                                cp /home/0xdiag/bigdata/laptop/citibike-nyc/2013-12.csv ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/2013-12.csv
                                 cp /home/0xdiag/bigdata/laptop/citibike-nyc/31081_New_York_City__Hourly_2013.csv ${env.WORKSPACE}/unit-test-stash/examples/bigdata/laptop/citibike-nyc/31081_New_York_City__Hourly_2013.csv
 
 
                                 # Download h2o-python client, save it in private directory
                                 # and export variable H2O_PYTHON_WHEEL driving building of pysparkling package
-                                mkdir -p ${env.WORKSPACE}/unit-test-stash/private/
-                                curl `./gradlew -q printH2OWheelPackage ` > ${env.WORKSPACE}/unit-test-stash/private/h2o.whl  
+                                mkdir -p ${env.WORKSPACE}/private/
+                                curl `./gradlew -q printH2OWheelPackage ` > ${env.WORKSPACE}/private/h2o.whl  
                                 ./gradlew -q extendJar -PdownloadH2O=${env.driverHadoopVersion}
                                  
 
@@ -70,21 +73,24 @@ node('mr-0xc2'){
         
         stage('QA:Unit tests'){
         
-                withEnv(["SPARK_HOME=${env.WORKSPACE}/unit-test-stash/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
-                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/unit-test-stash/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/unit-test-stash/assembly-h2o/private/"]
+                withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
+                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
                        ){
                  sh """
+                                mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
+                                #rm -r ${env.WORKSPACE}/unit-test-stash
+
                                 # Build, run regular tests
                                 #if [ "$runBuildTests" = "true" ]; then
                                 #        echo 'runBuildTests = True'
-                                #        ${env.WORKSPACE}/unit-test-stash/gradlew clean build -PbackendMode=${backendMode} 
+                                #        ${env.WORKSPACE}/gradlew clean build -PbackendMode=${backendMode} 
                                 #else
-                                #        ${env.WORKSPACE}/unit-test-stash/gradlew clean build -x check -PbackendMode=${backendMode} 
+                                #        ${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode} 
                                 #        echo 'runBuildTests = False'
                                 #fi
 
                                 if [ "$runScriptTests" = "true" ]; then 
-                                        ${env.WORKSPACE}/unit-test-stash/gradlew scriptTest -PbackendMode=${backendMode} 
+                                        ${env.WORKSPACE}/gradlew scriptTest -PbackendMode=${backendMode} 
                                         echo 'runScriptTests = true'
                                 fi  
                         """
@@ -111,7 +117,7 @@ node('mr-0xc2'){
                                 sh """  
                                 
                                  mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
-                                 rm -r ${env.WORKSPACE}/unit-test-stash
+                                 #rm -r ${env.WORKSPACE}/unit-test-stash
 
                                  if [ "$runIntegTests" = true -a "$startH2OClusterOnYarn" = true ]; then 
                                          ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
@@ -145,7 +151,7 @@ node('mr-0xc2'){
                         try{
                                  sh"""		
                                  mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
-                                 rm -r ${env.WORKSPACE}/unit-test-stash
+                                 #rm -r ${env.WORKSPACE}/unit-test-stash
 
                                  #		
                                  # Run pySparkling integration tests on top of YARN		
