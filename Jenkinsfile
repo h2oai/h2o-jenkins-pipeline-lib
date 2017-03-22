@@ -70,7 +70,7 @@ node('mr-0xc2'){
                                         ${env.WORKSPACE}/gradlew clean build -PbackendMode=${backendMode} 
                                 else
                                         echo 'runBuildTests = False'
-                                        ${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode} 
+                                        #${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode} 
                                         
                                 fi
 
@@ -91,9 +91,11 @@ node('mr-0xc2'){
                 stash useDefaultExcludes: false, name: 'unit-test-stash'
                 echo 'Stash successful'
                 
-                echo "Deleteing the original workspace after stashing the directory"
-                sh "rm -r ${env.WORKSPACE}/*"
-                echo "Workspace Directory deleted"
+                sh "ls -ltrh ${env.WORKSPACE}"
+                sh "ls -ltrh ${env.WORKSPACE}/unit-test-stash"
+                //echo "Deleteing the original workspace after stashing the directory"
+                //sh "rm -r ${env.WORKSPACE}/*"
+                //echo "Workspace Directory deleted"
                 
         }
 
@@ -107,7 +109,8 @@ node('mr-0xc2'){
                           sh """
                                 # Move the unstashed directory outside the stashed one for the environment variables to pick up properly
                                  mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
-                                 rm -r ${env.WORKSPACE}/unit-test-stash
+                          
+                                 #rm -r ${env.WORKSPACE}/unit-test-stash
 
                            """
                  }		
