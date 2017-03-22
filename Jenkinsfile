@@ -6,7 +6,7 @@ node('mr-0xc2'){
         stage('init'){
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
         }
-       /* stage('Git Checkout and Preparation'){
+        stage('Git Checkout and Preparation'){
                 
                 git url: 'https://github.com/h2oai/sparkling-water.git'
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
@@ -19,13 +19,7 @@ node('mr-0xc2'){
                 sh"""
                 echo 'Checkout and Preparation completed'  
         }
-        
-        stage('Stashing'){
                 
-                stash useDefaultExcludes: false, name: 'unit-test-stash'
-                echo 'Stash successful'
-        }
-        
         stage('QA: build & lint'){
                 
                 dir("unit-test-stash") {		
@@ -67,27 +61,26 @@ node('mr-0xc2'){
 
                         """   
                         echo 'Archiving artifacts after build'
-       */ //                archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-        /*        }
+                        archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+               }
         }
+        
+        
         
         stage('QA:Unit tests'){
         
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
                        ){
-                 sh """
-                                mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
-                                #rm -r ${env.WORKSPACE}/unit-test-stash
-
+                     sh """
                                 # Build, run regular tests
-                                #if [ "$runBuildTests" = "true" ]; then
-                                #        echo 'runBuildTests = True'
-                                #        ${env.WORKSPACE}/gradlew clean build -PbackendMode=${backendMode} 
-                                #else
-                                #        ${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode} 
-                                #        echo 'runBuildTests = False'
-                                #fi
+                                if [ "$runBuildTests" = "true" ]; then
+                                        echo 'runBuildTests = True'
+                                        ${env.WORKSPACE}/gradlew clean build -PbackendMode=${backendMode} 
+                                else
+                                        ${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode} 
+                                        echo 'runBuildTests = False'
+                                fi
 
                                 if [ "$runScriptTests" = "true" ]; then 
                                         ${env.WORKSPACE}/gradlew scriptTest -PbackendMode=${backendMode} 
@@ -95,19 +88,32 @@ node('mr-0xc2'){
                                 fi  
                         """
                          echo 'Archiving artifacts after Unit tests'
-      */ //                  archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+                         archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
                          
-           /*      }
+                 }
         }
-*/
+        
+        stage('Stashing'){
+                
+                stash useDefaultExcludes: false, name: 'unit-test-stash'
+                echo 'Stash successful'
+                
+        }
+
         
         stage('QA:Integration tests'){
                  		
                  echo "Unstash the unit test"		
          		
-                 //dir("unit-test-stash") {		
-                 //         unstash "unit-test-stash"		
-                 //}		
+                 dir("unit-test-stash") {		
+                          unstash "unit-test-stash"	
+                          sh """
+                                # Move the unstashed directory outside the stashed one for the environment variables to pick up properly
+                                 mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
+                                 #rm -r ${env.WORKSPACE}/unit-test-stash
+
+                           """
+                 }		
          		
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
                         "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]		
@@ -115,10 +121,6 @@ node('mr-0xc2'){
                         try{
                                 
                                 sh """  
-                                
-                                 mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
-                                 #rm -r ${env.WORKSPACE}/unit-test-stash
-
                                  if [ "$runIntegTests" = true -a "$startH2OClusterOnYarn" = true ]; then 
                                          ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PstartH2OClusterOnYarn -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
                                  fi 
@@ -141,17 +143,21 @@ node('mr-0xc2'){
          		
         stage('QA:Integration test- pySparkling'){
                   
-               // dir("unit-test-stash") {		
-               //           unstash "unit-test-stash"		
-               //  }
-        
+               /* dir("unit-test-stash") {		
+                          unstash "unit-test-stash"		
+                          sh """
+                                # Move the unstashed directory outside the stashed one for the environment variables to pick up properly
+                                 mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
+                                 #rm -r ${env.WORKSPACE}/unit-test-stash
+
+                           """
+                 }
+               */
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
                         "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]		
                         ){   
                         try{
-                                 sh"""		
-                                 mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
-                                 #rm -r ${env.WORKSPACE}/unit-test-stash
+                                 sh"""	
 
                                  #		
                                  # Run pySparkling integration tests on top of YARN		
