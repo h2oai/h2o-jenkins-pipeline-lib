@@ -91,9 +91,9 @@ node('mr-0xc2'){
                 stash useDefaultExcludes: false, name: 'unit-test-stash'
                 echo 'Stash successful'
                 
-                //echo "Deleteing the original workspace after stashing the directory"
-                //sh "rm -r ${env.WORKSPACE}/*"
-                //echo "Workspace Directory deleted"
+                echo "Deleteing the original workspace after stashing the directory"
+                sh "rm -r ${env.WORKSPACE}/*"
+                echo "Workspace Directory deleted"
                 
         }
 
