@@ -91,14 +91,14 @@ node('mr-0xc2'){
                 stash useDefaultExcludes: false, name: 'unit-test-stash'
                 echo 'Stash successful'
                 
-                echo "Deleteing the original workspace after stashing the directory"
-                sh "rm -r ${env.WORKSPACE}"
-                echo "Workspace Directory deleted"
+                //echo "Deleteing the original workspace after stashing the directory"
+                //sh "rm -r ${env.WORKSPACE}"
+                //echo "Workspace Directory deleted"
                 
         }
 
         
-        stage('QA:Integration tests'){
+        /*stage('QA:Integration tests'){
                  		
                  echo "Unstash the unit test"		
          		
@@ -128,12 +128,12 @@ node('mr-0xc2'){
  		        
                                 """
                                 echo 'Archiving artifacts after Integration test'
-                                archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-                        } 
+             */ //                  archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+               /*         } 
                         catch(err){
                                 echo 'Archiving artifacts after Integration test after catch'
-                                archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-                        }
+                 */ //              archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+                   /*     }
 
                   }
         }
@@ -150,7 +150,7 @@ node('mr-0xc2'){
                            """
                  }
                */
-                withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
+               /* withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
                         "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]		
                         ){   
                         try{
@@ -173,15 +173,16 @@ node('mr-0xc2'){
                                  fi 		
                                 """	
                                 echo 'Archiving artifacts after Integration test- pySparkling'
-                                archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-             
+             *///                   archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+             /*
                         }
                         catch(err){
                                  echo 'Archiving artifacts after Integration test after catch'
-                                 archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-                        }
+               *///                  archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+                  /*      }
                   }
-            }  
+            } 
+*/
         }
 
 
