@@ -88,7 +88,7 @@ node('mr-0xc2'){
         
         stage('Stashing'){
                 
-                stash useDefaultExcludes: false, name: 'unit-test-stash'
+                stash useDefaultExcludes: true, name: 'unit-test-stash'
                 echo 'Stash successful'
                 
                 sh "ls -ltrh ${env.WORKSPACE}"
