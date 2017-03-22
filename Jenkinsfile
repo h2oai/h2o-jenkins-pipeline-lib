@@ -92,7 +92,7 @@ node('mr-0xc2'){
                 echo 'Stash successful'
                 
                 echo "Deleteing the original workspace after stashing the directory"
-                rm -r ${env.WORKSPACE}
+                sh "rm -r ${env.WORKSPACE}"
                 echo "Workspace Directory deleted"
                 
         }
