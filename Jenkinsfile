@@ -27,8 +27,6 @@ node('mr-0xc2'){
                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
                        ){
                         sh"""
-                                mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
-                                #rm -r ${env.WORKSPACE}/unit-test-stash
 
                                 mkdir -p ${env.WORKSPACE}/Rlibrary
                                 echo "spark.driver.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"" >> ${env.SPARK_HOME}/conf/spark-defaults.conf
