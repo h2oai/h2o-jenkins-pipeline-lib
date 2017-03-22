@@ -103,17 +103,17 @@ node('mr-0xc2'){
                  		
                  echo "Unstash the unit test"		
          		
-                 dir("unit-test-stash") {		
-                          unstash "unit-test-stash"
+                // dir("unit-test-stash") {		
+                         unstash "unit-test-stash"
                          sh "ls -ltrh ${env.WORKSPACE}/unit-test-stash"
-                          sh """
+                         /* sh """
                                 # Move the unstashed directory outside the stashed one for the environment variables to pick up properly
                                  mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
                           
                                  #rm -r ${env.WORKSPACE}/unit-test-stash
 
                            """
-                 }		
+*/                 //}		
          		
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
                         "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]		
