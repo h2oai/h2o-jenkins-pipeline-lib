@@ -107,7 +107,7 @@ node('mr-0xc2'){
                           sh """
                                 # Move the unstashed directory outside the stashed one for the environment variables to pick up properly
                                  mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
-                                 #rm -r ${env.WORKSPACE}/unit-test-stash
+                                 rm -r ${env.WORKSPACE}/unit-test-stash
 
                            """
                  }		
@@ -145,7 +145,7 @@ node('mr-0xc2'){
                           sh """
                                 # Move the unstashed directory outside the stashed one for the environment variables to pick up properly
                                  mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
-                                 #rm -r ${env.WORKSPACE}/unit-test-stash
+                                 rm -r ${env.WORKSPACE}/unit-test-stash
 
                            """
                  }
