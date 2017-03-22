@@ -92,9 +92,9 @@ node('mr-0xc2'){
                 echo 'Stash successful'
                 
                 sh "ls -ltrh ${env.WORKSPACE}"
-                //echo "Deleteing the original workspace after stashing the directory"
-                //sh "rm -r ${env.WORKSPACE}/*"
-                //echo "Workspace Directory deleted"
+                echo "Deleteing the original workspace after stashing the directory"
+                sh "rm -r ${env.WORKSPACE}/*"
+                echo "Workspace Directory deleted"
                 
         }
 
