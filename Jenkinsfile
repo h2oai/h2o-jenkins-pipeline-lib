@@ -6,6 +6,7 @@ node('mr-0xc2'){
         stage('init'){
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
         }
+        
         stage('Git Checkout and Preparation'){
                 
                 git url: 'https://github.com/h2oai/sparkling-water.git'
@@ -22,12 +23,6 @@ node('mr-0xc2'){
                 
         stage('QA: build & lint'){
                 
-                dir("unit-test-stash") {		
-                          unstash "unit-test-stash"		
-                 }
-                
-
-          
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/${SPARK}","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/unit-test-stash/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
                        ){
@@ -51,21 +46,18 @@ node('mr-0xc2'){
                                 cp /home/0xdiag/bigdata/laptop/citibike-nyc/2013-12.csv ${env.WORKSPACE}/examples/bigdata/laptop/citibike-nyc/2013-12.csv
                                 cp /home/0xdiag/bigdata/laptop/citibike-nyc/31081_New_York_City__Hourly_2013.csv ${env.WORKSPACE}/unit-test-stash/examples/bigdata/laptop/citibike-nyc/31081_New_York_City__Hourly_2013.csv
 
-
                                 # Download h2o-python client, save it in private directory
                                 # and export variable H2O_PYTHON_WHEEL driving building of pysparkling package
                                 mkdir -p ${env.WORKSPACE}/private/
                                 curl `./gradlew -q printH2OWheelPackage ` > ${env.WORKSPACE}/private/h2o.whl  
                                 ./gradlew -q extendJar -PdownloadH2O=${env.driverHadoopVersion}
-                                 
-
+          
                         """   
                         echo 'Archiving artifacts after build'
                         archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
                }
         }
-        
-        
+
         
         stage('QA:Unit tests'){
         
