@@ -88,11 +88,13 @@ node('mr-0xc2'){
         
         stage('Stashing'){
                 
-                stash useDefaultExcludes: true, name: 'unit-test-stash', includes: '**'
+                // Make a tar of the directory and stash it
+                tar -zcvf stash_archive.tar.gz .
+                stash name: 'unit-test-stash', includes: 'stash_archive.tar.gz'
                 echo 'Stash successful'
                 
                 sh "ls -ltrh ${env.WORKSPACE}"
-                echo "Deleteing the original workspace after stashing the directory"
+                echo "Deleting the original workspace after stashing the directory"
                 //sh "rm -r ${env.WORKSPACE}/*"
                 echo "Workspace Directory deleted"
                 
@@ -103,8 +105,12 @@ node('mr-0xc2'){
                  		
                  echo "Unstash the unit test"		
          		
-                // dir("unit-test-stash") {		
+                // dir("unit-test-stash") {	
+                        
                          unstash "unit-test-stash"
+                
+                        //Untar the archieve
+                         tar -zxvf stash_archive.tar.gz
                          sh "ls -ltrh ${env.WORKSPACE}"
                          /* sh """
                                 # Move the unstashed directory outside the stashed one for the environment variables to pick up properly
