@@ -88,8 +88,13 @@ node('mr-0xc2'){
         
         stage('Stashing'){
                 
+                try{
                 // Make a tar of the directory and stash it
                 sh "tar -zcvf stash_archive.tar.gz ."
+                }
+                catch(err){
+                        echo "Tar completed with few changes while running tar"
+                }
                 stash name: 'unit-test-stash', includes: 'stash_archive.tar.gz'
                 echo 'Stash successful'
                 
