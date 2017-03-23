@@ -67,16 +67,16 @@ node('mr-0xc2'){
                                 # Build, run regular tests
                                 if [ "$runBuildTests" = true ]; then
                                         echo 'runBuildTests = True'
-                                       # ${env.WORKSPACE}/gradlew clean build -PbackendMode=${backendMode} 
+                                        ${env.WORKSPACE}/gradlew clean build -PbackendMode=${backendMode} 
                                 else
                                         echo 'runBuildTests = False'
-                                        #${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode} 
+                                        ${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode} 
                                         
                                 fi
 
                                 if [ "$runScriptTests" = true ]; then 
                                         echo 'runScriptTests = true'
-                                        #${env.WORKSPACE}/gradlew scriptTest -PbackendMode=${backendMode} 
+                                        ${env.WORKSPACE}/gradlew scriptTest -PbackendMode=${backendMode} 
                                         
                                 fi  
                         """
@@ -93,7 +93,7 @@ node('mr-0xc2'){
                 
                 sh "ls -ltrh ${env.WORKSPACE}"
                 echo "Deleteing the original workspace after stashing the directory"
-                sh "rm -r ${env.WORKSPACE}/*"
+                //sh "rm -r ${env.WORKSPACE}/*"
                 echo "Workspace Directory deleted"
                 
         }
