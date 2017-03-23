@@ -90,7 +90,7 @@ node('mr-0xc2'){
                 
                 try{
                 // Make a tar of the directory and stash it
-                sh "tar -zcvf stash_archive.tar.gz ."
+                sh "tar --ignore-failed-read -zcvf stash_archive.tar.gz ."
                 }
                 catch(err){
                         echo "Tar completed with few changes while running tar"
