@@ -98,7 +98,7 @@ node('mr-0xd2'){
                 catch(err){
                         echo "Tar completed with few changes while running tar"
                 }*/
-                stash name: 'unit-test-stash', includes: 'stash_archive.tar.gz'
+                stash name: 'unit-test-stash', includes: '**'
                 echo 'Stash successful'
                 
                 sh "ls -ltrh ${env.WORKSPACE}"
