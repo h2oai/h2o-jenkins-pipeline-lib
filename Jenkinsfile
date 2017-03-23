@@ -17,6 +17,7 @@ node('mr-0xd2'){
                         echo "Extracting spark JAR"
                         tar zxvf ${SPARK}.tgz
                 fi
+                echo "Test"
                 sh"""
                 echo 'Checkout and Preparation completed'  
         }
