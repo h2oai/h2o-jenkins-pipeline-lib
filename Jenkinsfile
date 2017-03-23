@@ -67,16 +67,16 @@ node('mr-0xc2'){
                                 # Build, run regular tests
                                 if [ "$runBuildTests" = true ]; then
                                         echo 'runBuildTests = True'
-                                        ${env.WORKSPACE}/gradlew clean build -PbackendMode=${backendMode} 
+                                       # ${env.WORKSPACE}/gradlew clean build -PbackendMode=${backendMode} 
                                 else
                                         echo 'runBuildTests = False'
-                                        ${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode} 
+                                        #${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode} 
                                         
                                 fi
 
                                 if [ "$runScriptTests" = true ]; then 
                                         echo 'runScriptTests = true'
-                                        ${env.WORKSPACE}/gradlew scriptTest -PbackendMode=${backendMode} 
+                                        #${env.WORKSPACE}/gradlew scriptTest -PbackendMode=${backendMode} 
                                         
                                 fi  
                         """
@@ -88,7 +88,7 @@ node('mr-0xc2'){
         
         stage('Stashing'){
                 
-                stash useDefaultExcludes: true, name: 'unit-test-stash'
+                stash useDefaultExcludes: true, name: 'unit-test-stash', includes: '**'
                 echo 'Stash successful'
                 
                 sh "ls -ltrh ${env.WORKSPACE}"
