@@ -91,14 +91,14 @@ node('mr-0xd2'){
         
         stage('Stashing'){
                 
-               /* try{
+                try{
                 // Make a tar of the directory and stash it
                 sh "tar --ignore-failed-read -zcvf stash_archive.tar.gz ."
                 }
                 catch(err){
                         echo "Tar completed with few changes while running tar"
-                }*/
-                stash name: 'unit-test-stash', includes: '**'
+                }
+                stash name: 'unit-test-stash', includes: 'stash_archive.tar.gz'
                 echo 'Stash successful'
                 
                 sh "ls -ltrh ${env.WORKSPACE}"
@@ -118,16 +118,16 @@ node('mr-0xd2'){
                          unstash "unit-test-stash"
                 
                         //Untar the archieve
-                         //sh "tar -zxvf stash_archive.tar.gz"
+                         sh "tar -zxvf stash_archive.tar.gz"
                          sh "ls -ltrh ${env.WORKSPACE}"
-                         /* sh """
+                         sh """
                                 # Move the unstashed directory outside the stashed one for the environment variables to pick up properly
                                  mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
                           
                                  #rm -r ${env.WORKSPACE}/unit-test-stash
 
                            """
-*/                 //}		
+                  //}		
          		
                 withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
                         "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]		
