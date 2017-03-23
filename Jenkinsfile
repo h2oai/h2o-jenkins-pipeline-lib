@@ -89,7 +89,7 @@ node('mr-0xc2'){
         stage('Stashing'){
                 
                 // Make a tar of the directory and stash it
-                tar -zcvf stash_archive.tar.gz .
+                sh "tar -zcvf stash_archive.tar.gz ."
                 stash name: 'unit-test-stash', includes: 'stash_archive.tar.gz'
                 echo 'Stash successful'
                 
@@ -110,7 +110,7 @@ node('mr-0xc2'){
                          unstash "unit-test-stash"
                 
                         //Untar the archieve
-                         tar -zxvf stash_archive.tar.gz
+                         sh "tar -zxvf stash_archive.tar.gz"
                          sh "ls -ltrh ${env.WORKSPACE}"
                          /* sh """
                                 # Move the unstashed directory outside the stashed one for the environment variables to pick up properly
