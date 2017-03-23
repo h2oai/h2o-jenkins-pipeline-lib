@@ -70,7 +70,7 @@ node('mr-0xc2'){
                                         ${env.WORKSPACE}/gradlew clean build -PbackendMode=${backendMode} 
                                 else
                                         echo 'runBuildTests = False'
-                                        #${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode} 
+                                        ${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode} 
                                         
                                 fi
 
@@ -126,7 +126,7 @@ node('mr-0xc2'){
                                  fi 
         
                                  if [ "$runIntegTests" = true -a "$startH2OClusterOnYarn" = false ]; then 		
-                                        # ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
+                                        ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
                                  fi		
  		        
                                 """
