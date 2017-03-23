@@ -93,7 +93,7 @@ node('mr-0xc2'){
                 
                 sh "ls -ltrh ${env.WORKSPACE}"
                 echo "Deleteing the original workspace after stashing the directory"
-                //sh "rm -r ${env.WORKSPACE}/*"
+                sh "rm -r ${env.WORKSPACE}/*"
                 echo "Workspace Directory deleted"
                 
         }
@@ -105,7 +105,7 @@ node('mr-0xc2'){
          		
                 // dir("unit-test-stash") {		
                          unstash "unit-test-stash"
-                         sh "ls -ltrh ${env.WORKSPACE}/unit-test-stash"
+                         sh "ls -ltrh ${env.WORKSPACE}"
                          /* sh """
                                 # Move the unstashed directory outside the stashed one for the environment variables to pick up properly
                                  mv ${env.WORKSPACE}/unit-test-stash/* ${env.WORKSPACE}
