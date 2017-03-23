@@ -1,7 +1,7 @@
 #!/usr/bin/groovy
 
 
-node('mr-0xc2'){
+node('mr-0xd1'){
         
         stage('init'){
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
