@@ -171,12 +171,13 @@ pipeline{
         
                                  if [ "$runIntegTests" = true -a "$startH2OClusterOnYarn" = false ]; then 		
                                         ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest		
-                                 fi		
- 		        
-                                """
-                                echo 'Archiving artifacts after Integration test'
+                                 fi	
+
+ 		                  echo 'Archiving artifacts after Integration test'
                                 archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-                       /* } 
+                   
+                                """
+                                  /* } 
                         catch(err){
                                 echo 'Archiving artifacts after Integration test after catch'
                         */  //      archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
@@ -219,11 +220,13 @@ pipeline{
                                          # manually create empty test-result/empty.xml file so Publish JUnit test result report does not fail when only pySparkling integration tests parameter has been selected		
                                          mkdir -p py/build/test-result		
                                          touch py/build/test-result/empty.xml		
-                                 fi 		
-                                """	
+                                 fi 
+
                                 echo 'Archiving artifacts after Integration test- pySparkling'
                                 archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
              
+                                """	
+                               
                       //  }
                       //  catch(err){
                        //          echo 'Archiving artifacts after Integration test after catch'
