@@ -1,7 +1,9 @@
 #!/usr/bin/groovy
 
 pipeline{
-        agent mr-0xd2
+        
+        agent { mr-0xd2 }
+        
         environment{
                          SPARK_HOME='${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6'
                          HADOOP_CONF_DIR='/etc/hadoop/conf'
@@ -13,7 +15,7 @@ pipeline{
                        H2O_PYTHON_WHEEL='${env.WORKSPACE}/private/h2o.whl'
                         H2O_EXTENDED_JAR='${env.WORKSPACE}/assembly-h2o/private/'
         }
-//node('mr-0xd2'){
+        //node('mr-0xd2'){
         stages{
                 
         stage('init'){
@@ -227,6 +229,6 @@ pipeline{
 
    //     }
 
-}
+//}
 
 
