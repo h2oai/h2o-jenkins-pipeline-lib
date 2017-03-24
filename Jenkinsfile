@@ -27,14 +27,15 @@ pipeline{
 
                 steps{
                         
-                git url: 'https://github.com/h2oai/sparkling-water.git'
-                def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
                         
                 sh"""
-                if [ ! -d "${SPARK}" ]; then
-                        wget "http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz"
+                #git url: 'https://github.com/h2oai/sparkling-water.git'
+                #def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
+
+                if [ ! -d "spark-2.1.0-bin-hadoop2.6" ]; then
+                        wget "http://d3kbcqa49mib13.cloudfront.net/spark-2.1.0-bin-hadoop2.6.tgz"
                         echo "Extracting spark JAR"
-                        tar zxvf ${SPARK}.tgz
+                        tar zxvf spark-2.1.0-bin-hadoop2.6.tgz
                 fi
                 echo "Test"
                 sh"""
