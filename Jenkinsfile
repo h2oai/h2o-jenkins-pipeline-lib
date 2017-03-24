@@ -29,7 +29,7 @@ pipeline{
                         
                         
                 sh"""
-                git url: 'https://github.com/h2oai/sparkling-water.git'
+                #git url: 'https://github.com/h2oai/sparkling-water.git'
                 #def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
 
                 if [ ! -d "spark-2.1.0-bin-hadoop2.6" ]; then
