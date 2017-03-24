@@ -1,8 +1,21 @@
 #!/usr/bin/groovy
 
-
-node('mr-0xd2'){
-        
+pipeline{
+        agent mr-0xd2
+        environment{
+                SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6,
+                HADOOP_CONF_DIR=/etc/hadoop/conf
+                        MASTER='yarn-client'
+                        R_LIBS_USER=${env.WORKSPACE}/Rlibrary
+                        HDP_VERSION=${hdpVersion}
+                        driverHadoopVersion=${driverHadoopVersion}
+                        startH2OClusterOnYarn=${startH2OClusterOnYarn}
+                       H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl
+                        H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/
+        }
+//node('mr-0xd2'){
+        stages{
+                
         stage('init'){
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
         }
@@ -11,6 +24,7 @@ node('mr-0xd2'){
                 
                 git url: 'https://github.com/h2oai/sparkling-water.git'
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
+                steps{
                 sh"""
                 if [ ! -d "${SPARK}" ]; then
                         wget "http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz"
@@ -19,14 +33,17 @@ node('mr-0xd2'){
                 fi
                 echo "Test"
                 sh"""
+                }
                 echo 'Checkout and Preparation completed'  
         }
                 
         stage('QA: build & lint'){
                 
-                withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
-                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
-                       ){
+                //withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
+                //       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
+                //       ){
+                
+                steps{
                         sh"""
 
                                 mkdir -p ${env.WORKSPACE}/Rlibrary
@@ -61,9 +78,11 @@ node('mr-0xd2'){
         
         stage('QA:Unit tests'){
         
-                withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
-                       "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
-                       ){
+               // withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",
+               //        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]
+               //        ){
+                
+                steps{
                      sh """
                                 # Build, run regular tests
                                 if [ "$runBuildTests" = true ]; then
@@ -92,6 +111,7 @@ node('mr-0xd2'){
         
         stage('Stashing'){
                 
+                steps{
                 try{
                 // Make a tar of the directory and stash it
                 sh "tar --ignore-failed-read -zcvf stash_archive.tar.gz ."
@@ -106,12 +126,13 @@ node('mr-0xd2'){
                 echo "Deleting the original workspace after stashing the directory"
                 sh "rm -r ${env.WORKSPACE}/*"
                 echo "Workspace Directory deleted"
-                
+                }
         }
 
         
         stage('QA:Integration tests'){
                  		
+                steps{
                  echo "Unstash the unit test"		
          		
                 // dir("unit-test-stash") {	
@@ -130,9 +151,9 @@ node('mr-0xd2'){
                            """
                   //}		
          		
-                withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
-                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]		
-                        ){	
+                //withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
+                //        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]		
+                //        ){	
                         try{
                                 
                                 sh """  
@@ -155,6 +176,7 @@ node('mr-0xd2'){
 
                   }
         }
+        }
          		
         stage('QA:Integration test- pySparkling'){
                   
@@ -168,9 +190,10 @@ node('mr-0xd2'){
                            """
                  }
                */
-               withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
-                        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]		
-                        ){   
+             //  withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
+              //          "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]		
+               //         ){   
+                steps{
                         try{
                                  sh"""	
 
@@ -200,9 +223,10 @@ node('mr-0xd2'){
                         }
                   }
             } 
-
         }
 
+   //     }
 
+}
 
 
