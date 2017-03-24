@@ -2,18 +2,18 @@
 
 pipeline{
         
-        agent { mr-0xd2 }
+        agent any
         
         environment{
-                         SPARK_HOME='${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6'
-                         HADOOP_CONF_DIR='/etc/hadoop/conf'
-                        MASTER='yarn-client'
-                        R_LIBS_USER='${env.WORKSPACE}/Rlibrary'
-                        HDP_VERSION='${hdpVersion}'
-                        driverHadoopVersion='${driverHadoopVersion}'
-                        startH2OClusterOnYarn='${startH2OClusterOnYarn}'
-                       H2O_PYTHON_WHEEL='${env.WORKSPACE}/private/h2o.whl'
-                        H2O_EXTENDED_JAR='${env.WORKSPACE}/assembly-h2o/private/'
+                        SPARK_HOME="${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6"
+                        HADOOP_CONF_DIR="/etc/hadoop/conf"
+                        MASTER="yarn-client"
+                        R_LIBS_USER="${env.WORKSPACE}/Rlibrary"
+                        HDP_VERSION="${hdpVersion}"
+                        driverHadoopVersion="${driverHadoopVersion}"
+                        startH2OClusterOnYarn="${startH2OClusterOnYarn}"
+                        H2O_PYTHON_WHEEL="${env.WORKSPACE}/private/h2o.whl"
+                        H2O_EXTENDED_JAR="${env.WORKSPACE}/assembly-h2o/private/"
         }
         //node('mr-0xd2'){
         stages{
