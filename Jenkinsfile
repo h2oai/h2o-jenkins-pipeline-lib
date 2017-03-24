@@ -18,15 +18,18 @@ pipeline{
         //node('mr-0xd2'){
         stages{
                 
-        stage('init'){
+      /*  stage('init'){
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
         }
-        
+       */ 
         stage('Git Checkout and Preparation'){
                 
+
+                steps{
+                        
                 git url: 'https://github.com/h2oai/sparkling-water.git'
                 def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
-                steps{
+                        
                 sh"""
                 if [ ! -d "${SPARK}" ]; then
                         wget "http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz"
