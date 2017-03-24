@@ -37,10 +37,11 @@ pipeline{
                         echo "Extracting spark JAR"
                         tar zxvf spark-2.1.0-bin-hadoop2.6.tgz
                 fi
-                echo "Test"
+          
+                echo 'Checkout and Preparation completed' 
                 sh"""
                 }
-                echo 'Checkout and Preparation completed'  
+                 
         }
                 
         stage('QA: build & lint'){
@@ -118,13 +119,14 @@ pipeline{
         stage('Stashing'){
                 
                 steps{
-                try{
-                // Make a tar of the directory and stash it
-                sh "tar --ignore-failed-read -zcvf stash_archive.tar.gz ."
-                }
-                catch(err){
-                        echo "Tar completed with few changes while running tar"
-                }
+                //try{
+                // Make a tar of the directory and stash it -> --ignore-failed-read
+                sh "tar  -zcvf stash_archive.tar.gz .."
+                sh "mv ../stash_archive.tar.gz ."        
+                //}
+                //catch(err){
+                //        echo "Tar completed with few changes while running tar"
+                //}
                 stash name: 'unit-test-stash', includes: 'stash_archive.tar.gz'
                 echo 'Stash successful'
                 
@@ -160,7 +162,7 @@ pipeline{
                 //withEnv(["SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6","HADOOP_CONF_DIR=/etc/hadoop/conf","MASTER='yarn-client'","R_LIBS_USER=${env.WORKSPACE}/Rlibrary","HDP_VERSION=${hdpVersion}","driverHadoopVersion=${driverHadoopVersion}","startH2OClusterOnYarn=${startH2OClusterOnYarn}",		
                 //        "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]		
                 //        ){	
-                        try{
+                        //try{
                                 
                                 sh """  
                                  if [ "$runIntegTests" = true -a "$startH2OClusterOnYarn" = true ]; then 
@@ -174,12 +176,12 @@ pipeline{
                                 """
                                 echo 'Archiving artifacts after Integration test'
                                 archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-                        } 
+                       /* } 
                         catch(err){
                                 echo 'Archiving artifacts after Integration test after catch'
-                                archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-                        }
-
+                        */  //      archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+                        //}
+                        
                   }
         }
         }
@@ -200,7 +202,7 @@ pipeline{
               //          "H2O_PYTHON_WHEEL=${env.WORKSPACE}/private/h2o.whl","H2O_EXTENDED_JAR=${env.WORKSPACE}/assembly-h2o/private/"]		
                //         ){   
                 steps{
-                        try{
+                        //try{
                                  sh"""	
 
                                  #		
@@ -222,11 +224,11 @@ pipeline{
                                 echo 'Archiving artifacts after Integration test- pySparkling'
                                 archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
              
-                        }
-                        catch(err){
-                                 echo 'Archiving artifacts after Integration test after catch'
-                                 archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-                        }
+                      //  }
+                      //  catch(err){
+                       //          echo 'Archiving artifacts after Integration test after catch'
+                        //         archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+                       // }
                   }
             } 
         }
