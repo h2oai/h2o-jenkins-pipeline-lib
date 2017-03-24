@@ -3,8 +3,8 @@
 pipeline{
         agent mr-0xd2
         environment{
-                SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6,
-                HADOOP_CONF_DIR=/etc/hadoop/conf
+                         SPARK_HOME=${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6
+                         HADOOP_CONF_DIR=/etc/hadoop/conf
                         MASTER='yarn-client'
                         R_LIBS_USER=${env.WORKSPACE}/Rlibrary
                         HDP_VERSION=${hdpVersion}
