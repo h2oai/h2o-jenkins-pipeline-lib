@@ -27,6 +27,7 @@ pipeline{
 
                 steps{
                         
+                checkout scm       
                         
                 sh"""
                 #git url: 'https://github.com/h2oai/sparkling-water.git'
