@@ -28,7 +28,7 @@ pipeline{
                 steps{
                         
                 //checkout scm       
-                        
+                 git url: 'https://github.com/h2oai/sparkling-water.git'       
                 sh"""
                 #git url: 'https://github.com/h2oai/sparkling-water.git'
                 #def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
