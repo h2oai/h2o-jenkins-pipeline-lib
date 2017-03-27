@@ -124,7 +124,7 @@ pipeline{
                 steps{
                 //try{
                 // Make a tar of the directory and stash it -> --ignore-failed-read
-                sh "tar  -zcvf stash_archive.tar.gz .."
+                sh "tar  -zcvf ../stash_archive.tar.gz ."
                 sh "mv ../stash_archive.tar.gz ."        
                 //}
                 //catch(err){
