@@ -226,12 +226,14 @@ pipeline{
                                          touch py/build/test-result/empty.xml		
                                  fi 
 
-                                echo 'Archiving artifacts after Integration test- pySparkling'
-                                #archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+                                #echo 'Archiving artifacts after Integration test- pySparkling'
+                                echo 'Finished integration test'
+
              
                                 """	
                                
                       //  }
+                        //archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
                       //  catch(err){
                        //          echo 'Archiving artifacts after Integration test after catch'
                         //         archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
