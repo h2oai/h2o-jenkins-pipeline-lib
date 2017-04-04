@@ -51,30 +51,6 @@ def call(String project, String files, String directoryOfBuild, String branchNam
 
         echo "UPDATE LATEST POINTER"
 
-      #  tmpdir=./buildh2odev.tmp
-      #  mkdir -p ${tmpdir}
-      #  echo ${buildNumber} > ${tmpdir}/latest
-      #  echo "<head>" > ${tmpdir}/latest.html
-      #  echo "<meta http-equiv=\\"refresh\\" content=\\"0; url=${buildNumber}/index.html\\" />" >> ${tmpdir}/latest.html
-      #  echo "</head>" >> ${tmpdir}/latest.html
-
-      #  echo "PUSH TO S3"
-
-      #  s3cmd --acl-public put ${tmpdir}/latest s3://h2o-release/h2o/${branchName}/latest
-      #  s3cmd --acl-public put ${tmpdir}/latest.html s3://h2o-release/h2o/${branchName}/latest.html
-      #  s3cmd --acl-public put ${tmpdir}/latest.html s3://h2o-release/h2o/${branchName}/index.html
-
-      #  projectVersion =\$(cat ${directoryOfBuild}/project_version)
-
-      # if [ "$IS_LATEST_STABLE" = "true" ]; then
-      #     $THIS_DIR/h2o3-upload-stable-links.sh "$branchName" "$buildNumber" "$projectVersion"
-      # fi
-
-
-        # Update success pointer.
-       # cd ${branchdir}
-       # rm -f lastSuccessfulBuild
-       # ln -s ${buildNumber} lastSuccessfulBuild
     """
 
 
