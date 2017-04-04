@@ -25,7 +25,7 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     
     echo "EXPLICITLY SET MIME TYPES AS NEEDED"
 
-    sh "list_of_html_files=`find dist/build -name '*.html' | sed 's/dist\\/build\///g'`"
+    sh "list_of_html_files=`find dist/build -name '*.html' | sed 's/dist\\/build\\///g'`"
     
     echo "${list_of_html_files}"
     
