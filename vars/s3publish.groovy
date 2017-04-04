@@ -26,12 +26,12 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     println list_of_files
     
     echo "calling upload"
-    upload(list_of_files)
+    upload(list_of_files,directoryOfBuild,branchName,buildNumber)
 
 }
 
 @NonCPS
-def upload(list_of_files){
+def upload(list_of_files,directoryOfBuild,branchName,buildNumber){
     for( def f in list_of_files) {
         echo "INSIDE FOR"
         println f
