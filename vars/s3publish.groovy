@@ -13,7 +13,7 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     // This is really awful.  This old version of s3cmd does not set Content-Encoding metadata in S3.
     // The newer version of s3cmd sets the Content-Encoding to UTF-8 and gradle fails.
     // Alternately, we could strip off the Content-Encoding metadata tag for every file underneath maven.
-
+    def list_of_html_files
     sh """
 
         s3cmd --rexclude='${directoryOfBuild}/maven' --acl-public sync ${directoryOfBuild}/ s3://h2o-release/h2o/${branchName}/${buildNumber}/
