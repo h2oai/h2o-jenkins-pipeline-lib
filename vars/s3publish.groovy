@@ -19,7 +19,7 @@ def call(String project, String files, String directoryOfBuild, String branchNam
 
     sh "s3cmd --rexclude='${directoryOfBuild}/maven' --acl-public sync ${directoryOfBuild}/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
     
-    sh "echo "EXPLICITLY SET MIME TYPES AS NEEDED""
+   echo "EXPLICITLY SET MIME TYPES AS NEEDED"
     
     def list_of_files = sh (
         script: "find ${directoryOfBuild} -name '*.html' | sed 's/${directoryOfBuild}\\///g'",
