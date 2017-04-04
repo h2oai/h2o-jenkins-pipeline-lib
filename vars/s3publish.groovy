@@ -27,7 +27,7 @@ def call(String project, String files, String directoryOfBuild, String branchNam
 
     sh "list_of_html_files= `find ${directoryOfBuild} -name '*.html | sed 's/${directoryOfBuild}\\///g''`"
     
-    echo ${list_of_html_files}
+    echo "${list_of_html_files}"
     
     sh """
         for f in ${list_of_html_files}
