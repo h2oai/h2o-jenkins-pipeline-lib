@@ -19,9 +19,9 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     def f
  
 
-    sh  "s3cmd --rexclude='${directoryOfBuild}/maven' --acl-public sync ${directoryOfBuild}/ s3://h2o-release/h2o/${branchName}/${buildNumber}/"
+    //sh  "s3cmd --rexclude='${directoryOfBuild}/maven' --acl-public sync ${directoryOfBuild}/ s3://h2o-release/h2o/${branchName}/${buildNumber}/"
 
-    sh  "~jenkins/frozen/s3cmd-1.0.1/s3cmd --acl-public sync ${directoryOfBuild}/maven/ s3://h2o-release/h2o/${branchName}/${buildNumber}/maven/"
+    //sh  "~jenkins/frozen/s3cmd-1.0.1/s3cmd --acl-public sync ${directoryOfBuild}/maven/ s3://h2o-release/h2o/${branchName}/${buildNumber}/maven/"
     
     echo "EXPLICITLY SET MIME TYPES AS NEEDED"
 
@@ -32,6 +32,7 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     sh """
         for f in ${list_of_html_files}
         do
+            echo "Inside for"
             s3cmd --acl-public --mime-type text/html put ${directoryOfBuild}/${f} s3://h2o-release/h2o/${branchName}/${buildNumber}/${f}
         done
     
