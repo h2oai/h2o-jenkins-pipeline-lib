@@ -23,7 +23,7 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     
     def list_of_files = sh (
         script: "find ${directoryOfBuild} -name '*.html' | sed 's/${directoryOfBuild}\\///g'",
-        returnStdout: true)
+        returnStdout: true).split("\n")
     println list_of_files
     
     echo "TEST"
