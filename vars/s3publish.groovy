@@ -19,29 +19,22 @@ def call(String project, String files, String directoryOfBuild, String branchNam
 
     sh "s3cmd --rexclude='${directoryOfBuild}/maven' --acl-public sync ${directoryOfBuild}/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
     
-    def list_of_files = sh (
+    sh "echo "EXPLICITLY SET MIME TYPES AS NEEDED""
+    
+    def list_of_files[] = sh (
         script: "find ${directoryOfBuild} -name '*.html' | sed 's/${directoryOfBuild}\\///g'",
         returnStdout: true)
     println list_of_files
     
     echo "TEST"
     
-    sh """
+    for( def f in list_of_files) {
+        sh "s3cmd --acl-public --mime-type text/html put ${directoryOfBuild}/${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
+    }
+    
+ 
 
-        s3cmd --rexclude='${directoryOfBuild}/maven' --acl-public sync ${directoryOfBuild}/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/
-
-        echo "EXPLICITLY SET MIME TYPES AS NEEDED"
-
-        list_of_files=`find ${directoryOfBuild} -name '*.html' | sed 's/${directoryOfBuild}\\///g'`
-
-        echo ${list_of_files}
-
-
-        for f in ${list_of_files}
-        do
-            s3cmd --acl-public --mime-type text/html put ${directoryOfBuild}/${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}
-        done
-
+/*
         list_of_files=`find ${directoryOfBuild} -name '*.js' | sed 's/${directoryOfBuild}\\///g'`
         echo ${list_of_files}
         for f in ${list_of_files}
@@ -58,7 +51,7 @@ def call(String project, String files, String directoryOfBuild, String branchNam
 
         echo "UPDATE LATEST POINTER"
 
-    """
+*/
 
 
     //branchdir , THIS_DIR, IS_LATEST_STABLE
