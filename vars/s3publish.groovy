@@ -25,16 +25,21 @@ def call(String project, String files, String directoryOfBuild, String branchNam
         returnStdout: true).split("\n")
     println list_of_files
     
-    
+    echo "calling upload"
+    upload(list_of_files)
 
+}
+
+@NonCPS
+def upload(list_of_files){
     for( def f in list_of_files) {
         echo "INSIDE FOR"
         println f
         echo "$f"
         sh "s3cmd --acl-public --mime-type text/html put $directoryOfBuild/$f s3://ai.h2o.tests/intermittent_files/$branchName/$buildNumber/$f"
-        echo "DISCARDING INSIDE FOR"
-        f = null
     }
+   echo "Done" 
+}
     
  
 
@@ -63,4 +68,4 @@ def call(String project, String files, String directoryOfBuild, String branchNam
 
     ///Users/nikhilshekhar/pipeline/vars/s3publish.groovy
 
-}
+
