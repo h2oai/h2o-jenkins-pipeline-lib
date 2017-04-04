@@ -21,8 +21,6 @@ def call(String project, String files, String directoryOfBuild, String branchNam
 
         s3cmd --rexclude='${directoryOfBuild}/maven' --acl-public sync ${directoryOfBuild}/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/
 
-        ~jenkins/frozen/s3cmd-1.0.1/s3cmd --acl-public sync ${directoryOfBuild}/maven/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/maven/
-
         echo "EXPLICITLY SET MIME TYPES AS NEEDED"
 
         list_of_files=`find ${directoryOfBuild} -name '*.html' | sed 's/${directoryOfBuild}\\///g'`
