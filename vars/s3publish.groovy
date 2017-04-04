@@ -19,9 +19,9 @@ def call(String project, String files, String directoryOfBuild, String branchNam
 
     sh """
 
-        s3cmd --rexclude='${directoryOfBuild}/maven' --acl-public sync ${directoryOfBuild}/ s3://h2o-release/h2o/${branchName}/${buildNumber}/
+        s3cmd --rexclude='${directoryOfBuild}/maven' --acl-public sync ${directoryOfBuild}/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/
 
-        ~jenkins/frozen/s3cmd-1.0.1/s3cmd --acl-public sync ${directoryOfBuild}/maven/ s3://h2o-release/h2o/${branchName}/${buildNumber}/maven/
+        ~jenkins/frozen/s3cmd-1.0.1/s3cmd --acl-public sync ${directoryOfBuild}/maven/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/maven/
 
         echo "EXPLICITLY SET MIME TYPES AS NEEDED"
 
@@ -32,21 +32,21 @@ def call(String project, String files, String directoryOfBuild, String branchNam
 
         for f in ${list_of_files}
         do
-            s3cmd --acl-public --mime-type text/html put ${directoryOfBuild}/${f} s3://h2o-release/h2o/${branchName}/${buildNumber}/${f}
+            s3cmd --acl-public --mime-type text/html put ${directoryOfBuild}/${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}
         done
 
         list_of_files=`find ${directoryOfBuild} -name '*.js' | sed 's/${directoryOfBuild}\\///g'`
         echo ${list_of_files}
         for f in ${list_of_files}
         do
-            s3cmd --acl-public --mime-type text/javascript put ${directoryOfBuild}/${f} s3://h2o-release/h2o/${branchName}/$buildNumber}/${f}
+            s3cmd --acl-public --mime-type text/javascript put ${directoryOfBuild}/${f} s3://ai.h2o.tests/intermittent_files/${branchName}/$buildNumber}/${f}
         done
 
         list_of_files=`find ${directoryOfBuild} -name '*.css' | sed 's/${directoryOfBuild}\\///g'`
         echo ${list_of_files}
         for f in ${list_of_files}
         do
-            s3cmd --acl-public --mime-type text/css put ${directoryOfBuild}/${f} s3://h2o-release/h2o/${branchName}/${buildNumber}/${f}
+            s3cmd --acl-public --mime-type text/css put ${directoryOfBuild}/${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}
         done
 
         echo "UPDATE LATEST POINTER"
