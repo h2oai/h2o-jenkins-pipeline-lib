@@ -29,7 +29,8 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     echo "TEST"
     
     for( def f in list_of_files) {
-        sh "s3cmd --acl-public --mime-type text/html put ${directoryOfBuild}/${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
+        println f
+        //sh "s3cmd --acl-public --mime-type text/html put ${directoryOfBuild}/${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
     }
     
  
