@@ -27,13 +27,16 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     println list_of_files
     
     echo "TEST"
-    
-    for( def f in list_of_files) {
+    for(int i = 0; i < list_of_files.size; i++ ){
+        println list_of_files[i]
+        sh "s3cmd --acl-public --mime-type text/html put $directoryOfBuild/${list_of_files[i]} s3://ai.h2o.tests/intermittent_files/$branchName/$buildNumber/${list_of_files[i]}"
+    }
+/*    for( def f in list_of_files) {
         println f
         echo "$f"
         sh "s3cmd --acl-public --mime-type text/html put $directoryOfBuild/$f s3://ai.h2o.tests/intermittent_files/$branchName/$buildNumber/$f"
     }
-    
+  */  
  
 
 /*
