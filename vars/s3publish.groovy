@@ -14,8 +14,8 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     // The newer version of s3cmd sets the Content-Encoding to UTF-8 and gradle fails.
     // Alternately, we could strip off the Content-Encoding metadata tag for every file underneath maven.
 
-    def list_of_files
-    def f
+    //def list_of_files
+    //def f
 
     sh """
 
