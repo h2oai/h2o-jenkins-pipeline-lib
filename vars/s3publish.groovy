@@ -17,6 +17,15 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     //def list_of_files
     //def f
 
+    sh "s3cmd --rexclude='${directoryOfBuild}/maven' --acl-public sync ${directoryOfBuild}/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
+    
+    def list_of_files = sh (
+        script: list_of_files=`find ${directoryOfBuild} -name '*.html' | sed 's/${directoryOfBuild}\\///g'`,
+        returnStdout: true)
+    println list_of_files
+    
+    echo "TEST"
+    
     sh """
 
         s3cmd --rexclude='${directoryOfBuild}/maven' --acl-public sync ${directoryOfBuild}/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/
