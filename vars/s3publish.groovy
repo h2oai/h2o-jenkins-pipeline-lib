@@ -46,13 +46,13 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     sh """
         tmpdir=./buildsparklingwater.tmp
         mkdir -p ${tmpdir}
-        echo ${BUILD_NUMBER} > ${tmpdir}/latest
+        echo ${buildNumber} > ${tmpdir}/latest
         echo "<head>" > ${tmpdir}/latest.html
-        echo "<meta http-equiv=\\"refresh\\" content=\\"0; url=${BUILD_NUMBER}/index.html\\" />" >> ${tmpdir}/latest.html
+        echo "<meta http-equiv=\\"refresh\\" content=\\"0; url=${buildNumber}/index.html\\" />" >> ${tmpdir}/latest.html
         echo "</head>" >> ${tmpdir}/latest.html
-        s3cmd --acl-public put ${tmpdir}/latest s3://h2o-release/sparkling-water/${BRANCH_NAME}/latest
-        s3cmd --acl-public put ${tmpdir}/latest.html s3://h2o-release/sparkling-water/${BRANCH_NAME}/latest.html
-        s3cmd --acl-public put ${tmpdir}/latest.html s3://h2o-release/sparkling-water/${BRANCH_NAME}/index.html
+        s3cmd --acl-public put ${tmpdir}/latest s3://h2o-release/sparkling-water/${branchName}/latest
+        s3cmd --acl-public put ${tmpdir}/latest.html s3://h2o-release/sparkling-water/${branchName}/latest.html
+        s3cmd --acl-public put ${tmpdir}/latest.html s3://h2o-release/sparkling-water/${branchName}/index.html
 
     """
 
