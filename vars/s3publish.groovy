@@ -42,6 +42,7 @@ def call(String project, String files, String directoryOfBuild, String branchNam
 
     echo "UPDATE LATEST POINTER"
 
+    def tmpdir
     sh """
         tmpdir=./buildsparklingwater.tmp
         mkdir -p ${tmpdir}
