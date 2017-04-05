@@ -50,9 +50,9 @@ def call(String project, String files, String directoryOfBuild, String branchNam
         echo "<head>" > ${tmpdir}/latest.html
         echo "<meta http-equiv=\\"refresh\\" content=\\"0; url=${buildNumber}/index.html\\" />" >> ${tmpdir}/latest.html
         echo "</head>" >> ${tmpdir}/latest.html
-        s3cmd --acl-public put ${tmpdir}/latest s3://h2o-release/sparkling-water/${branchName}/latest
-        s3cmd --acl-public put ${tmpdir}/latest.html s3://h2o-release/sparkling-water/${branchName}/latest.html
-        s3cmd --acl-public put ${tmpdir}/latest.html s3://h2o-release/sparkling-water/${branchName}/index.html
+        s3cmd --acl-public put ${tmpdir}/latest s3://ai.h2o.tests/intermittent_files/${branchName}/latest
+        s3cmd --acl-public put ${tmpdir}/latest.html s3://ai.h2o.tests/intermittent_files/${branchName}/latest.html
+        s3cmd --acl-public put ${tmpdir}/latest.html s3://ai.h2o.tests/intermittent_files/${branchName}/index.html
 
     """
 
