@@ -25,6 +25,11 @@ def call(String project, String files, String directoryOfBuild, String branchNam
         returnStdout: true).split("\n")
     println list_of_files
     
+ 
+    
+    for( def f in list_of_files) {
+        echo "${f}"
+    }
     echo "calling upload"
     upload(list_of_files,directoryOfBuild,branchName,buildNumber)
 
@@ -34,9 +39,8 @@ def call(String project, String files, String directoryOfBuild, String branchNam
 def upload(list_of_files,directoryOfBuild,branchName,buildNumber){
     for( def f in list_of_files) {
         echo "INSIDE FOR"
-        println f
-        echo "$f"
-        sh "s3cmd --acl-public --mime-type text/html put $directoryOfBuild/$f s3://ai.h2o.tests/intermittent_files/$branchName/$buildNumber/$f"
+        echo "${f}"
+        sh "s3cmd --acl-public --mime-type text/html put ${directoryOfBuild}/${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
     }
    echo "Done" 
 }
