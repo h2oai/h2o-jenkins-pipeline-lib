@@ -14,14 +14,11 @@ pipeline{
         startH2OClusterOnYarn="${startH2OClusterOnYarn}"
         H2O_PYTHON_WHEEL="${env.WORKSPACE}/private/h2o.whl"
         H2O_EXTENDED_JAR="${env.WORKSPACE}/assembly-h2o/private/"
+        SPARK="spark-${sparkVersion}-bin-hadoop2.6"
     }
 
     stages{
-
-        /*  stage('init'){
-                  def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
-          }
-         */
+        
         stage('Git Checkout and Preparation'){
             steps{
 
@@ -29,13 +26,10 @@ pipeline{
                 git url: 'https://github.com/h2oai/sparkling-water.git',
                         branch: 'master'
                 sh"""
-                #git url: 'https://github.com/h2oai/sparkling-water.git'
-                #def SPARK="spark-${sparkVersion}-bin-hadoop2.6"
-
                 if [ ! -d "spark-2.1.0-bin-hadoop2.6" ]; then
-                        wget "http://d3kbcqa49mib13.cloudfront.net/spark-2.1.0-bin-hadoop2.6.tgz"
+                        wget "http://d3kbcqa49mib13.cloudfront.net/${SPARK}.tgz"
                         echo "Extracting spark JAR"
-                        tar zxvf spark-2.1.0-bin-hadoop2.6.tgz
+                        tar zxvf ${SPARK}.tgz
                 fi
 
                 echo 'Checkout and Preparation completed'
@@ -101,7 +95,7 @@ pipeline{
                                 # running integration just after unit test
                                 ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest
                         """
-               //archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+               archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
             }
         }
 
@@ -154,13 +148,14 @@ pipeline{
 
                     """
 
-                 //archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+                 archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
             }
         }
 
         stage('QA:Integration test- pySparkling'){
 
             steps{
+                
                 sh"""
 
                                  #
