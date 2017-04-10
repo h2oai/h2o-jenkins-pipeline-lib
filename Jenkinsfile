@@ -4,7 +4,7 @@
 
 pipeline{
 
-    agent { label 'mr-0xd3' }
+    agent { label 'mr-0xd1' }
 
     environment{
         SPARK_HOME="${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6"
