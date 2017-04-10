@@ -185,10 +185,10 @@ pipeline{
         //    }
         //}
         
-       stage('QA: build & lint'){
+       stage('Publish'){
 
             steps{
-                s3publish ('project','files','.','testBranch','999.99')
+                s3publish ('project1,'files1','.','testBranch1','1234')
              }
        }
         
