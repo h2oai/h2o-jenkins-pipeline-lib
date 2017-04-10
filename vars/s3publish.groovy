@@ -21,24 +21,39 @@ def call(String project, String files, String directoryOfBuild, String branchNam
             script: "find ${directoryOfBuild} -name '*.html' | sed 's/${directoryOfBuild}\\///g'",
             returnStdout: true).split("\n")
     println list_of_html_files
-
-    upload_html(list_of_html_files,directoryOfBuild,branchName,buildNumber)
-
+    
+    try{
+        upload_html(list_of_html_files,directoryOfBuild,branchName,buildNumber)
+        catch(Exception e){
+            echo "Nothing to upload"
+        }
+    }
+    
     // Process js files
     def list_of_js_files = sh (
             script: "find ${directoryOfBuild} -name '*.html' | sed 's/${directoryOfBuild}\\///g'",
             returnStdout: true).split("\n")
     println list_of_js_files
-
-    upload_js(list_of_js_files,directoryOfBuild,branchName,buildNumber)
-
+    
+    try{
+        upload_js(list_of_js_files,directoryOfBuild,branchName,buildNumber)
+        catch(Exception e){
+            echo "Nothing to upload"
+        }
+    }
+    
     // Process css files
     def list_of_css_files = sh (
             script: "find ${directoryOfBuild} -name '*.html' | sed 's/${directoryOfBuild}\\///g'",
             returnStdout: true).split("\n")
     println list_of_css_files
-
-    upload_css(list_of_css_files,directoryOfBuild,branchName,buildNumber)
+    
+    try{
+        upload_css(list_of_css_files,directoryOfBuild,branchName,buildNumber)
+        catch(Exception e){
+            echo "Nothing to upload"
+        }
+    }
 
     echo "UPDATE LATEST POINTER"
 
