@@ -32,7 +32,7 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     
     // Process js files
     def list_of_js_files = sh (
-            script: "find ${directoryOfBuild} -name '*.html' | sed 's/${directoryOfBuild}\\///g'",
+            script: "find ${directoryOfBuild} -name '*.js' | sed 's/${directoryOfBuild}\\///g'",
             returnStdout: true).split("\n")
     println list_of_js_files
     
@@ -45,7 +45,7 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     
     // Process css files
     def list_of_css_files = sh (
-            script: "find ${directoryOfBuild} -name '*.html' | sed 's/${directoryOfBuild}\\///g'",
+            script: "find ${directoryOfBuild} -name '*.css' | sed 's/${directoryOfBuild}\\///g'",
             returnStdout: true).split("\n")
     println list_of_css_files
     
