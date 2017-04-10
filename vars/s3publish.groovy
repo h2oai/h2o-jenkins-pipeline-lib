@@ -57,7 +57,7 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     }
     
     def list_of_extended_jars = sh (
-        script: "find assembly-h2o/private -name '*-extended.jar' | sed 's/assembly-h2o\/private\///g'",
+        script: "find assembly-h2o/private -name '*-extended.jar' | sed 's/assembly-h2o\\/private\\///g'",
         returnStdout: true).split("\n")
     println list_of_extended_jars
     
