@@ -55,6 +55,18 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     catch(Exception e){
         echo "No CSS files to upload"
     }
+    
+    def list_of_extended_jars = sh (
+        script: "find assembly-h2o/private -name '*-extended.jar' | sed 's/assembly-h2o\/private\///g'",
+        returnStdout: true).split("\n")
+    println list_of_extended_jars
+    
+    try{
+        upload_extended_jar(list_of_extended_jars,directoryOfBuild,branchName,buildNumber)
+    }
+    catch(Exception e){
+        echo "No extended JAR's found"
+    }
 
     echo "UPDATE LATEST POINTER"
 
@@ -97,6 +109,15 @@ upload_css(list_of_files,directoryOfBuild,branchName,buildNumber){
     for( f in list_of_files) {
         echo "${f}"
         sh "s3cmd --acl-public --mime-type text/css put ${directoryOfBuild}/${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
+    }
+    echo "Done"
+}
+
+@NonCPS
+upload_extended_jar(list_of_files,directoryOfBuild,branchName,buildNumber){
+    for( f in list_of_files) {
+        echo "${f}"
+        sh "s3cmd --acl-public put assembly-h2o/private/${f} s3://h2o-release/sparkling-water/${BRANCH_NAME}/${BUILD_NUMBER}/${f}"
     }
     echo "Done"
 }
