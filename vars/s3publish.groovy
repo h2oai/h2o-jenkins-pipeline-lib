@@ -4,6 +4,8 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     echo "Project to publish: ${project}"
     echo "Files to publish: ${files}"
     echo "Directory of artifacts to publish: ${directoryOfBuild}"
+    echo "Branch name: ${branchName}"
+    echo "Build number: ${buildNumber}"
 
     // This is really awful.  This old version of s3cmd does not set Content-Encoding metadata in S3.
     // The newer version of s3cmd sets the Content-Encoding to UTF-8 and gradle fails.
