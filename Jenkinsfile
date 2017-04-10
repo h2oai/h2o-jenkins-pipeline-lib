@@ -40,10 +40,10 @@ pipeline{
 
         }
 
-        stage('QA: build & lint'){
+        /*stage('QA: build & lint'){
 
             steps{
-                /*sh"""
+                sh"""
                                 mkdir -p ${env.WORKSPACE}/Rlibrary
                                 echo "spark.driver.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"" >> ${env.SPARK_HOME}/conf/spark-defaults.conf
                                 echo "spark.yarn.am.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"" >> ${env.SPARK_HOME}/conf/spark-defaults.conf
@@ -70,13 +70,13 @@ pipeline{
                         """
               */  //archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
 
-            }
-        }
+       //     }
+       // }
 
 
-        stage('QA:Unit tests'){
+       // stage('QA:Unit tests'){
 
-            steps{
+         //   steps{
             /*    sh """
                                 # Build, run regular tests
                                 if [ "$runBuildTests" = true ]; then
@@ -98,8 +98,8 @@ pipeline{
                                 ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest
                         """
             */ //   archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-            }
-        }
+   //         }
+    //    }
 /*
         stage('Stashing'){
 
