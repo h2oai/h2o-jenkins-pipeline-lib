@@ -188,7 +188,7 @@ pipeline{
        stage('Publish'){
 
             steps{
-                s3publish ('project1','files1','.','testBranch1','1234')
+                s3publish ('project1','files1',"${env.WORKSPACE}",'testBranch1','1234')
              }
        }
            
