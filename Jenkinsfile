@@ -1,5 +1,7 @@
 #!/usr/bin/groovy
 
+@Library('test-shared-library') _
+
 pipeline{
 
     agent { label 'mr-0xd4' }
@@ -41,7 +43,7 @@ pipeline{
         stage('QA: build & lint'){
 
             steps{
-                sh"""
+                /*sh"""
                                 mkdir -p ${env.WORKSPACE}/Rlibrary
                                 echo "spark.driver.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"" >> ${env.SPARK_HOME}/conf/spark-defaults.conf
                                 echo "spark.yarn.am.extraJavaOptions -Dhdp.version="${env.HDP_VERSION}"" >> ${env.SPARK_HOME}/conf/spark-defaults.conf
@@ -66,7 +68,7 @@ pipeline{
 
 
                         """
-                //archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+              */  //archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
 
             }
         }
@@ -75,7 +77,7 @@ pipeline{
         stage('QA:Unit tests'){
 
             steps{
-                sh """
+            /*    sh """
                                 # Build, run regular tests
                                 if [ "$runBuildTests" = true ]; then
                                         echo 'runBuildTests = True'
@@ -95,10 +97,10 @@ pipeline{
                                 # running integration just after unit test
                                 ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest
                         """
-               archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+            */ //   archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
             }
         }
-
+/*
         stage('Stashing'){
 
             steps{
@@ -144,15 +146,15 @@ pipeline{
                                  fi
 
  		                #  echo 'Archiving artifacts after Integration test'
-                                #archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+    *///                            #archive includes:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
 
-                    """
+    //                """
+    
+      //           archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+      //      }
+       // }
 
-                 archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-            }
-        }
-
-        stage('QA:Integration test- pySparkling'){
+       /* stage('QA:Integration test- pySparkling'){
 
             steps{
                 
@@ -179,8 +181,17 @@ pipeline{
 
 
                                 """
-                //archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-            }
-        }
+        */        //archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+        //    }
+        //}
+        
+       stage('QA: build & lint'){
+
+            steps{
+                s3publish ('project','files','.','testBranch','999.99')
+             }
+       }
+        
+        
     }
 }
