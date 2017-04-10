@@ -24,10 +24,11 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     
     try{
         upload_html(list_of_html_files,directoryOfBuild,branchName,buildNumber)
-        catch(Exception e){
-            echo "No HTML files to upload"
-        }
     }
+    catch(Exception e){
+        echo "No HTML files to upload"
+    }
+
     
     // Process js files
     def list_of_js_files = sh (
@@ -37,9 +38,9 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     
     try{
         upload_js(list_of_js_files,directoryOfBuild,branchName,buildNumber)
-        catch(Exception e){
-            echo "No JS files to upload"
-        }
+    }
+    catch(Exception e){
+        echo "No JS files to upload"
     }
     
     // Process css files
@@ -50,9 +51,9 @@ def call(String project, String files, String directoryOfBuild, String branchNam
     
     try{
         upload_css(list_of_css_files,directoryOfBuild,branchName,buildNumber)
-        catch(Exception e){
-            echo "No CSS files to upload"
-        }
+    }
+    catch(Exception e){
+        echo "No CSS files to upload"
     }
 
     echo "UPDATE LATEST POINTER"
