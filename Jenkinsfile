@@ -201,12 +201,13 @@ pipeline{
                                 else
                                         echo 'runBuildTests = False'
                                         ${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode}
+                                fi
                         """
                         
                     },
                     "task2" :{
                       sh """
-                                fi
+                                
 
                                 if [ "$runScriptTests" = true ]; then
                                         echo 'runScriptTests = true'
