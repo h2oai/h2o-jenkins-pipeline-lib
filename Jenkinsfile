@@ -4,7 +4,7 @@
 
 pipeline{
 
-    agent { label 'mr-0xd1' }
+    agent { label 'mr-0xd1', 'mr-0xd2 }
 
     environment{
         SPARK_HOME="${env.WORKSPACE}/spark-2.1.0-bin-hadoop2.6"
@@ -74,7 +74,7 @@ pipeline{
         }
 
 
-        stage('QA:Unit tests'){
+    /*    stage('QA:Unit tests'){
 
             steps{
                 sh """
@@ -97,11 +97,11 @@ pipeline{
                                 # running integration just after unit test
                                 ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest
                         """
-               archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-            }
-       }
+      */ //        archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+     //       }
+     //  }
 
-        stage('Stashing'){
+     /*   stage('Stashing'){
 
             steps{
                                 // Make a tar of the directory and stash it -> --ignore-failed-read
@@ -117,9 +117,9 @@ pipeline{
                                 echo "Workspace Directory deleted"
             }
         }
+*/
 
-
-        stage('QA:Integration tests'){
+   /*     stage('QA:Integration tests'){
 
             steps{
                 echo "Unstash the unit test"
@@ -147,9 +147,9 @@ pipeline{
 
                   """
     
-                archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
-          }
-        }
+          */ //     archiveArtifacts artifacts:'**/build/*tests.log,**/*.log, **/out.*, **/*py.out.txt,examples/build/test-results/binary/integTest/*, **/stdout, **/stderr,**/build/**/*log*, py/build/py_*_report.txt,**/build/reports/'
+       //   }
+       // }
 
        /* stage('QA:Integration test- pySparkling'){
 
@@ -182,12 +182,46 @@ pipeline{
         //    }
         //}
    
-       stage('Publish'){
+ /*      stage('Publish'){
 
             steps{
                 s3publish ('project1','files1',"${env.WORKSPACE}",'testBranch1','1234')
              }
        }
+   */     
+        stage('Parallel'){
+            steps{
+                parallel(
+                    "task1" :{
+                              sh """
+                                # Build, run regular tests
+                                if [ "$runBuildTests" = true ]; then
+                                        echo 'runBuildTests = True'
+                                       ${env.WORKSPACE}/gradlew clean build -PbackendMode=${backendMode}
+                                else
+                                        echo 'runBuildTests = False'
+                                        ${env.WORKSPACE}/gradlew clean build -x check -PbackendMode=${backendMode}
+                        """
+                        
+                    },
+                    "task2" :{
+                      sh """
+                                fi
+
+                                if [ "$runScriptTests" = true ]; then
+                                        echo 'runScriptTests = true'
+                                        ${env.WORKSPACE}/gradlew scriptTest -PbackendMode=${backendMode}
+
+                                fi
+
+                                # running integration just after unit test
+                                ${env.WORKSPACE}/gradlew integTest -PbackendMode=${backendMode} -PsparklingTestEnv=$sparklingTestEnv -PsparkMaster=${env.MASTER} -PsparkHome=${env.SPARK_HOME} -x check -x :sparkling-water-py:integTest
+                        """
+                        
+                    }
+                    )
+            }
+        }
            
     }
 }
