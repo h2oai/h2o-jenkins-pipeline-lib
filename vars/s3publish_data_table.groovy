@@ -53,7 +53,7 @@ upload_artifacts(list_of_files,directoryOfBuild,branchName,buildNumber){
     for( f in list_of_files) {
         echo "Inside upload_artifact"
         echo "${f}"
-        length = "${f}".split("/").length()
+        length = "${f}".split("/").length
         name = "${f}".split("/")[length-1]
         echo "${name}"
         sh "s3cmd --acl-public put ${name} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
