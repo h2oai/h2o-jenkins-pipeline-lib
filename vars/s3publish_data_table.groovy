@@ -7,8 +7,7 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
     echo "Branch name: ${branchName}"
     echo "Build number: ${buildNumber}"
 
-    //Publish the artifacts // > path | name=$(basename '$path' '.so') |echo "$name".so"
-    //--rexclude='${directoryOfBuild}/build/lib.linux-x86_64-3.6/datatable/*'
+    //Publish the artifacts 
     sh "s3cmd --acl-public sync ${directoryOfBuild}/build/lib.linux-x86_64-3.6/*.so --rexclude='${directoryOfBuild}/build/lib.linux-x86_64-3.6/datatable/*' s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
     
     def list_of_publishable_files = sh (
@@ -16,12 +15,12 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
         returnStdout: true).split("\n")
     
     
-    //try{
+    try{
         upload_artifacts(list_of_publishable_files,directoryOfBuild,branchName,buildNumber)
-   // }
-   // catch(Exception e){
-   //     echo "No files to upload"
-   // }
+    }
+    catch(Exception e){
+        echo "No Artifacts to upload"
+    }
     
     //Publish meta information for the build
     sh "s3cmd --acl-public sync ${directoryOfBuild}/meta/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/meta/"
@@ -30,8 +29,13 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
             script: "find ${directoryOfBuild}/meta -name '*.json'",
             returnStdout: true).split("\n")
     
+    try{
     upload_meta(list_of_publishable_meta_files,directoryOfBuild,branchName,buildNumber)
-
+    }
+    catch(Exception e){
+        echo "No meta files to upload"
+    }
+    
     echo "UPDATE LATEST POINTER"
 
     def tmpdir = "${directoryOfBuild}/datatable.tmp"
