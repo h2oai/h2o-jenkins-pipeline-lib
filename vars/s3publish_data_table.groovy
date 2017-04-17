@@ -24,7 +24,7 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
    // }
     
     //Publish meta information for the build
-    sh "s3cmd --acl-public sync ${directoryOfBuild}/meta/ s3://ai.h2o.tests/intermittent_files/${branchName}/meta/${buildNumber}/"
+    sh "s3cmd --acl-public sync ${directoryOfBuild}/meta/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/meta/"
     
     def list_of_publishable_meta_files = sh (
             script: "find ${directoryOfBuild}/meta -name '*.json'",
