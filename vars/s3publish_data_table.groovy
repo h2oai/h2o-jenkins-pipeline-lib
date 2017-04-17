@@ -15,9 +15,9 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
     //sh "s3cmd --acl-public sync ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
     
     def list_of_publishable_files = sh (
-        script: '''path=$(find ${env.directoryOfBuild}/build/lib.linux-x86_64-3.6/ -name '*.so')
+        script: """path=${(find ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ -name '*.so')}
                 name=$(basename "$path")
-                echo $name''',
+                echo $name""",
         returnStdout: true).split("\n")
     println list_of_publishable_files
     
