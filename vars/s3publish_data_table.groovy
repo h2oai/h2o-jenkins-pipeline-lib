@@ -52,7 +52,7 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
 upload_artifacts(list_of_files,directoryOfBuild,branchName,buildNumber){
     for( f in list_of_files) {
         echo "${f}"
-        sh "s3cmd --acl-public put ${directoryOfBuild}/build/lib.linux-x86_64-3.6/${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
+        sh "s3cmd --acl-public put ${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
     }
     echo "Done"
 }
@@ -61,7 +61,7 @@ upload_artifacts(list_of_files,directoryOfBuild,branchName,buildNumber){
 upload_meta(list_of_files,directoryOfBuild,branchName,buildNumber){
     for( f in list_of_files) {
         echo "${f}"
-        sh "s3cmd --acl-public put ${directoryOfBuild}/meta/${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
+        sh "s3cmd --acl-public put ${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
     }
     echo "Done"
 }
