@@ -10,6 +10,7 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
     //Publish the artifacts // > path | name=$(basename '$path' '.so') |echo "$name".so"
     //--rexclude='${directoryOfBuild}/build/lib.linux-x86_64-3.6/datatable/*'
     //sh "s3cmd --acl-public sync ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
+    //sh "s3cmd --acl-public put ${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
     
     def list_of_publishable_files = sh (
         script: "find ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ -name '*.so'",
@@ -52,7 +53,13 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
 upload_artifacts(list_of_files,directoryOfBuild,branchName,buildNumber){
     for( f in list_of_files) {
         echo "${f}"
-        sh "s3cmd --acl-public put ${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
+        sh """
+            directoryOfBuild=${f}
+            name=`basename $directoryOfBuild`
+            echo ${name}
+            s3cmd --acl-public put ${name} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}
+        """
+        
     }
     echo "Done"
 }
