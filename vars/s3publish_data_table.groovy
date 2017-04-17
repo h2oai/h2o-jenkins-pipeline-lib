@@ -26,12 +26,12 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
     //Publish meta information for the build
     sh "s3cmd --rexclude='${directoryOfBuild}/build/meta' --acl-public sync ${directoryOfBuild}/build/meta/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
     
-    def list_of_publishable_files = sh (
+    def list_of_publishable_meta_files = sh (
             script: "find ${directoryOfBuild}/build/meta/ -name '*.json'",
             returnStdout: true).split("\n")
-    println list_of_meta_files
+    println list_of_publishable_meta_files
     
-    upload_meta(list_of_meta_files,directoryOfBuild,branchName,buildNumber)
+    upload_meta(list_of_publishable_meta_files,directoryOfBuild,branchName,buildNumber)
 
     echo "UPDATE LATEST POINTER"
 
