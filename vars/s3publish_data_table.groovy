@@ -17,7 +17,7 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
     
     
     try{
-        upload_artifacts(list_of_publishable_files,directoryOfBuild,branchName,${env.BUILD_NUMBER})
+        upload_artifacts(list_of_publishable_files,directoryOfBuild,branchName,"${env.BUILD_NUMBER}")
     }
     catch(Exception e){
         echo "No Artifacts to upload"
