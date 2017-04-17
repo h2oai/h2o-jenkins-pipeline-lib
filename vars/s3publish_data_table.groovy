@@ -55,6 +55,7 @@ upload_artifacts(list_of_files,directoryOfBuild,branchName,buildNumber){
         echo "Inside upload_artifact"
         echo "${f}"
         sh """
+            echo "Inside shell"
             directoryOfBuild=${f}
             name=`basename $directoryOfBuild`
             echo ${name}
