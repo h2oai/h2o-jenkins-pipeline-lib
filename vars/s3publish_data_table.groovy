@@ -24,10 +24,10 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
     }
     
     //Publish meta information for the build
-    sh "s3cmd --rexclude='${directoryOfBuild}/build/meta' --acl-public sync ${directoryOfBuild}/build/meta/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
+    sh "s3cmd --rexclude='${directoryOfBuild}/meta' --acl-public sync ${directoryOfBuild}/meta/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
     
     def list_of_publishable_meta_files = sh (
-            script: "find ${directoryOfBuild}/build/meta/ -name '*.json'",
+            script: "find ${directoryOfBuild}/meta/ -name '*.json'",
             returnStdout: true).split("\n")
     println list_of_publishable_meta_files
     
@@ -61,7 +61,7 @@ upload_artifacts(list_of_files,directoryOfBuild,branchName,buildNumber){
 upload_meta(list_of_files,directoryOfBuild,branchName,buildNumber){
     for( f in list_of_files) {
         echo "${f}"
-        sh "s3cmd --acl-public put ${directoryOfBuild}/build/meta/${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
+        sh "s3cmd --acl-public put ${directoryOfBuild}/meta/${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
     }
     echo "Done"
 }
