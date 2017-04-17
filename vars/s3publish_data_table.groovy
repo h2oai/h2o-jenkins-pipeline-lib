@@ -53,13 +53,8 @@ upload_artifacts(list_of_files,directoryOfBuild,branchName,buildNumber){
     for( f in list_of_files) {
         echo "Inside upload_artifact"
         echo "${f}"
-        sh """
-        directoryOfBuild=${f}
-        name=`basename $directoryOfBuild`
-        echo ${name}
-        s3cmd --acl-public put ${name} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}
-        """
-        
+        name = ${f}.replaceFirst(~/\.[^\.]+$/, '')
+        sh "s3cmd --acl-public put ${name} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
     }
     echo "Done"
 }
