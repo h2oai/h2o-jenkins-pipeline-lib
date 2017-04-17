@@ -9,7 +9,7 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
 
     //Publish the artifacts // > path | name=$(basename '$path' '.so') |echo "$name".so"
     //--rexclude='${directoryOfBuild}/build/lib.linux-x86_64-3.6/datatable/*'
-    sh "s3cmd --acl-public sync ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ --rexclude='${directoryOfBuild}/build/lib.linux-x86_64-3.6/datatable/*' s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
+    sh "s3cmd --acl-public sync ${directoryOfBuild}/build/lib.linux-x86_64-3.6/*.so --rexclude='${directoryOfBuild}/build/lib.linux-x86_64-3.6/datatable/*' s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
     
     def list_of_publishable_files = sh (
         script: "find ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ -name '*.so'",
