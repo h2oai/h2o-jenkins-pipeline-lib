@@ -7,10 +7,9 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
     echo "Branch name: ${branchName}"
     //echo "Build number: ${buildNumber}"
     echo "Build number from env: ${env.BUILD_NUMBER}"
-    def buildNumber = ${env.BUILD_NUMBER}
 
     //Publish the artifacts 
-    sh "s3cmd --acl-public sync ${directoryOfBuild}/build/lib.linux-x86_64-3.6/*.so --rexclude='${directoryOfBuild}/build/lib.linux-x86_64-3.6/datatable/*' s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
+    sh "s3cmd --acl-public sync ${directoryOfBuild}/build/lib.linux-x86_64-3.6/*.so --rexclude='${directoryOfBuild}/build/lib.linux-x86_64-3.6/datatable/*' s3://ai.h2o.tests/intermittent_files/${branchName}/${env.BUILD_NUMBER}/"
     
     def list_of_publishable_files = sh (
         script: "find ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ -name '*.so'",
@@ -18,21 +17,21 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
     
     
     try{
-        upload_artifacts(list_of_publishable_files,directoryOfBuild,branchName,buildNumber)
+        upload_artifacts(list_of_publishable_files,directoryOfBuild,branchName,${env.BUILD_NUMBER})
     }
     catch(Exception e){
         echo "No Artifacts to upload"
     }
     
     //Publish meta information for the build
-    sh "s3cmd --acl-public sync ${directoryOfBuild}/meta/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/meta/"
+    sh "s3cmd --acl-public sync ${directoryOfBuild}/meta/ s3://ai.h2o.tests/intermittent_files/${branchName}/${env.BUILD_NUMBER}/meta/"
     
     def list_of_publishable_meta_files = sh (
             script: "find ${directoryOfBuild}/meta -name '*.json'",
             returnStdout: true).split("\n")
     
     try{
-    upload_meta(list_of_publishable_meta_files,directoryOfBuild,branchName,buildNumber)
+    upload_meta(list_of_publishable_meta_files,directoryOfBuild,branchName,${env.BUILD_NUMBER})
     }
     catch(Exception e){
         echo "No meta files to upload"
@@ -43,9 +42,9 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
     def tmpdir = "${directoryOfBuild}/datatable.tmp"
     sh """
         mkdir -p ${tmpdir}
-        echo ${buildNumber} > ${tmpdir}/latest
+        echo ${env.BUILD_NUMBER} > ${tmpdir}/latest
         echo "<head>" > ${tmpdir}/latest.html
-        echo "<meta http-equiv=\\"refresh\\" content=\\"0; url=${buildNumber}/index.html\\" />" >> ${tmpdir}/latest.html
+        echo "<meta http-equiv=\\"refresh\\" content=\\"0; url=${env.BUILD_NUMBER}/index.html\\" />" >> ${tmpdir}/latest.html
         echo "</head>" >> ${tmpdir}/latest.html
         s3cmd --acl-public put ${tmpdir}/latest s3://ai.h2o.tests/intermittent_files/${branchName}/latest
         s3cmd --acl-public put ${tmpdir}/latest.html s3://ai.h2o.tests/intermittent_files/${branchName}/latest.html
