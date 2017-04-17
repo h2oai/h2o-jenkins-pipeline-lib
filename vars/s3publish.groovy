@@ -119,7 +119,7 @@ upload_css(list_of_files,directoryOfBuild,branchName,buildNumber){
 upload_extended_jar(list_of_files,directoryOfBuild,branchName,buildNumber){
     for( f in list_of_files) {
         echo "${f}"
-        sh "s3cmd --acl-public put ${directoryOfBuild}/assembly-h2o/private/${f} s3://h2o-release/sparkling-water/${BRANCH_NAME}/${BUILD_NUMBER}/${f}"
+        sh "s3cmd --acl-public put ${directoryOfBuild}/assembly-h2o/private/${f} s3://h2o-release/sparkling-water/${branchName}/${buildNumber}/${f}"
     }
     echo "Done"
 }
