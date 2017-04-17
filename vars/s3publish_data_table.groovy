@@ -9,10 +9,10 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
 
     //Publish the artifacts
     
-    //sh "s3cmd --rexclude='${directoryOfBuild}/build/lib.linux-x86_64-3.6' --acl-public sync ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
+    sh "s3cmd --rexclude='${directoryOfBuild}/build/lib.linux-x86_64-3.6' --acl-public sync ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
     
     def list_of_publishable_files = sh (
-            script: "find ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ -name '*.so'",
+            script: "find ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ -name '*.so' |name=$(basename "$path" ".so") | echo "$name".so",
             returnStdout: true).split("\n")
     println list_of_publishable_files
     
@@ -24,10 +24,10 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
     }
     
     //Publish meta information for the build
-    //sh "s3cmd --rexclude='${directoryOfBuild}/meta' --acl-public sync ${directoryOfBuild}/meta/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
+    sh "s3cmd --rexclude='${directoryOfBuild}/meta' --acl-public sync ${directoryOfBuild}/meta/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
     
     def list_of_publishable_meta_files = sh (
-            script: "find ${directoryOfBuild}/meta/ -name '*.json'",
+            script: "find ${directoryOfBuild}/meta -name '*.json'",
             returnStdout: true).split("\n")
     println list_of_publishable_meta_files
     
