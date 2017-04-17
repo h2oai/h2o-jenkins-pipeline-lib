@@ -17,12 +17,12 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
         returnStdout: true).split("\n")
     println list_of_publishable_files
     
-    try{
+    //try{
         upload_artifacts(list_of_publishable_files,directoryOfBuild,branchName,buildNumber)
-    }
-    catch(Exception e){
-        echo "No files to upload"
-    }
+   // }
+   // catch(Exception e){
+   //     echo "No files to upload"
+   // }
     
     //Publish meta information for the build
     sh "s3cmd --acl-public sync ${directoryOfBuild}/meta/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
@@ -52,6 +52,7 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
 @NonCPS
 upload_artifacts(list_of_files,directoryOfBuild,branchName,buildNumber){
     for( f in list_of_files) {
+        echo "Inside upload_artifact"
         echo "${f}"
         sh """
             directoryOfBuild=${f}
