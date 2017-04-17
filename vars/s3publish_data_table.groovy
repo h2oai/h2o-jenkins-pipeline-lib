@@ -15,7 +15,7 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
     def list_of_publishable_files = sh (
         script: "find ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ -name '*.so'",
         returnStdout: true).split("\n")
-    println list_of_publishable_files
+    
     
     //try{
         upload_artifacts(list_of_publishable_files,directoryOfBuild,branchName,buildNumber)
@@ -30,7 +30,6 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
     def list_of_publishable_meta_files = sh (
             script: "find ${directoryOfBuild}/meta -name '*.json'",
             returnStdout: true).split("\n")
-    println list_of_publishable_meta_files
     
     upload_meta(list_of_publishable_meta_files,directoryOfBuild,branchName,buildNumber)
 
@@ -54,10 +53,12 @@ upload_artifacts(list_of_files,directoryOfBuild,branchName,buildNumber){
     for( f in list_of_files) {
         echo "Inside upload_artifact"
         echo "${f}"
-        sh "export directoryOfBuild=${f}"
-        sh "export name=`basename $directoryOfBuild`"    
+        sh '''
+        directoryOfBuild=${f}
+        name=`basename $directoryOfBuild`
         echo ${name}
-        sh "s3cmd --acl-public put ${name} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
+        s3cmd --acl-public put ${name} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}
+        '''
         
     }
     echo "Done"
