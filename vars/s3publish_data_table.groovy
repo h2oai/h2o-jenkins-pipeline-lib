@@ -9,8 +9,7 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
 
     //Publish the artifacts // > path | name=$(basename '$path' '.so') |echo "$name".so"
     //--rexclude='${directoryOfBuild}/build/lib.linux-x86_64-3.6/datatable/*'
-    //sh "s3cmd --acl-public sync ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
-    //sh "s3cmd --acl-public put ${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${f}"
+    sh "s3cmd --acl-public sync ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ --rexclude='${directoryOfBuild}/build/lib.linux-x86_64-3.6/datatable/*' s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
     
     def list_of_publishable_files = sh (
         script: "find ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ -name '*.so'",
@@ -25,7 +24,7 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
    // }
     
     //Publish meta information for the build
-    sh "s3cmd --acl-public sync ${directoryOfBuild}/meta/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
+    sh "s3cmd --acl-public sync ${directoryOfBuild}/meta/ s3://ai.h2o.tests/intermittent_files/${branchName}/meta/${buildNumber}/"
     
     def list_of_publishable_meta_files = sh (
             script: "find ${directoryOfBuild}/meta -name '*.json'",
@@ -67,7 +66,7 @@ upload_meta(list_of_files,directoryOfBuild,branchName,buildNumber){
         length = "${f}".split("/").length
         name = "${f}".split("/")[length-1]
         echo "${name}"
-        sh "s3cmd --acl-public put ${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/${name}"
+        sh "s3cmd --acl-public put ${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/meta/${name}"
     }
     echo "Done"
 }
