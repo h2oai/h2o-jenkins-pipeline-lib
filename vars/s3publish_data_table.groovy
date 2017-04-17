@@ -7,7 +7,7 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
     echo "Branch name: ${branchName}"
     //echo "Build number: ${buildNumber}"
     echo "Build number from env: ${env.BUILD_NUMBER}"
-    buildNumber = ${env.BUILD_NUMBER}
+    def buildNumber = ${env.BUILD_NUMBER}
 
     //Publish the artifacts 
     sh "s3cmd --acl-public sync ${directoryOfBuild}/build/lib.linux-x86_64-3.6/*.so --rexclude='${directoryOfBuild}/build/lib.linux-x86_64-3.6/datatable/*' s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
