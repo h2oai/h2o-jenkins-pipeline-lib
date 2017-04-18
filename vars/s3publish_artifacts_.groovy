@@ -1,7 +1,6 @@
-def call(String project, String directoryOfMetaInfo, String directoryOfBuild, String branchName, String buildNumber){
+def call(String directoryOfBuild, String branchName, String buildNumber){
 
     echo "********Parameters received by this function call********"
-    echo "Project to publish: ${project}"
     echo "Directory of Meta information to publish: ${directoryOfMetaInfo}"
     echo "Directory of artifacts to publish: ${directoryOfBuild}"
     echo "Branch name: ${branchName}"
