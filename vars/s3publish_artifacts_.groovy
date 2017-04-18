@@ -9,32 +9,17 @@ def call(String project, String directoryOfMetaInfo, String directoryOfBuild, St
     //echo "Build number from env: ${env.BUILD_NUMBER}"
 
     //Publish the artifacts 
-    sh "s3cmd --acl-public sync ${directoryOfBuild}/build/lib.linux-x86_64-3.6/*.so --rexclude='${directoryOfBuild}/build/lib.linux-x86_64-3.6/datatable/*' s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
+    sh "s3cmd --acl-public sync ${directoryOfBuild}/artifacts s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/"
     
     def list_of_publishable_files = sh (
-        script: "find ${directoryOfBuild}/build/lib.linux-x86_64-3.6/ -name '*.so'",
+        script: "find ${directoryOfBuild}/artifacts/ -name '*'",
         returnStdout: true).split("\n")
-    
     
     try{
         upload_artifacts(list_of_publishable_files,directoryOfBuild,branchName,buildNumber)
     }
     catch(Exception e){
         echo "No Artifacts to upload"
-    }
-    
-    //Publish meta information for the build
-    sh "s3cmd --acl-public sync ${directoryOfBuild}/meta/ s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/meta/"
-    
-    def list_of_publishable_meta_files = sh (
-            script: "find ${directoryOfBuild}/meta -name '*.json'",
-            returnStdout: true).split("\n")
-    
-    try{
-    upload_meta(list_of_publishable_meta_files,directoryOfBuild,branchName,buildNumber)
-    }
-    catch(Exception e){
-        echo "No meta files to upload"
     }
     
     echo "UPDATE LATEST POINTER"
@@ -63,16 +48,3 @@ upload_artifacts(list_of_files,directoryOfBuild,branchName,buildNumber){
     }
     echo "Done"
 }
-
-@NonCPS
-upload_meta(list_of_files,directoryOfBuild,branchName,buildNumber){
-    for( f in list_of_files) {
-        echo "${f}"
-        length = "${f}".split("/").length
-        name = "${f}".split("/")[length-1]
-        echo "${name}"
-        sh "s3cmd --acl-public put ${f} s3://ai.h2o.tests/intermittent_files/${branchName}/${buildNumber}/meta/${name}"
-    }
-    echo "Done"
-}
-
