@@ -9,8 +9,10 @@ def call(body) {
     body.delegate = config
     body()
 
-    //echo s3cmd --access_key=${env.ACCESS_KEY} --secret_key=${env.SECRET_KEY} --acl-private put ${config.localArtifact} ${config.remoteArtifact} 
+    def aclPrivate = keepPrivate ? "--acl-private" : ""
+
     sh """
-    echo ===============XXXXXXXX= ${config}
+    echo "Uploading artifacts: ${config}"
+    s3cmd --access_key=${env.ACCESS_KEY} --secret_key=${env.SECRET_KEY} ${aclPrivate} put ${config.localArtifact} ${config.remoteArtifact} 
     """
 }
