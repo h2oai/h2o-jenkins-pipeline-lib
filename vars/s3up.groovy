@@ -7,11 +7,11 @@ def call(String localArtifact, String remoteArtifact, Boolean keepPrivate = true
     body.delegate = config
     body()*/
 
-    sh """
+    sh '''
     find /
-    echo s3cmd --access_key=${ACCESS_KEY}\
-          --secret_key=${SECRET_KEY}\
+    echo s3cmd --access_key=${env.ACCESS_KEY}\
+          --secret_key=${env.SECRET_KEY}\
           --acl-private\
           put ${localArtifact} ${remoteArtifact} 
-    """
+    '''
 }
