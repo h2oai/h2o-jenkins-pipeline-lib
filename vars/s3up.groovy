@@ -10,7 +10,7 @@ def call(body) {
     body()
 
     //echo s3cmd --access_key=${env.ACCESS_KEY} --secret_key=${env.SECRET_KEY} --acl-private put ${config.localArtifact} ${config.remoteArtifact} 
-    sh '''
-    echo ===============XXXXXXXX=
-    '''
+    sh """
+    echo ===============XXXXXXXX= ${config}
+    """
 }
