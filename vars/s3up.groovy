@@ -8,10 +8,6 @@ def call(String localArtifact, String remoteArtifact, Boolean keepPrivate = true
     body()*/
 
     sh '''
-    find /
-    echo s3cmd --access_key=${env.ACCESS_KEY}\
-          --secret_key=${env.SECRET_KEY}\
-          --acl-private\
-          put ${localArtifact} ${remoteArtifact} 
+    echo s3cmd --access_key=${env.ACCESS_KEY} --secret_key=${env.SECRET_KEY} --acl-private put ${localArtifact} ${remoteArtifact} 
     '''
 }
