@@ -9,7 +9,7 @@ def call(body) {
     body.delegate = config
     body()
 
-    def aclPrivate = keepPrivate ? "--acl-private" : ""
+    def aclPrivate = config.keepPrivate ? "--acl-private" : ""
 
     sh """
     echo "Uploading artifacts: ${config}"
