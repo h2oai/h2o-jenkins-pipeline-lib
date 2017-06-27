@@ -29,11 +29,12 @@ def call(body) {
 	def buildFile = new File(builDir, "build.dir")
 	buildDir.mkdirs()
 	//writeFile(new File(buildDir, "build.gradle"), buildProjectFileContent)
+    def buildFileLocation = buildFile.getAbsolutePath()
 
     withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: config.credentialsId]]) {
         sh """
         echo ======================
-        cat "${buildFile}"
+        cat "${buildFileLocation}"
         echo ======================
         """
     }
