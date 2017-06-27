@@ -31,7 +31,7 @@ def call(body) {
 
     withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: config.credentialsId]]) {
         sh """
-		
+        cat "${buildFile}"
         """
     }
 }
