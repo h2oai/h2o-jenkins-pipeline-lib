@@ -6,7 +6,6 @@
 import org.gradle.tooling.GradleConnector
 import org.gradle.tooling.model.GradleProject
 import java.io.File
-import ai.h2o._
 
 /**
  * s3up 
