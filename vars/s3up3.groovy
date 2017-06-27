@@ -6,6 +6,7 @@
 import org.gradle.tooling.GradleConnector
 import org.gradle.tooling.model.GradleProject
 import java.io.File
+import ai.h2o._
 
 /**
  * s3up 
@@ -34,34 +35,5 @@ def call(body) {
         cat "${buildFile}"
         """
     }
-}
-
-@NonCPS
-def buildProjectFileContent = """
-plugins {
-  id 'ivy-publish'
-}
-"""
-
-@NonCPS
-def withClosable = { closable, closure ->
-    try {
-        closure(closable)
-    } finally {
-        closable.close()
-    }
-}
-
-@NonCPS
-def writeFile(File destination, String content) throws IOException {
-	BufferedWriter output = null;
-	try {
-		output = new BufferedWriter(new FileWriter(destination));
-		output.write(content);
-	} finally {
-		if (output != null) {
-			output.close();
-		}
-	}
 }
 
