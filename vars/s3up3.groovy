@@ -32,7 +32,9 @@ def call(body) {
 
     withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: config.credentialsId]]) {
         sh """
+        echo ======================
         cat "${buildFile}"
+        echo ======================
         """
     }
 }
