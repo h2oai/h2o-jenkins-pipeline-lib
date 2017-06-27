@@ -13,12 +13,14 @@
 def call(body) {
     def config = [
         groupId: "ai/h2o",
-        remoteArtifactBucket:"s3://artifacts.h2o.ai/releases/", 
+        remoteArtifactBucket:"s3://artifacts.h2o.ai/releases", 
         keepPrivate:true, 
         credentialsId:"awsArtifactsUploader"]
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
     body()
+
+    // FIXME: check remoteArtifactBucket for suffix `/` and remove it
 
     def aclPrivate = config.keepPrivate ? "--acl-private" : ""
 
