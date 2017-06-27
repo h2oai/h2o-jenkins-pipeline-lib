@@ -28,7 +28,7 @@ def call(body) {
 	def buildDir = new File("${conf.workspaceDir}/xxx")
 	def buildFile = new File(builDir, "build.dir")
 	buildDir.mkdirs()
-	writeFile(new File(buildDir, "build.gradle"), buildProjectFileContent)
+	//writeFile(new File(buildDir, "build.gradle"), buildProjectFileContent)
 
     withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: config.credentialsId]]) {
         sh """
