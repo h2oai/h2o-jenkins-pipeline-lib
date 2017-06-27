@@ -13,7 +13,7 @@
 def call(body) {
     def config = [
         groupId: "ai/h2o",
-        remoteArtifactBucket:"s3://artifacts.h2o.ai", 
+        remoteArtifactBucket:"s3://artifacts.h2o.ai/releases/", 
         keepPrivate:true, 
         credentialsId:"awsArtifactsUploader"]
     body.resolveStrategy = Closure.DELEGATE_FIRST
@@ -25,8 +25,8 @@ def call(body) {
     withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: config.credentialsId]]) {
         sh """
         echo "Uploading artifacts: ${config}"
-        s3cmd --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}/${config.buildVersion}/"
-        s3cmd --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}/latest/"
+        s3cmd --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.${config.buildVersion}/"
+        s3cmd --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.latest/"
         """
     }
 }
