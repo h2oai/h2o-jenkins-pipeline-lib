@@ -25,11 +25,11 @@ def call(body) {
     body.delegate = config
     body()
 
-	def buildDir = new File("${conf.workspaceDir}/xxx")
-	def buildFile = new File(builDir, "build.dir")
-	buildDir.mkdirs()
+	//def buildDir = new File("${conf.workspaceDir}/xxx")
+	//def buildFile = new File(builDir, "build.dir")
+	//buildDir.mkdirs()
 	//writeFile(new File(buildDir, "build.gradle"), buildProjectFileContent)
-    def buildFileLocation = buildFile.getAbsolutePath()
+    def buildFileLocation = "here" //abuildFile.getAbsolutePath()
 
     withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: config.credentialsId]]) {
         sh """
