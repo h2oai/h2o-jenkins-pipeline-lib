@@ -5,11 +5,10 @@ def utilsLib = new Utils()
 def call(String title = "Environment") {
     ansiColor('xterm') {
         sh """
-           printf "\n\001B[32m=== Environment ===\001B[0m\n"
+           printf "\n=== ${title} ===\n"
            printf "\nJava version:\n$(java -version)"
            printf "\nEnvironment:\n$(env)"
            """
     }
 }
-
 
