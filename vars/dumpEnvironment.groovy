@@ -1,6 +1,9 @@
+import ai.h2o.ci.Utils
+
 def call(String title = 'Environment') {
-    def s = """
-    echo ${title}
+    def utils = new Utils()
+
+    def s = """echo ${title}
     $(java -version)
     """
 
