@@ -1,4 +1,6 @@
-import ai.h2o.ci
+import ai.h2o.ci.Utils
+
+def utilsLib = new Utils()
 
 def call(String title = "Environment") {
     ansiColor('xterm') {
