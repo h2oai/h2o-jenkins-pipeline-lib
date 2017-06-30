@@ -1,4 +1,4 @@
-import ai.h2o.build
+import ai.h2o.ci
 
 def call(String title = "Environment") {
     ansiColor('xterm') {
