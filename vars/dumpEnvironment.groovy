@@ -7,6 +7,9 @@ def call(String title = 'Environment') {
     +===================+
       ${title}
     +===================+
+    Git Describe: ${utils.gitDescribeAll()} / ${utils.gitDescribe()}
+    Java version: ${utils.getJavaVersion()}
+
     """
 
     /*sh """
