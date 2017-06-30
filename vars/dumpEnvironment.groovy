@@ -4,9 +4,9 @@ def utilsLib = new Utils()
 
 def call(String title = "Environment") {
     sh """
-       echo "\n=== ${title} ===\n"
-       echo "\nJava version:\n$(java -version)"
-       echo "\nEnvironment:\n$(env)"
+       echo -e "\n=== ===\n"
+       echo -e "\nJava version:\n$(java -version)"
+       echo -e "\nEnvironment:\n$(env)"
        """
 }
 
