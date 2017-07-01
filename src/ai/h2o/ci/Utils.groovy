@@ -17,7 +17,7 @@ def gitDescribeAll() {
 }
 
 def gitDescribe() {
-    return getShell().pipe("git describe --always --long HEAD")
+    return getShell().pipe("git describe --always --long HEAD || echo none")
 }
 
 def javaVersion() {
