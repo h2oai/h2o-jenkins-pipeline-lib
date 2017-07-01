@@ -4,13 +4,13 @@ def call(String title = 'Environment') {
     def utils = new Utils()
 
     echo """
-    "\033[1;33m
+    \033[1;33m
     +===================+
       ${title}
     +===================+
     Git Describe: ${utils.gitDescribeAll()} 
     Java version: ${utils.javaVersion()}
-    \033[0m $1"
+    \033[0m
     """
 
     /*sh """
