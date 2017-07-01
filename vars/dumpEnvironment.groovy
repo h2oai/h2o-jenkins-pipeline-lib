@@ -8,7 +8,7 @@ def call(String title = 'Environment') {
       ${title}
     +===================+
     Git Describe: ${utils.gitDescribeAll()} 
-    Java version: ${utils.getJavaVersion()}
+    Java version: ${utils.javaVersion()}
 
     """
 
