@@ -13,19 +13,19 @@ def getVersionSuffix() {
 }
 
 def gitDescribeAll() {
-    return getShell().pipe("git describe --all --long HEAD")
+    return getShell().pipe("git describe --all --long HEAD").trim()
 }
 
 def gitDescribe() {
-    return getShell().pipe("git describe --always --long HEAD || echo none")
+    return getShell().pipe("git describe --always --long HEAD || echo none").trim()
 }
 
 def javaVersion() {
-    return getShell().pipe("java -version || echo not found")
+    return getShell().pipe("java -version || echo not found").trim()
 }
 
 def gitBranch() {
-    return getShell().pipe("git rev-parse --abbrev-ref HEAD")
+    return getShell().pipe("git rev-parse --abbrev-ref HEAD").trim()
 }
 
 
