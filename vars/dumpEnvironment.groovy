@@ -8,9 +8,10 @@ def call(String title = 'Environment') {
     +===================+
       ${title}
     +===================+\033[0m
-    Git Describe (tag/all): ${utils.gitDescribe()} / ${utils.gitDescribeAll()} 
-    Git Branch            : ${utils.gitBranch()}
-    Java version          : ${utils.javaVersion()}
+    Git Describe : ${utils.gitDescribe()} 
+    Git Describe : ${utils.gitDescribeAll()} 
+    Git Branch   : ${utils.gitBranch()}
+    Java version : ${utils.javaVersion()}
     """
 
     /*sh """
