@@ -17,9 +17,12 @@ def gitDescribeAll() {
 }
 
 def gitDescribe() {
-    return getShell().pipe("git describe --long HEAD")
+    return getShell().pipe("git describe --always --long HEAD")
 }
 
+def javaVersion() {
+    return getShell().pipe("java -version")
+}
 
 def gitBranch() {
     return getShell().pipe("git rev-parse --abbrev-ref HEAD")
