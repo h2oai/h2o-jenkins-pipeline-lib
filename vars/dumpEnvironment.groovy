@@ -9,10 +9,10 @@ def call(String title = 'Environment') {
       ${title}
     +===================+
     Git Describe: ${utils.gitDescribeAll()} 
-    Java version: ${utils.javaVersion()}
     \033[0m
     """
 
+    //Java version: ${utils.javaVersion()}
     /*sh """
        echo -e "\nJava version:\n$(java -version)"
        echo -e "\nEnvironment:\n$(env)"
