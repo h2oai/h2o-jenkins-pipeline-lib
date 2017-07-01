@@ -12,6 +12,10 @@ def getVersionSuffix() {
     return "${env.BRANCH}_${env.BUILD_ID}"
 }
 
+def getCommmandOutput(String cmd) {
+    return getShell().pipe(cmd).trim()
+}
+
 def gitDescribeAll() {
     return getShell().pipe("git describe --all --long HEAD").trim()
 }
