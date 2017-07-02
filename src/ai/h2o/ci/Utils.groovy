@@ -32,6 +32,17 @@ def gitBranch() {
     return getShell().pipe("git rev-parse --abbrev-ref HEAD").trim()
 }
 
+/**
+ * Version is given as X.Y.Z
+ * @returns (X.Y, Z)
+ */
+def fragmentVersion(String version) {
+    def xyPartRgx = /\d+.\d+/
+    def zPartRgx = /\d+.*/
+    def versionRgx = /($xyPartRgx).($zPartRgx)/
+    def matcher = (version =~ versionRgx)
+    return new Tuple2(matcher[0][1], matcher[0][2])
+}
 
 
 return this
