@@ -8,7 +8,7 @@ def getShell() {
  * Return version suffix based on current branch 
  * and environment variable BUILD_ID.
  */
-def getVersionSuffix() {
+def getCiVersionSuffix() {
     return "${env.BRANCH}_${env.BUILD_ID}"
 }
 
