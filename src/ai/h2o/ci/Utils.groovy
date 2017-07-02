@@ -36,6 +36,7 @@ def gitBranch() {
  * Version is given as X.Y.Z
  * @returns (X.Y, Z)
  */
+ @NonCPS
 def fragmentVersion(String version) {
     def xyPartRgx = /\d+.\d+/
     def zPartRgx = /\d+.*/
