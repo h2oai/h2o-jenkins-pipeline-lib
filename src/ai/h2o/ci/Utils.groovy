@@ -34,7 +34,7 @@ def gitBranch() {
 
 /**
  * Version is given as X.Y.Z
- * @returns (X.Y, Z)
+ * It returns a tuple (X.Y, Z).
  */
 // @NonCPS
 //def fragmentVersion(String version) {
