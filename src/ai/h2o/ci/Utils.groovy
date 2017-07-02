@@ -9,7 +9,7 @@ def getShell() {
  * and environment variable BUILD_ID.
  */
 def getCiVersionSuffix() {
-    return "${env.BRANCH}_${env.BUILD_ID}"
+    return "${env.BRANCH_NAME}_${env.BUILD_ID}"
 }
 
 def getCommmandOutput(String cmd) {
