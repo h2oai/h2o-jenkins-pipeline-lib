@@ -6,9 +6,9 @@ def call(String title = 'Environment') {
     def utils = new Utils()
     def tableUtils = new TableUtils()
     def data = [
-      "Git Describe"    : utils.gitDescribe()
-      "Git Describe All": utils.gitDescribeAll()
-      "Git Branch"   : utils.gitBranch()
+      "Git Describe"    : utils.gitDescribe(),
+      "Git Describe All": utils.gitDescribeAll(),
+      "Git Branch"   : utils.gitBranch(),
       "Java version" : utils.javaVersion()
     ]
 
