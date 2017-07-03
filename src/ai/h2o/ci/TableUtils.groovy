@@ -10,3 +10,4 @@ def table(cols, colSizes, data) {
     at.render()
 }
 
+return this
