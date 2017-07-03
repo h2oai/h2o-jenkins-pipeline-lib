@@ -20,9 +20,9 @@ def call(String title = 'Environment') {
     """)
 
     echo """
-    ${header}
-    ${table}
-    """
+    |${header}
+    |${table}
+    """.stripMargin('|')
 }
 
 
