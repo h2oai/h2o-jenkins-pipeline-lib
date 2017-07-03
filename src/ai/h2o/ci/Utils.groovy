@@ -26,12 +26,21 @@ def gitDescribe() {
 }
 
 def javaVersion() {
-    return getShell().pipe("java -version &2>1 || echo 'not found'").trim()
+    return getShell().pipe("java -version &2>1 || true").trim()
 }
 
 def gitBranch() {
     return getShell().pipe("git rev-parse --abbrev-ref HEAD").trim()
 }
+
+def uname() {
+    return getShell().pipe("uname -a").trim()
+}
+
+def hostname() {
+    return getShell().pipe("hostname").trim()
+}
+
 
 /**
  * Version is given as X.Y.Z
