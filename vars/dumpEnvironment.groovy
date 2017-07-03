@@ -13,7 +13,7 @@ def call(String title = 'Environment') {
             "Hostname"        : utils.hostname()
     ]
 
-    def table = tableUtils.table2cols(data)
+    def table = tableUtils.table2cols(data, colSizes = [ 0 : 40])
 
     def header = green("""
     +===================+

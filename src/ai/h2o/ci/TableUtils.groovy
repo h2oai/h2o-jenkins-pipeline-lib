@@ -2,7 +2,7 @@ package ai.h2o.ci
 
 @Grab('de.vandermeer:asciitable:0.3.2')
 import de.vandermeer.asciitable.AsciiTable
-import de.vandermeer.asciitable.CWC_LongestWordMax
+import de.vandermeer.asciitable.CWC_LongestWordMin
 
 @NonCPS
 def table2cols(data, leftMargin = 4, colSizes = [:], maxWidth = 80) {
@@ -17,7 +17,7 @@ def table2cols(data, leftMargin = 4, colSizes = [:], maxWidth = 80) {
     // Generate constraints
     int[] colWidths = [-1, -1] as int[]
     colSizes.each {idx, width -> colWidths[idx] = width}
-    def cwc = new CWC_LongestWordMax(colWidths)
+    def cwc = new CWC_LongestWordMin(colWidths)
     at.getRenderer().setCWC(cwc)
     at.render(maxWidth)
 }
