@@ -12,8 +12,9 @@ def getCiVersionSuffix() {
     return "${env.BRANCH_NAME}_${env.BUILD_ID}"
 }
 
-def getCommandOutput(cmd) {
-    return getShell().pipe(cmd).trim()
+def getCommandOutput(cmd, trim = true) {
+    def output = getShell().pipe(cmd)
+    return trim ? output.trim() : output
 }
 
 def gitDescribeAll() {
