@@ -5,9 +5,11 @@ import de.vandermeer.asciitable.AsciiTable
 
 @NonCPS
 def table(cols, colSizes, data) {
+    def utils = new Utils()
     def at = new AsciiTable()
     at.addRule()
-    at.addRow("Git Describe", "OOO")
+    at.addRow("Git Describe", utils.gitDescribe())
+    at.addRow("Git Describe All", utils.gitDescribeAll())
     at.addRule()
     at.render()
 }
