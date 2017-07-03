@@ -5,7 +5,7 @@ import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.CWC_LongestWordMin
 
 @NonCPS
-def table2cols(data, leftMargin = 4, colSizes = [:], maxWidth = 80) {
+def table2cols(data, colSizes = [:] , leftMargin = 4, maxWidth = 80) {
     def utils = new Utils()
     def at = new AsciiTable()
     at.addRule()
