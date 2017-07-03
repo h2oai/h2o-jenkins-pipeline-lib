@@ -16,10 +16,10 @@ def table2cols(data, colSizes = [:], int leftMargin = 4, int maxWidth = 80) {
     at.getContext().setFrameLeftMargin(leftMargin)
     // Generate constraints
     int[] colWidths = [-1, -1] as int[]
-    //colSizes.each {int idx, int width -> colWidths[idx] = width}
-    //def cwc = new CWC_LongestWordMin(colWidths)
+    colSizes.each {int idx, int width -> colWidths[idx] = width}
+    /*def cwc = new CWC_LongestWordMin(colWidths)
     def cwc = new CWC_LongestWordMax(colWidths)
-    at.getRenderer().setCWC(cwc)
+    at.getRenderer().setCWC(cwc) */
     at.render(maxWidth)
 }
 
