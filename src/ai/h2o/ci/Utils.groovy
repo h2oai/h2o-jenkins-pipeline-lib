@@ -26,7 +26,7 @@ def gitDescribe() {
 }
 
 def javaVersion() {
-    return getShell().pipe("java -version &2>1 || echo not found").trim()
+    return getShell().pipe("java -version &2>1 || echo 'not found'").trim()
 }
 
 def gitBranch() {
