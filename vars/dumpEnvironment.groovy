@@ -10,8 +10,6 @@ def call(String title = 'Environment') {
     at.addRow("Git Describe", utils.gitDescribe())
     at.addRule()
     def t = at.render()*/
-    echo "$t"
-
     echo """
     +===================+
       ${green(${title})}
