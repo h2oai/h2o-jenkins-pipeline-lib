@@ -17,7 +17,7 @@ def table2cols(data, leftMargin = 4, colSizes = [:]) {
     // Generate constraints
     int[] colWidths = [-1, -1] as int[]
     colSizes.each {idx, width -> colWidths[idx] = width}
-    def cwc = new CWC_LongestWordMax(colSizes)
+    def cwc = new CWC_LongestWordMax(colWidths)
     at.getRenderer().setCWC(cwc)
     at.render()
 }
