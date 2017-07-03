@@ -56,12 +56,12 @@ def getShellEnv() {
 def buildInfo() {
     def tableUtils = new ai.h2o.ci.TableUtils()
     def data = [
-            "Git Describe"    : utils.gitDescribe(),
-            "Git Describe All": utils.gitDescribeAll(),
-            "Git Branch"      : utils.gitBranch(),
-            "Java version"    : utils.javaVersion(),
-            "uname -a"        : utils.uname(),
-            "Hostname"        : utils.hostname()
+            "Git Describe"    : gitDescribe(),
+            "Git Describe All": gitDescribeAll(),
+            "Git Branch"      : gitBranch(),
+            "Java version"    : javaVersion(),
+            "uname -a"        : uname(),
+            "Hostname"        : hostname()
     ]
 
     def table = tableUtils.table2cols(data, [ 0 : 20])
