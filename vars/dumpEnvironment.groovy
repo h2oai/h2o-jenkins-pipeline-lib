@@ -18,11 +18,8 @@ def call(String title = 'Environment') {
     +===================+
       ${green(title)}
     +===================+
-    Git Describe : ${utils.gitDescribeAll()}
-    Git Branch   : ${utils.gitBranch()}
-    Java version : ${utils.javaVersion()}
+    ${table}
     """
-    echo "${table}"
 }
 
 
