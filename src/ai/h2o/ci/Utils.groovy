@@ -55,4 +55,13 @@ def fragmentVersion(String version) {
     return new Tuple(matcher[0][1], matcher[0][2])
 }
 
+@NonCPS
+static def banner(String title, int width=40) {
+    def out = new StringBuffer()
+    out << "=".center(40, '=') << '\n'
+    out << title.center(40) << '\n'
+    out << "=".center(40, '=') << '\n'
+    out.toString()
+}
+
 return this
