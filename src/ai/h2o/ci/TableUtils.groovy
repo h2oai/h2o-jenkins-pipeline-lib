@@ -4,11 +4,13 @@ package ai.h2o.ci
 import de.vandermeer.asciitable.AsciiTable
 
 @NonCPS
-def table(cols, colSizes, data) {
+def table2cols(data, colSizes = [:]) {
     def utils = new Utils()
     def at = new AsciiTable()
     at.addRule()
-    at.addRow("Git Describe", "OOO")
+    data.each { k, v ->
+      at.addRow(k, v)
+    }
     at.addRule()
     at.render()
 }
