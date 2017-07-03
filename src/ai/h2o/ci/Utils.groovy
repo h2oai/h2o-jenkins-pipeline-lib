@@ -36,13 +36,13 @@ def gitBranch() {
  * Version is given as X.Y.Z
  * It returns a tuple (X.Y, Z).
  */
-// @NonCPS
-//def fragmentVersion(String version) {
-//    def xyPartRgx = /\d+.\d+/
-//    def zPartRgx = /\d+.*/
-//    def versionRgx = /($xyPartRgx).($zPartRgx)/
-//    def matcher = (version =~ versionRgx)
-//    return new Tuple2(matcher[0][1], matcher[0][2])
-//}
+ @NonCPS
+def fragmentVersion(String version) {
+    def xyPartRgx = /\d+.\d+/
+    def zPartRgx = /\d+.*/
+    def versionRgx = /($xyPartRgx).($zPartRgx)/
+    def matcher = (version =~ versionRgx)
+    return new Tuple(matcher[0][1], matcher[0][2])
+}
 
 return this
