@@ -1,4 +1,5 @@
 import ai.h2o.ci.Utils
+import ai.h2o.ci.TableUtils
 import static ai.h2o.ci.ColorUtils.*
 
 def call(String title = 'Environment') {
