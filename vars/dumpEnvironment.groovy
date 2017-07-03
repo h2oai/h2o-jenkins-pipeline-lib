@@ -15,16 +15,7 @@ def call(String title = 'Environment') {
 
     def table = tableUtils.table2cols(data, [ 0 : 20])
 
-    def header = green("""
-    +===================+
-       ${title}
-    +===================+
-    """)
-
-    echo """
-    |${header}
-    |${table}
-    """.stripMargin('|')
+    echo "not found"
 }
 
 
