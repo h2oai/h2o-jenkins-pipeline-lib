@@ -43,7 +43,7 @@ def hostname() {
 
 def getShellEnv() {
     def conf = [:]
-    def env = getShell().pipe("env", false)
+    def env = getShell().pipe("env")
     for (String line : env.split("\r?\n")) {
         def kv = line.split('=')
         conf[kv[0]] = kv[1]
