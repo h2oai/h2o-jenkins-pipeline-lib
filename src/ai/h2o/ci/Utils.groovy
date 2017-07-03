@@ -41,6 +41,16 @@ def hostname() {
     return getShell().pipe("hostname").trim()
 }
 
+def getShellEnv() {
+    def conf = [:]
+    def env = getShell().pipe("env", false)
+    for (String line : env.split("\r?\n")) {
+        def kv = line.split('=')
+        conf[kv[0]] = kv[1]
+    }
+    conf
+}
+
 
 /**
  * Version is given as X.Y.Z
