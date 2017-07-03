@@ -12,7 +12,7 @@ def call(String title = 'Environment') {
     def t = at.render()*/
     echo """
     +===================+
-      ${green(${title})}
+      ${green(title)}
     +===================+
     Git Describe : ${utils.gitDescribe()}
     Git Describe : ${utils.gitDescribeAll()}
