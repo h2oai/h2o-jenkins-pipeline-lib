@@ -14,7 +14,7 @@ def call(String title = 'Info') {
     |
     |${yellow(' Environment '.center(40, '*'))}
     |${envInfoTbl} 
-    """
+    """.stripMargin('|')
 }
 
 
