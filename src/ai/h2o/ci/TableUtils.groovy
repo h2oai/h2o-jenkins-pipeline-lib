@@ -5,7 +5,7 @@ import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.CWC_LongestWordMin
 
 @NonCPS
-def table2cols(data, colSizes = [:] , leftMargin = 4, maxWidth = 80) {
+def table2cols(data, colSizes = [:], int leftMargin = 4, int maxWidth = 80) {
     def utils = new Utils()
     def at = new AsciiTable()
     at.addRule()
@@ -16,7 +16,7 @@ def table2cols(data, colSizes = [:] , leftMargin = 4, maxWidth = 80) {
     at.getContext().setFrameLeftMargin(leftMargin)
     // Generate constraints
     int[] colWidths = [-1, -1] as int[]
-    colSizes.each {idx, width -> colWidths[idx] = width}
+    colSizes.each {int idx, int width -> colWidths[idx] = width}
     def cwc = new CWC_LongestWordMin(colWidths)
     at.getRenderer().setCWC(cwc)
     at.render(maxWidth)
