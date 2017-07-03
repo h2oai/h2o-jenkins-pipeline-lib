@@ -50,7 +50,31 @@ def getShellEnv() {
             conf[kv[0]] = kv[1]
         }
     }
-    conf
+    return conf
+}
+
+def buildInfo() {
+    def tableUtils = new ai.h2o.ci.TableUtils()
+    def data = [
+            "Git Describe"    : utils.gitDescribe(),
+            "Git Describe All": utils.gitDescribeAll(),
+            "Git Branch"      : utils.gitBranch(),
+            "Java version"    : utils.javaVersion(),
+            "uname -a"        : utils.uname(),
+            "Hostname"        : utils.hostname()
+    ]
+
+    def table = tableUtils.table2cols(data, [ 0 : 20])
+    return table
+}
+
+def envInfo() {
+    def tableUtils = new ai.h2o.ci.TableUtils()
+    def data = getShellEnv()
+
+    def table = tableUtils.table2cols(data, [ 0 : 20])
+
+    return table
 }
 
 
