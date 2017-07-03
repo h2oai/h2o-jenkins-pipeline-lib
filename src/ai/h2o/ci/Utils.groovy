@@ -12,7 +12,7 @@ def getCiVersionSuffix() {
     return "${env.BRANCH_NAME}_${env.BUILD_ID}"
 }
 
-def getCommmandOutput(String cmd) {
+def getCommmandOutput(cmd) {
     return getShell().pipe(cmd).trim()
 }
 
