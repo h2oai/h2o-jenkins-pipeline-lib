@@ -4,7 +4,7 @@ package ai.h2o.ci
 import de.vandermeer.asciitable.AsciiTable
 
 @NonCPS
-def table2cols(data, colSizes = [:]) {
+def table2cols(data, leftMargin = 4, colSizes = [:]) {
     def utils = new Utils()
     def at = new AsciiTable()
     at.addRule()
@@ -12,6 +12,7 @@ def table2cols(data, colSizes = [:]) {
       at.addRow(k, v)
     }
     at.addRule()
+    at.getContext().setFrameLeftMargin(leftMargin)
     at.render()
 }
 

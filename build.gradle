@@ -6,20 +6,21 @@ apply plugin: 'groovy'
 sourceSets {
     main {
         groovy {
-            srcDirs += ['var']
+            srcDirs += ['var', 'src']
         }
     }
 }
 
 repositories {
-        mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-        compile 'org.codehaus.groovy:groovy-all:2.4.7'
+    compile 'org.codehaus.groovy:groovy-all:2.4.7'
+    compile 'de.vandermeer:asciitable:0.3.2'
 }
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '3.2.1'
+    gradleVersion = '4.0'
 }
 
