@@ -53,7 +53,7 @@ def getShellEnv() {
     return conf
 }
 
-def savePyBuildInfo(targetFile) {
+def getPyBuildInfo() {
     def content = """
     |suffix=+${getCiVersionSuffix()}
     |build=${env.BUILD_ID}
@@ -62,8 +62,7 @@ def savePyBuildInfo(targetFile) {
     |build_os=${uname()}
     |build_machine=${hostname()}
     """.stripMargin()
-
-    writeFile(targetFile, content)
+    return content
 }
 
 def buildInfo() {
