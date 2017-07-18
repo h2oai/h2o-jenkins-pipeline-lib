@@ -45,6 +45,10 @@ def hostname() {
     return getShell().pipe("hostname").trim()
 }
 
+def getDockerLoadCommandForArtifact(String artifact) {
+    return "curl ${env.BUILD_URL}/artifact/${artifact} | gunzip -c | docker load"
+}
+
 def getShellEnv() {
     def conf = [:]
     def env = getShell().pipe("env")
