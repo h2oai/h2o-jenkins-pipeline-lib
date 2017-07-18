@@ -65,9 +65,10 @@ def date() {
     return getShell().pipe("date").trim()
 }
 
-def getPyBuildInfo() {
+def getPyBuildInfo(boolean isRelease) {
+    def suffix = isRelease ? "" : "+${getCiVersionSuffix()}" // Python dev version requires delimiter '+'
     def content = """
-    |suffix="+${getCiVersionSuffix()}"
+    |suffix="${suffix}"
     |build="${env.BUILD_ID}"
     |commit="${gitHeadSha()}"
     |branch="${gitBranch()}"
