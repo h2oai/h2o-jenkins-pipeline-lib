@@ -30,7 +30,7 @@ def javaVersion() {
 }
 
 def gitBranch() {
-    return getShell().pipe("git rev-parse --abbrev-ref HEAD").trim()
+    return getShell().pipe("git rev-parse HEAD | git branch -a --contains | grep -v detached | sed -e 's~remotes/origin/~~g").trim()
 }
 
 def gitHeadSha() {
