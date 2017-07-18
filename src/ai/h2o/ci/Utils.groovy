@@ -53,6 +53,19 @@ def getShellEnv() {
     return conf
 }
 
+def saveBuildInfo(targetFile) {
+    def content = """
+    |suffix=+${getCiVersionSuffix()}
+    |build=${env.BUILD_ID}
+    |commit=${}
+    |describe=${gitDescribe()}
+    |build_os=${uname()}
+    |build_machine=${hostname()}
+    """.stripMargin()
+
+    writeFile(targetFile, content)
+}
+
 def buildInfo() {
     def tableUtils = new ai.h2o.ci.TableUtils()
     def data = [
