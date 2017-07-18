@@ -7,6 +7,6 @@ def call(String ...targetFile) {
     def utils = new Utils()
     def content = utils.getPyBuildInfo()
     for(String tf : targetFile) {
-        writeFile file: targetFile, text: content
+        writeFile file: tf, text: content
     }
 }
