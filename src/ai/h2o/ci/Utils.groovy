@@ -55,12 +55,12 @@ def getShellEnv() {
 
 def getPyBuildInfo() {
     def content = """
-    |suffix=+${getCiVersionSuffix()}
-    |build=${env.BUILD_ID}
-    |commit=${}
-    |describe=${gitDescribe()}
-    |build_os=${uname()}
-    |build_machine=${hostname()}
+    |suffix="+${getCiVersionSuffix()}"
+    |build="${env.BUILD_ID}"
+    |commit="${}"
+    |describe="${gitDescribe()}"
+    |build_os="${uname()}"
+    |build_machine="${hostname()}"
     """.stripMargin()
     return content
 }
