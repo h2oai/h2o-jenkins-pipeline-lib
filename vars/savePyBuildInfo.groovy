@@ -6,7 +6,7 @@ import ai.h2o.ci.Utils
 def call(String ...targetFile) {
     def utils = new Utils()
     def content = utils.getPyBuildInfo()
-    for(String tf : targetFile) {
-        writeFile file: tf, text: content
+    for(int i = 0; i < targetFile.length; i++) {
+        writeFile file: targetFile[i], text: content
     }
 }
