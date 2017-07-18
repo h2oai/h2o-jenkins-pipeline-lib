@@ -33,6 +33,10 @@ def gitBranch() {
     return getShell().pipe("git rev-parse --abbrev-ref HEAD").trim()
 }
 
+def gitHeadSha() {
+    return getShell().pipe("git rev-parse HEAD").trim()
+}
+
 def uname() {
     return getShell().pipe("uname -a").trim()
 }
@@ -57,7 +61,8 @@ def getPyBuildInfo() {
     def content = """
     |suffix="+${getCiVersionSuffix()}"
     |build="${env.BUILD_ID}"
-    |commit="${}"
+    |commit="${gitHeadSha()}"
+    |branch="${gitBranch()}"
     |describe="${gitDescribe()}"
     |build_os="${uname()}"
     |build_machine="${hostname()}"
