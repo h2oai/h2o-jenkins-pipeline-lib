@@ -30,7 +30,11 @@ def javaVersion() {
 }
 
 def gitBranch() {
-    return getShell().pipe("git rev-parse --abbrev-ref HEAD").trim()
+    return getShell().pipe("git rev-parse HEAD | git branch -a --contains | grep -v detached | sed -e 's~remotes/origin/~~g' | tr '\\\n' ' '").trim()
+}
+
+def gitHeadSha() {
+    return getShell().pipe("git rev-parse HEAD").trim()
 }
 
 def uname() {
@@ -51,6 +55,24 @@ def getShellEnv() {
         }
     }
     return conf
+}
+
+def date() {
+    return getShell().pipe("date").trim()
+}
+
+def getPyBuildInfo() {
+    def content = """
+    |suffix="+${getCiVersionSuffix()}"
+    |build="${env.BUILD_ID}"
+    |commit="${gitHeadSha()}"
+    |branch="${gitBranch()}"
+    |describe="${gitDescribe()}"
+    |build_os="${uname()}"
+    |build_machine="${hostname()}"
+    |build_date="${date()}"
+    """.stripMargin()
+    return content
 }
 
 def buildInfo() {
