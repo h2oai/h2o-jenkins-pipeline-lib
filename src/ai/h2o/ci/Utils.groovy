@@ -53,7 +53,7 @@ def getShellEnv() {
     return conf
 }
 
-def saveBuildInfo(targetFile) {
+def savePyBuildInfo(targetFile) {
     def content = """
     |suffix=+${getCiVersionSuffix()}
     |build=${env.BUILD_ID}
