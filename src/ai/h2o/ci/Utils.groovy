@@ -119,6 +119,15 @@ def fragmentVersion(String version) {
 }
 
 @NonCPS
+def banner(String text, int width = 80, String pattern = "*") {
+    def out = new StringBuffer()
+    out << pattern.center(width) << '\n'
+    out << pattern << text.center(width - 2*pattern.length) << pattern << '\n'
+    out << pattern.center(width)
+    return out.toString()
+}
+
+@NonCPS
 static def banner(String title, int width=40) {
     def out = new StringBuffer()
     out << "=".center(40, '=') << '\n'
