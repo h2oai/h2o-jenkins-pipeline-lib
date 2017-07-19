@@ -121,9 +121,9 @@ def fragmentVersion(String version) {
 @NonCPS
 def banner(String text, int width = 80, String pattern = "*") {
     def out = new StringBuffer()
-    out << pattern.center(width) << '\n'
-    out << pattern << text.center(width - 2*pattern.length) << pattern << '\n'
-    out << pattern.center(width)
+    out << pattern.center(width, pattern) << '\n'
+    out << pattern << ColorUtils.green(text.center(width - 2*pattern.length()) << pattern) << '\n'
+    out << pattern.center(width, pattern)
     return out.toString()
 }
 
