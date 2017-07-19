@@ -49,6 +49,10 @@ def getDockerLoadCommandForArtifact(String artifact) {
     return "curl ${env.BUILD_URL}/artifact/${artifact} | gunzip -c | docker load"
 }
 
+def getDockerLoadCommandForS3Artifact(String artifactId, String version, String file) {
+    return """s3cmd --no-progress get "s3://artifacts.h2o.ai/releases/ai/h2o/${artifactId}/${version}/${file}" - 2>/dev/null | gunzip -d -c - | docker load"""
+}
+
 def getShellEnv() {
     def conf = [:]
     def env = getShell().pipe("env")
