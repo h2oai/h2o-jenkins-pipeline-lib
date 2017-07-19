@@ -12,10 +12,11 @@
  */
 def call(body) {
     def config = [
-        groupId: "ai/h2o",
-        remoteArtifactBucket:"s3://artifacts.h2o.ai/releases", 
-        keepPrivate:true, 
-        credentialsId:"awsArtifactsUploader"]
+        groupId              : "ai/h2o",
+        remoteArtifactBucket : "s3://artifacts.h2o.ai/releases", 
+        keepPrivate          : true, 
+        credentialsId        : "awsArtifactsUploader",
+        updateLatest         : true]
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
     body()
@@ -28,7 +29,11 @@ def call(body) {
         sh """
         echo "Uploading artifacts: ${config}"
         s3cmd --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.${config.buildVersion}/"
-        s3cmd --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.latest/"
         """
+        if (config.updateLatest) {
+            sh """
+            s3cmd --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.latest/"
+            """
+        }
     }
 }
