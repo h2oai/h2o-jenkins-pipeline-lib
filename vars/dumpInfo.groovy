@@ -6,7 +6,7 @@ def call(String title = 'Info') {
     def buildInfoTbl = utils.buildInfo()
     def envInfoTbl = utils.envInfo()
 
-    def header = green(banner(title))
+    def header = banner(title)
     echo """
     |${header}
     |${yellow(' Basic info '.center(40, '*'))}
