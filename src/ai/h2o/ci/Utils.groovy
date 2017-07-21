@@ -69,6 +69,10 @@ def date() {
     return getShell().pipe("date").trim()
 }
 
+def user() {
+    return getShell().pipe("id -u -n").trim()
+}
+
 def getPyBuildInfo(boolean isRelease) {
     def suffix = isRelease ? "" : "+${getCiVersionSuffix()}" // Python dev version requires delimiter '+'
     def content = """
@@ -80,6 +84,7 @@ def getPyBuildInfo(boolean isRelease) {
     |build_os="${uname()}"
     |build_machine="${hostname()}"
     |build_date="${date()}"
+    |build_user="${user()}"
     """.stripMargin()
     return content
 }
