@@ -1,5 +1,7 @@
 package ai.h2o.ci
 
+import com.cloudbees.groovy.cps.NonCPS
+
 def getShell() {
     new shell()
 }

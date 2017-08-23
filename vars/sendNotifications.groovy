@@ -12,8 +12,6 @@ def call(String buildStatus = 'STARTED') {
   def colorCode = '#FF0000'
   def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
   def summary = "${subject} (${env.BUILD_URL})"
-  def details = """<p>${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-    <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
 
   // Override default values based on build status
   if (buildStatus == 'STARTED') {
@@ -33,7 +31,7 @@ def call(String buildStatus = 'STARTED') {
   emailext (
       to: 'michal@h2o.ai',
       subject: subject,
-      body: details,
+      body: '''${JELLY_SCRIPT, template="html_gmail"}''',
       recipientProviders: [[$class: 'DevelopersRecipientProvider']]
     )
 }

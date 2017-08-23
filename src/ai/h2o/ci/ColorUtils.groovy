@@ -1,5 +1,7 @@
 package ai.h2o.ci
 
+import com.cloudbees.groovy.cps.NonCPS
+
 @NonCPS
 static def red(s) {
     "\033[1;31m${s}\033[0m"
