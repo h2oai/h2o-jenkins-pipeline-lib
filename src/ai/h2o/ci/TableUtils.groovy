@@ -1,5 +1,6 @@
 package ai.h2o.ci
 
+import com.cloudbees.groovy.cps.NonCPS
 @Grab('de.vandermeer:asciitable:0.3.2')
 import de.vandermeer.asciitable.AsciiTable
 import de.vandermeer.asciitable.*

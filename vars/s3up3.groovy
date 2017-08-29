@@ -3,10 +3,8 @@
 @Grab("org.gradle:gradle-tooling-api:4.0")
 @Grab("org.slf4j:slf4j-simple:1.6.4")
 
-import org.gradle.tooling.GradleConnector
-import org.gradle.tooling.model.GradleProject
 import java.io.File
-import ai.h2o._
+import ai.h2o.ci.*
 
 /**
  * s3up 
@@ -19,7 +17,7 @@ def call(body) {
     def config = [
         groupId: "ai.h2o",
         remoteArtifactBucket:"s3://s3n-test/s3up3", 
-        credentialsId:"awsArtifactsUploader"
+        credentialsId:"awsArtifactsUploader",
 		workspaceDir:env.WORKSPACE]
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config

@@ -1,3 +1,5 @@
+import com.cloudbees.groovy.cps.NonCPS
+
 // Local environment map
 def envMap = [:]
 

@@ -1,3 +1,5 @@
+import com.cloudbees.groovy.cps.NonCPS
+
 def call(String directoryOfBuild, String branchName, String buildNumber){
 
     echo "********Parameters received by this function call********"
