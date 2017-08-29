@@ -43,5 +43,28 @@ class GitUtils implements Serializable {
     def changeSet() {
         return script.currentBuild.changeSets*.items*.affectedFiles*.path.flatten()
     }
+
+    /**
+     * Returns author emails for commits in current build.
+     *
+     * @return
+     */
+    def changeAuthors() {
+        return script.currentBuild.changeSets*.items*.committerEmail.flatten()
+    }
+
+    /**
+     * Get author emails for any job.
+     * 
+     * Note: this needs security approval in sandbox settings
+     * @param jobName
+     * @param buildId
+     */
+    def changeAuthors(String jobName, String buildId) {
+        def job = script.jenkins.model.Jenkins.instance.getItemByFullName(jobName)
+        def currentBuild = job.getBuild(buildId)
+        return currentBuild == null ? [] : currentBuild.changeSets*.items*.committerEmail.flatten()
+    }
+
 }
 
