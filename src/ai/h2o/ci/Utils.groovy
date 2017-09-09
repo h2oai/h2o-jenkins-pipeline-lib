@@ -79,6 +79,10 @@ def getPyBuildInfo(boolean isRelease) {
     return getPyBuildInfo(isRelease, null)
 }
 
+def setCurrentBuildName(String name) {
+    currentBuild.displayName = name
+}
+
 def getPyBuildInfo(boolean isRelease, String baseVersion) {
     def suffix = isRelease ? "" : "+${getCiVersionSuffix()}" // Python dev version requires delimiter '+'
     def baseVersionEntry = baseVersion != null ? "base_version=\"${baseVersion}\"" : ""
