@@ -45,12 +45,10 @@ class GitUtils implements Serializable {
     }
 
     /**
-     * Returns author emails for commits in current build.
-     *
-     * @return
+     * Returns commit messages in current build.
      */
-    def changeAuthors() {
-        return script.currentBuild.changeSets*.items*.committerEmail.flatten()
+    def changeMsgs() {
+        return script.currentBuild.changeSets*.items*.msg.flatten()
     }
 
     /**
