@@ -8,10 +8,6 @@ class GitUtils implements Serializable {
         this.script = script
     }
 
-    public static GitUtils create(script) {
-	return new GitUitls(script)
-    }
-
     def pipe(command) {
         return this.script.sh(script: command, returnStdout: true)
     }
