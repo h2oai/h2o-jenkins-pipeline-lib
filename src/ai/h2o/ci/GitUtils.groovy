@@ -9,7 +9,7 @@ class GitUtils implements Serializable {
     }
 
     public static GitUtils create(script) {
-	return new GitUitls(script)
+	return new GitUtils(script)
     }
 
     def pipe(command) {
