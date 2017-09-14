@@ -20,7 +20,7 @@ def getCommandOutput(cmd, trim = true) {
 }
 
 def gitDescribeAll() {
-    return getShell().pipe("git describe --all --long HEAD").trim()
+    return getShell().pipe("git describe --all --long HEAD || echo none").trim()
 }
 
 def gitDescribe() {
