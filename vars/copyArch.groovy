@@ -4,7 +4,7 @@ def call(String projectName, String buildId, String fileFilter) {
         filter: fileFilter,
         selector: [$class: 'SpecificBuildSelector', buildNumber: buildId]
         ])
-    files = findFiles(fileFilter)
+    files = findFiles(glob: fileFilter)
     setJUnitPrefix(projectName, files)
 }
 
