@@ -5,7 +5,7 @@ def call(String projectName, String buildId, String fileFilter) {
         selector: [$class: 'SpecificBuildSelector', buildNumber: buildId]
         ])
     // THis needs a Pipeline utility plugin: https://github.com/jenkinsci/pipeline-utility-steps-plugin
-    files = findFiles(glob: fileFilter)*.name.join(" ")
+    files = findFiles(glob: fileFilter)*.path.join(" ")
     setJUnitPrefix(projectName, files)
 }
 
