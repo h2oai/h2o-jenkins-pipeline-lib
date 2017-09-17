@@ -8,6 +8,7 @@ def call(String projectName, String buildId, String fileFilter) {
         ])
     // THis needs a Pipeline utility plugin: https://github.com/jenkinsci/pipeline-utility-steps-plugin
     files = findFiles(glob: fileFilter)*.path.join(" ")
+    renameFiles(projectName, files)
 }
 
 def renameFiles(prefix, files) {
