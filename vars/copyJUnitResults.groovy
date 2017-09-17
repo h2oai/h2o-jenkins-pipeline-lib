@@ -1,5 +1,3 @@
-import java.io.File
-
 def call(String projectName, String buildId, String fileFilter) {
     step([$class: 'CopyArtifact',
         projectName: projectName,
@@ -8,14 +6,13 @@ def call(String projectName, String buildId, String fileFilter) {
         ])
     // THis needs a Pipeline utility plugin: https://github.com/jenkinsci/pipeline-utility-steps-plugin
     files = findFiles(glob: fileFilter)*.path.join(" ")
+    setJUnitPrefix(projectName.toUpperCase().replaceAll("/",""), files)
 }
 
-def renameFiles(prefix, files) {
-    sh """
-    for f in ${files}; do
-        fname=`basename \$f`
-        dir=`dirname \$f`
-        nfname="\$dir/${prefix}-\$fname"
-        mv "\$f" "\$nfname"
-    """
+def setJUnitPrefix(prefix, files) {
+  // add prefix to qualified classname
+  //sh "shopt -s globstar && sed -i \"s/\\(<testcase .*classname=['\\\"]\\)\\([a-z]\\)/\\1${prefix.toUpperCase()}.\\2/g\" $files"
+  sh """
+     sed -i -e "s/\\(<testcase classname=['\\\"]\\)\\(.\\)/\\1${prefix}.\\2/g" $files
+     """
 }
