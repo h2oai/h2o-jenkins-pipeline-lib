@@ -18,5 +18,6 @@ def renameFiles(prefix, files) {
         dir=`dirname \$f`
         nfname="\$dir/${prefix}-\$fname"
         mv "\$f" "\$nfname"
+    done
     """
 }
