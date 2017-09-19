@@ -74,7 +74,7 @@ class BuildInfo implements Serializable {
                |name='${name}'
                |version='${version}'
                |isRelease=${isRelease}
-               |gitSha=${getGitSha}
+               |gitSha=${gitSha}
                """.stripMargin('|')
     }
 }
