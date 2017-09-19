@@ -70,11 +70,12 @@ class BuildInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "BuildInfo{" +
-               "name='" + name + '\'' +
-               ", version='" + version + '\'' +
-               ", isRelease=" + isRelease +
-               '}';
+        return """\
+               |name='${name}'
+               |version='${version}'
+               |isRelease=${isRelease}
+               |gitSha=${getGitSha}
+               """.stripMargin('|')
     }
 }
 
