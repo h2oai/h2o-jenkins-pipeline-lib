@@ -39,6 +39,10 @@ def gitHeadSha() {
     return getShell().pipe("git rev-parse HEAD").trim()
 }
 
+def gitVersion() {
+    return getShell().pipe("git --version").trim()
+}
+
 def uname() {
     return getShell().pipe("uname -a").trim()
 }
@@ -104,6 +108,7 @@ def getPyBuildInfo(boolean isRelease, String baseVersion) {
 def buildInfo() {
     def tableUtils = new ai.h2o.ci.TableUtils()
     def data = [
+            "Git Version"     : gitVersion(),
             "Git Describe"    : gitDescribe(),
             "Git Describe All": gitDescribeAll(),
             "Git Branch"      : gitBranch(),
