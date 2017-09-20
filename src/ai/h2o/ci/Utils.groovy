@@ -88,7 +88,11 @@ def setCurrentBuildName(String name) {
 }
 
 def appendBuildDescription(String desc) {
-    currentBuild.description += desc
+    if (currentBuild.description != null) {
+        currentBuild.description += desc
+    } else {
+        currentBuild.describe = desc
+    }
 }
 
 def getPyBuildInfo(boolean isRelease, String baseVersion) {
