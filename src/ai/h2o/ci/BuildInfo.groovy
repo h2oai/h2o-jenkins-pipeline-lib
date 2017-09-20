@@ -70,8 +70,7 @@ class BuildInfo implements Serializable {
 
     @Override
     public String toString() {
-        return """\
-               |name='${name}'
+        return """|name='${name}'
                |version='${version}'
                |isRelease=${isRelease}
                |gitSha=${gitSha}
