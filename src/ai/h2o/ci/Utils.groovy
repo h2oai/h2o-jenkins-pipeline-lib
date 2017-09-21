@@ -91,7 +91,7 @@ def appendBuildDescription(String desc) {
     if (currentBuild.description != null) {
         currentBuild.description += desc
     } else {
-        currentBuild.describe = desc
+        currentBuild.description = desc
     }
 }
 
