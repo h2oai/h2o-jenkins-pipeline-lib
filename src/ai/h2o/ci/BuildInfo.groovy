@@ -12,22 +12,25 @@ class BuildInfo implements Serializable {
 
     final private ArrayList<String> changedFiles
 
-    final private ArrayList<String> authors
+    final private ArrayList<String> authorEmails
+
+    final private ArrayList<String> authorNames
 
     private String version
 
     public static BuildInfo create(script, String name, boolean isRelease) {
         def gitUtils = new GitUtils(script)
-        def bi = new BuildInfo(name, isRelease, gitUtils.gitHeadSha(), gitUtils.changeSet(), gitUtils.changeAuthors())
+        def bi = new BuildInfo(name, isRelease, gitUtils.gitHeadSha(), gitUtils.changeSet(), gitUtils.changeAuthors(), gitUtils.changeAuthorNames())
         return bi
     }
 
-    private BuildInfo(String name, boolean isRelease, String gitSha, ArrayList<String> changedFiles, ArrayList<String> authors) {
+    private BuildInfo(String name, boolean isRelease, String gitSha, ArrayList<String> changedFiles, ArrayList<String> authorEmails, authorNames) {
         this.name = name
         this.isRelease = isRelease
         this.gitSha = gitSha
         this.changedFiles = changedFiles
-        this.authors = authors
+        this.authorEmails = authorEmails
+        this.authorNames = authorNames
     }
 
     def getMajorVersion() {
@@ -58,9 +61,14 @@ class BuildInfo implements Serializable {
         return changedFiles
     }
 
-    def getAuthors() {
-        return authors
+    def getAuthorEmails() {
+        return authorEmails
     }
+
+    def getAuthorNames() {
+        return authorNames
+    }
+
 
     /**
      * Version is given as X.Y.Z

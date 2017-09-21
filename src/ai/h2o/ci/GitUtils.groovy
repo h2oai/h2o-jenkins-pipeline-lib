@@ -62,8 +62,13 @@ class GitUtils implements Serializable {
 
      */
     def changeAuthors() {
-        return script.currentBuild.changeSets*.items*.committerEmail.flatten()
+        return script.currentBuild.changeSets*.items*.committerEmail.unique().flatten()
     }
+
+    def changeAuthorNames() {
+        return script.currentBuild.changeSets*.items*.committer.unique().flatten()
+    }
+
 
     /**
      * Get author emails for any job.
