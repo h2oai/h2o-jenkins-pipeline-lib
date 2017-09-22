@@ -32,6 +32,6 @@ def call(String buildStatus = 'STARTED') {
       to: 'michal@h2o.ai',
       subject: subject,
       body: '''${JELLY_SCRIPT, template="html_gmail"}''',
-      recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider'], [$class: 'CulpritsRecipientProvider']]
+      recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
     )
 }
