@@ -1,6 +1,4 @@
-import ai.h2o.ci.BuildInfo
-
-def abortPreviousRunningBuilds() {
+def call() {
   def hi = Hudson.instance
   def pname = env.JOB_NAME.split('/')[0]
 
