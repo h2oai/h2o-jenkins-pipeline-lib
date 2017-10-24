@@ -30,13 +30,13 @@ def call(body) {
     withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: config.credentialsId]]) {
         sh """
         echo "Uploading artifacts: ${config}"
-        s3cmd --no-progres --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.${config.buildVersion}/"
+        s3cmd --recursive --no-progres --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.${config.buildVersion}/"
         """
         echo green("S3UP: ${config.localArtifact} --> ${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.${config.buildVersion}/")
 
         if (config.updateLatest) {
             sh """
-            s3cmd --no-progress --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.latest/"
+            s3cmd --recursive --no-progress --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.latest/"
             """
         }
     }
