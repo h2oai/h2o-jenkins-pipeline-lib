@@ -10,6 +10,8 @@ class BuildInfo implements Serializable {
 
     final private boolean isPr
 
+    final private boolean triggeredByTimer
+
     final private String gitSha
 
     final private ArrayList<String> changedFiles
@@ -28,18 +30,20 @@ class BuildInfo implements Serializable {
 
     static BuildInfo create(script, String name, boolean isRelease) {
         def gitUtils = new GitUtils(script)
+        def final triggeredByTimer = script.currentBuild.rawBuild.getAction(CauseAction.class).findCause(hudson.triggers.TimerTrigger.TimerTriggerCause.class) != null
         def bi = new BuildInfo(name, isRelease, gitUtils.isPrBranch(),
                                gitUtils.gitHeadSha(), gitUtils.changeSet(),
-                               gitUtils.changeAuthors(), gitUtils.changeAuthorNames())
+                               gitUtils.changeAuthors(), gitUtils.changeAuthorNames(), triggeredByTimer)
         return bi
     }
 
     private BuildInfo(String name, boolean isRelease, boolean isPr,
                       String gitSha, ArrayList<String> changedFiles,
-                      ArrayList<String> authorEmails, authorNames) {
+                      ArrayList<String> authorEmails, authorNames, boolean triggeredByTimer) {
         this.name = name
         this.isRelease = isRelease
         this.isPr = isPr
+        this.triggeredByTimer = triggeredByTimer
         this.gitSha = gitSha
         this.changedFiles = changedFiles
         this.authorEmails = authorEmails
@@ -84,6 +88,10 @@ class BuildInfo implements Serializable {
 
     def getAuthorNames() {
         return authorNames
+    }
+
+    def triggeredByTimer() {
+      return triggeredByTimer
     }
 
 
