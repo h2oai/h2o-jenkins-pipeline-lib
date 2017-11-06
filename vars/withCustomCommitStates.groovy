@@ -1,4 +1,6 @@
-def call(final TreeMap scmEnv, final String credentialsId, final String context, block) {
+import com.cloudbees.groovy.cps.NonCPS
+
+def call(scm, final String credentialsId, final String context, block) {
 
   def STATE_NAME_PENDING = 'pending'
   def STATE_NAME_SUCCESS = 'success'
@@ -18,28 +20,35 @@ def call(final TreeMap scmEnv, final String credentialsId, final String context,
 
   def currentState = FAILURE_STATE
   try {
-    setCommitState(scmEnv, credentialsId, PENDING_STATE['state'], PENDING_STATE['description'], context)
+    setCommitState(scm, credentialsId, PENDING_STATE['state'], PENDING_STATE['description'], context)
     block()
     currentState = SUCCESS_STATE
   } finally {
-    setCommitState(scmEnv, credentialsId, currentState['state'], currentState['description'], context)
+    setCommitState(scm, credentialsId, currentState['state'], currentState['description'], context)
   }
 }
 
-def setCommitState(final TreeMap scmEnv, final String credentialsId, final String state, final String description, final String context) {
-  withCredentials([string(credentialsId: credentialsId, variable: 'GITHUB_TOKEN')]) {
+def setCommitState(scm, final String credentialsId, final String state, final String description, final String context) {
+  node('master') {
+    withCredentials([string(credentialsId: credentialsId, variable: 'GITHUB_TOKEN')]) {
 
-    def repoName = scm.getUserRemoteConfigs().get(0).getUrl().tokenize('/')[3].split("\\.")[0]
-    def commitSHA = scmEnv['GIT_COMMIT']
+      def repoName = scm.getUserRemoteConfigs().get(0).getUrl().tokenize('/')[3].split("\\.")[0]
 
-    sh """
-      curl -XPOST -H "Authorization: token \${GITHUB_TOKEN}" https://api.github.com/repos/h2oai/${repoName}/statuses/${commitSHA} -d "{
-        \\"state\\": \\"${state}\\",
-        \\"target_url\\": \\"${BUILD_URL}\\",
-        \\"description\\": \\"${description}\\",
-        \\"context\\": \\"${context}\\"
-      }"
-    """
+      def relevantHEADRef = scm.getUserRemoteConfigs().get(0).getRefspec().split(':')[0].replaceAll('\\+', '')
+      def commitSHAresponse = sh(script: "curl -XGET -v -H \"Authorization: token ${GITHUB_TOKEN}\" https://api.github.com/repos/h2oai/${repoName}/git/${relevantHEADRef}", returnStdout: true).trim()
+      def commitSHA = new groovy.json.JsonSlurper().parseText(commitSHAresponse).object.sha
+
+      def params = """
+        {
+          \\"state\\": \\"${state}\\",
+          \\"target_url\\": \\"${BUILD_URL}\\",
+          \\"description\\": \\"${description}\\",
+          \\"context\\": \\"${context}\\"
+        }
+      """
+      def url = "https://api.github.com/repos/h2oai/${repoName}/statuses/${commitSHA}"
+      sh "curl -XPOST -v -H \"Authorization: token ${GITHUB_TOKEN}\" ${url} -d \"${params}\""
+    }
   }
 }
 
