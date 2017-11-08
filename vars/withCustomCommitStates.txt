@@ -1,0 +1,22 @@
+# Pipeline withCustomCommitStates step #
+This step allows a pipeline job to set custom GitHub commit states. The states are being updated in following manner:
+
+1. build **pending** - set before starting the build
+2. based on the result, there are two possibilities
+    1. build has been **successful** - set after the build finishes without errors
+    2. build has **failed** - set after the build finishes with errors or if the build does not finish at all (for example errors in Jenkinsfile, connectivity issues, etc.)
+
+## Example ##
+```groovy
+  withCustomCommitStates(scm, <CREDENTIALS_ID>, <CONTEXT>) {
+    node {
+      ...
+    }
+  }
+```
+All arguments are **mandatory**.
+
+|Argument          | Class  | Notes                                                                                            |
+| ---              | ---    | ---                                                                                              |
+| `CREDENTIALS_ID` | String | OAuth token used to set the commit state, credentials are expected to by of type **Secret Text** |
+| `CONTEXT`        | String | The notifications context, GH uses the context to differentiate notifications                    |
