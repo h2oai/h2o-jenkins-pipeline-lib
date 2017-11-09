@@ -18,7 +18,13 @@ class BuildInfo implements Serializable {
 
     private String version
 
-    public static BuildInfo create(script, String name, boolean isRelease) {
+    static BuildInfo create(script, String name, VersionSchema vs) {
+        def bi = create(script, name, vs.isRelease())
+        bi.setVersion(vs.getVersion())
+        return bi
+    }
+
+    static BuildInfo create(script, String name, boolean isRelease) {
         def gitUtils = new GitUtils(script)
         def bi = new BuildInfo(name, isRelease, gitUtils.gitHeadSha(), gitUtils.changeSet(), gitUtils.changeAuthors(), gitUtils.changeAuthorNames())
         return bi
