@@ -18,7 +18,8 @@ def call(body) {
         remoteArtifactBucket : "s3://artifacts.h2o.ai/releases", 
         keepPrivate          : true, 
         credentialsId        : "awsArtifactsUploader",
-        updateLatest         : true]
+        updateLatest         : true,
+        isRelease            : true,]
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
     body()
@@ -26,6 +27,9 @@ def call(body) {
     // FIXME: check remoteArtifactBucket for suffix `/` and remove it
 
     def aclPrivate = config.keepPrivate ? "--acl-private" : ""
+    if (!config.isRelease && config.remoteArtifactBucket == "s3://artifacts.h2o.ai/releases") {
+        config.remoteArtifactBucket == "s3://artifacts.h2o.ai/snapshots"
+    }
 
     withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: config.credentialsId]]) {
         sh """
