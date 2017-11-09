@@ -23,7 +23,7 @@ class SimpleVersionSchema implements VersionSchema {
     if (isRelease) {
       version = versionString
     } else {
-      version = versionString.replace("SNAPSHOT", "${script.env.BRANCH_NAME.toLowerCase()}.${script.env.BUILD_ID}")
+      version = versionString.replace("SNAPSHOT", "${script.env.BRANCH_NAME.toLowerCase().replace('-', '_')}.${script.env.BUILD_ID}")
     }
   }
 
