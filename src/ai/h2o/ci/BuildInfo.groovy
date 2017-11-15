@@ -47,6 +47,10 @@ class BuildInfo implements Serializable {
         return fragmentVersion(version)[1]
     }
 
+    def getNonLocalVersion() {
+        return nonLocalVersion(version)
+    }
+
     def setVersion(String version) {
         this.version = version
     }
@@ -87,6 +91,19 @@ class BuildInfo implements Serializable {
         def versionRgx = /($xyPartRgx).($zPartRgx)/
         def matcher = (version =~ versionRgx)
         return new Tuple(matcher[0][1], matcher[0][2])
+    }
+
+    /**
+     * Version is given as X.Y.Z+local_version
+     * It returns the X.Y.Z part
+     */
+    @NonCPS
+    def nonLocalVersion(String version) {
+        def xyzPartRgx = /\d+.\d+.\d+/
+        def localPartRgx = /*/
+        def versionRgx = /($xyzPartRgx)+($localPartRgx)/
+        def matcher = (version =~ versionRgx)
+        return matcher[0][1]
     }
 
     @Override
