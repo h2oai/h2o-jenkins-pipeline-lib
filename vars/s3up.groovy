@@ -26,22 +26,25 @@ def call(body) {
 
     // FIXME: check remoteArtifactBucket for suffix `/` and remove it
 
-    def aclPrivate = config.keepPrivate ? "--acl-private" : ""
+    def aclPrivate = config.keepPrivate ? "--acl-private" : "--acl-public"
     if (!config.isRelease && config.remoteArtifactBucket == "s3://artifacts.h2o.ai/releases") {
-        config.remoteArtifactBucket == "s3://artifacts.h2o.ai/snapshots"
+        config.remoteArtifactBucket = "s3://artifacts.h2o.ai/snapshots"
     }
 
+    def targetObject = "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.${config.buildVersion}/"
     withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: config.credentialsId]]) {
         sh """
         echo "Uploading artifacts: ${config}"
-        s3cmd --recursive --no-progres --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.${config.buildVersion}/"
+        s3cmd --recursive --no-progres --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} ${targetObject}
         """
-        echo green("S3UP: ${config.localArtifact} --> ${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.${config.buildVersion}/")
+        echo green("S3UP: ${config.localArtifact} --> ${targetObject}")
 
         if (config.updateLatest) {
             sh """
-            s3cmd --recursive --no-progress --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.latest/"
+            s3cmd --recursive --no-progress --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/latest/"
             """
         }
     }
+    return targetObject
 }
+
