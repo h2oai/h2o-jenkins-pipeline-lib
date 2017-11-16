@@ -31,9 +31,8 @@ def call(body) {
         config.remoteArtifactBucket == "s3://artifacts.h2o.ai/snapshots"
     }
 
+    def targetObject = "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.${config.buildVersion}/"
     withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: config.credentialsId]]) {
-        def targetObject = "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.${config.buildVersion}/"
-
         sh """
         echo "Uploading artifacts: ${config}"
         s3cmd --recursive --no-progres --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} ${targetObject}
