@@ -26,7 +26,7 @@ def call(body) {
 
     // FIXME: check remoteArtifactBucket for suffix `/` and remove it
 
-    def aclPrivate = config.keepPrivate ? "--acl-private" : ""
+    def aclPrivate = config.keepPrivate ? "--acl-private" : "--acl-public"
     if (!config.isRelease && config.remoteArtifactBucket == "s3://artifacts.h2o.ai/releases") {
         config.remoteArtifactBucket = "s3://artifacts.h2o.ai/snapshots"
     }
