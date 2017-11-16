@@ -28,7 +28,7 @@ def call(body) {
 
     def aclPrivate = config.keepPrivate ? "--acl-private" : ""
     if (!config.isRelease && config.remoteArtifactBucket == "s3://artifacts.h2o.ai/releases") {
-        config.remoteArtifactBucket == "s3://artifacts.h2o.ai/snapshots"
+        config.remoteArtifactBucket = "s3://artifacts.h2o.ai/snapshots"
     }
 
     def targetObject = "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.${config.buildVersion}/"
