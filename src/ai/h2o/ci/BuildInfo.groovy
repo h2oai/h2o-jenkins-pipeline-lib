@@ -28,8 +28,7 @@ class BuildInfo implements Serializable {
 
     static BuildInfo create(script, String name, boolean isRelease) {
         def gitUtils = new GitUtils(script)
-        def isPr = isPrBranch(script)
-        def bi = new BuildInfo(name, isRelease, isPr,
+        def bi = new BuildInfo(name, isRelease, gitUtils.isPrBranch(),
                                gitUtils.gitHeadSha(), gitUtils.changeSet(),
                                gitUtils.changeAuthors(), gitUtils.changeAuthorNames())
         return bi
@@ -108,12 +107,6 @@ class BuildInfo implements Serializable {
                |isRelease=${isRelease}
                |gitSha=${gitSha}
                """.stripMargin('|')
-    }
-
-    @NonCPS private def isPrBranch(script) {
-        return (script.env.CHANGE_BRANCH != null && script.env.CHANGE_BRANCH != '') ||
-                script.env.BRANCH_NAME.startsWith("PR-")
-
     }
 }
 
