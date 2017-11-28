@@ -40,6 +40,11 @@ class GitUtils implements Serializable {
         return pipe("git rev-parse --is-inside-work-tree || echo false").trim() == "true"
     }
 
+    def isPrBranch() {
+        return (script.env.CHANGE_BRANCH != null && script.env.CHANGE_BRANCH != '') ||
+               script.env.BRANCH_NAME.startsWith("PR-")
+    }
+
     /**
      * Get a change files as they are reported by Jenkins
      * @return list of modified files
