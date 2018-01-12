@@ -1,16 +1,16 @@
 package ai.h2o.ci
 
-class Emailer implements Serializable{
+class Emailer implements Serializable {
 
     private static final String LOGO_URL = 'https://pbs.twimg.com/profile_images/501572396810129408/DTgFCs-n.png'
     private static final BACKGROUND_COLORS = [
-            'success': '#84e03e',
-            'failure': '#f8433c',
-            'warning': '#f49242'
+            (BuildResult.SUCCESS): '#84e03e',
+            (BuildResult.FAILURE): '#f8433c',
+            (BuildResult.WARNING): '#f49242'
     ]
-    private static final String DEFAULT_BACKGROUND_COLOR = BACKGROUND_COLORS['failure']
+    private static final String DEFAULT_BACKGROUND_COLOR = BACKGROUND_COLORS[BuildResult.FAILURE]
 
-    static void sendEmail(final context, final String result, final String content, final List<String> recipients) {
+    static void sendEmail(final context, final BuildResult result, final String content, final List<String> recipients) {
         context.echo "Sending email to ${recipients}"
 
         final String headerDiv = """
@@ -35,7 +35,7 @@ class Emailer implements Serializable{
         """
 
         context.echo emailBody
-        context.emailext (
+        context.emailext(
                 subject: "${context.env.JOB_NAME.split('/')[0]}: ${result}",
                 body: emailBody,
                 to: recipients.join(' ')
