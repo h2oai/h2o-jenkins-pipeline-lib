@@ -12,6 +12,7 @@ def call(String projectName, String buildId, String fileFilter, boolean rename) 
         ])
     // THis needs a Pipeline utility plugin: https://github.com/jenkinsci/pipeline-utility-steps-plugin
     files = findFiles(glob: fileFilter)*.path.join(" ")
+    echo "Copy of ${files} from ${projectName}:${buildId} (rename: ${rename})"
     if (rename) {
         renameFiles(projectName.toUpperCase().replaceAll("/",""), files)
     }
