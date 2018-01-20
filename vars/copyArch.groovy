@@ -1,6 +1,10 @@
 import java.io.File
 
 def call(String projectName, String buildId, String fileFilter) {
+    call(projectName, buildId, true)
+}
+
+def call(String projectName, String buildId, String fileFilter, boolean rename) {
     step([$class: 'CopyArtifact',
         projectName: projectName,
         filter: fileFilter,
@@ -8,7 +12,9 @@ def call(String projectName, String buildId, String fileFilter) {
         ])
     // THis needs a Pipeline utility plugin: https://github.com/jenkinsci/pipeline-utility-steps-plugin
     files = findFiles(glob: fileFilter)*.path.join(" ")
-    renameFiles(projectName.toUpperCase().replaceAll("/",""), files)
+    if (rename) {
+        renameFiles(projectName.toUpperCase().replaceAll("/",""), files)
+    }
 }
 
 def renameFiles(prefix, files) {
