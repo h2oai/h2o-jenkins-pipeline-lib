@@ -1,7 +1,7 @@
 import java.io.File
 
 def call(String projectName, String buildId, String fileFilter) {
-    call(projectName, buildId, true)
+    call(projectName, buildId, fileFilter, true)
 }
 
 def call(String projectName, String buildId, String fileFilter, boolean rename) {
