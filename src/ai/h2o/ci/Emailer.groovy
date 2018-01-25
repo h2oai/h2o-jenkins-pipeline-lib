@@ -19,7 +19,7 @@ class Emailer implements Serializable {
                     <div style="display: table-cell;vertical-align: middle;padding-left: 1em">
                         <div>
                             <img width="80" height="80" alt="H2O.ai" title="H2O.ai" style="vertical-align:middle;" src="${LOGO_URL}"/>
-                            <a style="vertical-align:middle;color: white;font-size: 20pt;font-weight: bolder;margin-left: 20px;" href="${context.currentBuild.rawBuild.getAbsoluteUrl()}">${URLDecoder.decode(context.env.JOB_NAME, "UTF-8")} #${context.currentBuild.number} - ${result.toUpperCase()}</a>
+                            <a style="vertical-align:middle;color: white;font-size: 20pt;font-weight: bolder;margin-left: 20px;" href="${context.currentBuild.rawBuild.getAbsoluteUrl()}">${URLDecoder.decode(context.env.JOB_NAME, "UTF-8")} #${context.currentBuild.number} - ${result.getText()}</a>
                         </div>
                     </div>
                 </div>
@@ -30,7 +30,9 @@ class Emailer implements Serializable {
         final String emailBody = """
             <div>
                 ${headerDiv}
-                ${content}
+                <div style="border: 1px solid gray; padding: 1em;">
+                    ${content}
+                </div>
             </div>
         """
 
