@@ -95,6 +95,10 @@ def appendBuildDescription(String desc) {
     }
 }
 
+def appendBuildDescStatus(String name, boolean status) {
+    appendBuildDescription("${name} ${status ? '\u2713' : '\u2715'} ")
+}
+
 def getPyBuildInfo(boolean isRelease, String baseVersion) {
     def suffix = isRelease ? "" : "+${getCiVersionSuffix()}" // Python dev version requires delimiter '+'
     def baseVersionEntry = baseVersion != null ? "base_version=\"${baseVersion}\"" : ""
