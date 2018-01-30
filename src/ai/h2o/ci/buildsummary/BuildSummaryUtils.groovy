@@ -1,23 +1,14 @@
 package ai.h2o.ci.buildsummary
 
-import ai.h2o.ci.BuildResult
-
 class BuildSummaryUtils {
 
-
-    static String stageResultToImageName(final BuildResult result) {
-        switch (result) {
-            case BuildResult.PENDING:
-                return 'nobuilt_anime.gif'
-            case BuildResult.FAILURE:
-                return 'red.gif'
-            case BuildResult.SUCCESS:
-                return 'green.gif'
-            default:
-                return 'red.gif'
-        }
-    }
-
+     /**
+     * Returns absolute URL for the given image of given size
+     * @param context
+     * @param imageName name of the image
+     * @param imageSize size of the image
+     * @return
+     */
     static String imageLink(final context, final String imageName, final ImageSize imageSize = ImageSize.MEDIUM) {
         "${context.env.HUDSON_URL}${Jenkins.RESOURCE_PATH}/images/${imageSize.getSizeString()}/${imageName}"
     }

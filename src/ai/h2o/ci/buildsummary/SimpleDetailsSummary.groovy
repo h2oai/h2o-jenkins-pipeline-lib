@@ -2,6 +2,9 @@ package ai.h2o.ci.buildsummary
 
 import com.cloudbees.groovy.cps.NonCPS
 
+/**
+ * Custom implementation of the {@link DetailsSummary}. The {@link SimpleDetailsSummary} contains commit author, branch name, sha and message of the commit
+ */
 class SimpleDetailsSummary extends DetailsSummary implements Serializable {
     private static final String SHA_NAME = 'SHA'
     private static final String BRANCH_NAME = 'Branch'

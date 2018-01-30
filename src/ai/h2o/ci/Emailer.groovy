@@ -1,5 +1,9 @@
 package ai.h2o.ci
 
+/**
+ * Class responsible for sending emails. This class adds a default email header div to the specified HTML content
+ * before sending it to the recipients.
+ */
 class Emailer implements Serializable {
 
     private static final String LOGO_URL = 'https://pbs.twimg.com/profile_images/501572396810129408/DTgFCs-n.png'
@@ -10,7 +14,23 @@ class Emailer implements Serializable {
     ]
     private static final String DEFAULT_BACKGROUND_COLOR = BACKGROUND_COLORS[BuildResult.FAILURE]
 
-    static void sendEmail(final context, final BuildResult result, final String content, final List<String> recipients) {
+    /**
+     * Adds the default email header to the specified content and sends this to given recipients. Example usage:
+     * <pre>
+     *     <code>
+     *          Emailer.sendEmail(BuildResult.SUCCESS, buildSummary.get().toEmail(this), ['recipient@h2o.ai', 'recipient2@h2o.ai'])
+     *      </code>
+     * </pre>
+     * @param context
+     * @param result result of the build/stage
+     * @param content HTML content of the email
+     * @param recipients list of email addresses
+     * @param verbose if true, then echo the email before sending; false by default
+     */
+    static void sendEmail(
+            final context,
+            final BuildResult result,
+            final String content, final List<String> recipients, final boolean verbose = false) {
         context.echo "Sending email to ${recipients}"
 
         final String headerDiv = """
@@ -36,7 +56,9 @@ class Emailer implements Serializable {
             </div>
         """
 
-        context.echo emailBody
+        if (verbose) {
+            context.echo emailBody
+        }
         context.emailext(
                 subject: "${context.env.JOB_NAME.split('/')[0]}: ${result}",
                 body: emailBody,

@@ -13,12 +13,16 @@ def getStagesSummary() {
     return _buildSummary.getStagesSummary()
 }
 
-def stage(final String name, final String stageDir, final Closure body) {
-    _buildSummary.getStagesSummary().stage(this, name, stageDir, body)
+def stageWithSummary(final String name, final String stageDir, final Closure body) {
+    stage(name) {
+        _buildSummary.getStagesSummary().stage(this, name, stageDir, body)
+    }
 }
 
-def stage(final String name, final Closure body) {
-    _buildSummary.getStagesSummary().stage(this, name, '', body)
+def stageWithSummary(final String name, final Closure body) {
+    stage(name) {
+        _buildSummary.getStagesSummary().stage(this, name, '', body)
+    }
 }
 
 def refreshStage(final String name) {
