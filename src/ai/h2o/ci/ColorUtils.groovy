@@ -32,4 +32,15 @@ static def cyan(s) {
     "\033[1;36m${s}\033[0m"
 }
 
+@NonCPS
+static def lightGrey(s) {
+    "\033[1;37m${s}\033[0m"
+}
+
+@NonCPS
+static def darkGrey(s) {
+    "\033[1;90m${s}\033[0m"
+}
+
+
 return this
