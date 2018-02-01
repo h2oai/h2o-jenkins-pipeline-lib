@@ -1,26 +1,17 @@
 package ai.h2o.ci
 
 import com.cloudbees.groovy.cps.NonCPS
-@Grab('de.vandermeer:asciitable:0.3.2')
-import de.vandermeer.asciitable.AsciiTable
-import de.vandermeer.asciitable.*
 
 @NonCPS
-def table2cols(data, colSizes = [:], int leftMargin = 4, int maxWidth = 80) {
-    def utils = new Utils()
-    def at = new AsciiTable()
-    at.addRule()
+def table2cols(data, colSizes = [:], decorators = [:], int leftMargin = 4, int maxWidth = 80) {
+    def out = new StringBuffer()
+    def nop = { e -> e }
     data.each { k, v ->
-      at.addRow(k, v)
+        out << decorators.getOrDefault(0, nop)(k.padLeft(leftMargin).padRight(colSizes.getOrDefault(0, 20)))
+        out << decorators.getOrDefault(1, nop)(v)
+        out << '\n'
     }
-    at.addRule()
-    at.getContext().setFrameLeftMargin(leftMargin)
-    // Generate constraints
-    int[] colWidths = [-1, -1] as int[]
-    colSizes.each {int idx, int width -> colWidths[idx] = width}
-    def cwc = new CWC_LongestWordMin(colWidths)
-    at.getRenderer().setCWC(cwc)
-    at.render(maxWidth)
+    return out.toString()
 }
 
 return this

@@ -129,7 +129,7 @@ def buildInfo() {
             "Hostname"        : hostname()
     ]
 
-    def table = tableUtils.table2cols(data, [ 0 : 20])
+    def table = tableUtils.table2cols(data, [ 0 : 20], [0:ai.h2o.ci.ColorUtils.&darkGrey])
     return table
 }
 
@@ -137,7 +137,7 @@ def envInfo() {
     def tableUtils = new ai.h2o.ci.TableUtils()
     def data = getShellEnv()
 
-    def table = tableUtils.table2cols(data, [ 0 : 20])
+    def table = tableUtils.table2cols(data, [ 0 : 20], [0:ai.h2o.ci.ColorUtils.&darkGrey])
 
     return table
 }
