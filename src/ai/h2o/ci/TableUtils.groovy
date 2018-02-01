@@ -7,7 +7,7 @@ def table2cols(data, colSizes = [:], decorators = [:], int leftMargin = 4, int m
     def out = new StringBuffer()
     def nop = { e -> e }
     data.each { k, v ->
-        out << decorators.getOrDefault(0, nop)(k.padRight(colSizes.getOrDefault(0, 20)))
+        out << decorators.getOrDefault(0, nop)(k.padLeft(leftMargin).padRight(colSizes.getOrDefault(0, 20)))
         out << decorators.getOrDefault(1, nop)(v)
         out << '\n'
     }
