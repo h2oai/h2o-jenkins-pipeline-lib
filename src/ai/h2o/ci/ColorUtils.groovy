@@ -42,5 +42,11 @@ static def darkGrey(s) {
     "\033[1;90m${s}\033[0m"
 }
 
+@NonCPS
+static def bgLightGrey(s) {
+    "\033[47m${s}\033[0m"
+}
+
+
 
 return this
