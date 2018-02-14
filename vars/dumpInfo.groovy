@@ -1,7 +1,7 @@
 import static ai.h2o.ci.Utils.banner
 import static ai.h2o.ci.ColorUtils.*
 
-def call(String title = 'Info') {
+def call(String title = "${STAGE_NAME}") {
     def utils = new ai.h2o.ci.Utils()
     def buildInfoTbl = utils.buildInfo()
     def envInfoTbl = utils.envInfo()
