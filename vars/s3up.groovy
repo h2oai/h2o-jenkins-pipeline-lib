@@ -18,7 +18,7 @@ def call(body) {
         remoteArtifactBucket : "s3://artifacts.h2o.ai/releases", 
         keepPrivate          : true, 
         credentialsId        : "awsArtifactsUploader",
-        updateLatest         : true,
+        updateLatest         : false,
         isRelease            : true,]
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
@@ -31,7 +31,9 @@ def call(body) {
         config.remoteArtifactBucket = "s3://artifacts.h2o.ai/snapshots"
     }
 
-    def targetObject = "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${config.majorVersion}.${config.buildVersion}/"
+    def artifactVersion = config.containsKey('version') ? config.version : "${config.majorVersion}.${config.buildVersion}"
+
+    def targetObject = "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${artifactVersion}/"
     withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: config.credentialsId]]) {
         sh """
         echo "Uploading artifacts: ${config}"
