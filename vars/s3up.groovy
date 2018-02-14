@@ -18,7 +18,7 @@ def call(body) {
         remoteArtifactBucket : "s3://artifacts.h2o.ai/releases", 
         keepPrivate          : true, 
         credentialsId        : "awsArtifactsUploader",
-        updateLatest         : true,
+        updateLatest         : false,
         isRelease            : true,]
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
