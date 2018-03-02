@@ -19,7 +19,6 @@ def call(body) {
         remoteArtifactBucket : "s3://artifacts.h2o.ai/releases", 
         keepPrivate          : true, 
         credentialsId        : "awsArtifactsUploader",
-        updateLatest         : false,
         isRelease            : true,
         platform: null
     ]
@@ -49,15 +48,6 @@ def call(body) {
         """
         echo green("S3UP: ${config.localArtifact} --> ${targetObject}")
 
-        if (config.updateLatest) {
-            def latestObject = "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/latest/"
-            if (config.platform != null && config.platform != '') {
-                latestObject += config.platform + '/'
-            }
-            sh """
-            s3cmd --recursive --no-progress --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} ${latestObject}
-            """
-        }
     }
     return targetObject
 }
