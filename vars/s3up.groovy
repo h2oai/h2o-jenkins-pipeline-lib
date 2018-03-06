@@ -4,12 +4,14 @@ import static ai.h2o.ci.ColorUtils.*
 
 /**
  * s3up 
- *  - groupId:String 
+ *  - groupId: String
  *  - artifactId: String
+ *  - version: String
  *  - majorVersion: String
  *  - buildVersion: String
- *  - localArtifact:String 
- *  - remoteArtifactBucket:String
+ *  - platform: String
+ *  - localArtifact: String
+ *  - remoteArtifactBucket: String
  *  - keepPrivate:Boolean = true
  */
 def call(body) {
@@ -18,11 +20,14 @@ def call(body) {
         remoteArtifactBucket : "s3://artifacts.h2o.ai/releases", 
         keepPrivate          : true, 
         credentialsId        : "awsArtifactsUploader",
-        updateLatest         : false,
-        isRelease            : true,]
+        isRelease            : true,
+        platform: null
+    ]
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
     body()
+
+    echo "${config}"
 
     // FIXME: check remoteArtifactBucket for suffix `/` and remove it
 
@@ -34,6 +39,9 @@ def call(body) {
     def artifactVersion = config.containsKey('version') ? config.version : "${config.majorVersion}.${config.buildVersion}"
 
     def targetObject = "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/${artifactVersion}/"
+    if (config.platform != null && config.platform != '') {
+        targetObject += config.platform + '/'
+    }
     withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: config.credentialsId]]) {
         sh """
         echo "Uploading artifacts: ${config}"
@@ -41,11 +49,6 @@ def call(body) {
         """
         echo green("S3UP: ${config.localArtifact} --> ${targetObject}")
 
-        if (config.updateLatest) {
-            sh """
-            s3cmd --recursive --no-progress --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} "${config.remoteArtifactBucket}/${config.groupId}/${config.artifactId}/latest/"
-            """
-        }
     }
     return targetObject
 }
