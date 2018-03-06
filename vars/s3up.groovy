@@ -6,6 +6,7 @@ import static ai.h2o.ci.ColorUtils.*
  * s3up 
  *  - groupId: String
  *  - artifactId: String
+ *  - version: String
  *  - majorVersion: String
  *  - buildVersion: String
  *  - platform: String
