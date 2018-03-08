@@ -2,7 +2,8 @@ def call(String projectName, String buildId, String fileFilter) {
     step([$class: 'CopyArtifact',
         projectName: projectName,
         filter: fileFilter,
-        selector: [$class: 'SpecificBuildSelector', buildNumber: buildId]
+        selector: [$class: 'SpecificBuildSelector', buildNumber: buildId],
+        optional: true
         ])
     // THis needs a Pipeline utility plugin: https://github.com/jenkinsci/pipeline-utility-steps-plugin
     files = findFiles(glob: fileFilter)*.path.join(" ")
