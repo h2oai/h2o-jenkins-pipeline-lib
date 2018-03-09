@@ -6,8 +6,10 @@ def call(String projectName, String buildId, String fileFilter) {
         optional: true
         ])
     // THis needs a Pipeline utility plugin: https://github.com/jenkinsci/pipeline-utility-steps-plugin
-    files = findFiles(glob: fileFilter)*.path.join(" ")
-    setJUnitPrefix(projectName.toUpperCase().replaceFirst("/", "").replaceAll("/","_"), files)
+    files = findFiles(glob: fileFilter)
+    if (files.length > 0) {
+        setJUnitPrefix(projectName.toUpperCase().replaceFirst("/", "").replaceAll("/","_"), files*.path.join(" "))
+    }
 }
 
 def setJUnitPrefix(prefix, files) {
