@@ -165,4 +165,11 @@ static def banner(String text, int width = 80, String pattern = "*") {
     return out.toString()
 }
 
+@NonCPS
+static def ex2str(Exception e) {
+    StringWriter sw = new StringWriter()
+    e.printStackTrace(new PrintWriter(sw))
+    return e.toString()
+}
+
 return this
