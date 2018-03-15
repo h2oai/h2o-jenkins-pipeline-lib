@@ -21,7 +21,7 @@ def call(body) {
         keepPrivate          : true, 
         credentialsId        : "awsArtifactsUploader",
         isRelease            : true,
-        platform: null
+        platform             : null
     ]
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
