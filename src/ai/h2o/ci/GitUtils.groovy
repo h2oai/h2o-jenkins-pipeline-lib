@@ -42,7 +42,7 @@ class GitUtils implements Serializable {
 
     def isPrBranch() {
         return (script.env.CHANGE_BRANCH != null && script.env.CHANGE_BRANCH != '') ||
-               script.env.BRANCH_NAME.startsWith("PR-")
+               (script.env.BRANCH_NAME != null && script.env.BRANCH_NAME.startsWith("PR-"))
     }
 
     /**
