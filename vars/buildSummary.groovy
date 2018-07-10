@@ -25,6 +25,6 @@ def stageWithSummary(final String name, final Closure body) {
     }
 }
 
-def refreshStage(final String name) {
-    _buildSummary.getStagesSummary().setStageDetails(this, name)
+def refreshStage(final String name, final boolean resetTimer = true) {
+    _buildSummary.getStagesSummary().setStageDetails(this, name, resetTimer)
 }

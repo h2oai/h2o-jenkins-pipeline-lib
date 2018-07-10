@@ -1,5 +1,7 @@
 package ai.h2o.ci.buildsummary
 
+import hudson.Util
+
 import ai.h2o.ci.BuildResult
 
 class StagesSummary extends SummaryInfo {
@@ -24,9 +26,10 @@ class StagesSummary extends SummaryInfo {
     }
 
     void stage(final context, final String name, final String stageDirName, final Closure body) {
-        addStage(context, new StageInfo(name, stageDirName))
+        final StageInfo stageInfo = new StageInfo(name, stageDirName)
+        addStage(context, stageInfo)
         try {
-            setStageDetails(context, name)
+            setStageDetails(context, name, true)
             body()
             markStageSuccessful(context, name)
         } catch (Exception e) {
@@ -36,23 +39,26 @@ class StagesSummary extends SummaryInfo {
     }
 
     void markStageSuccessful(final context, final String stageName) {
-        final StageInfo stage = setStageResult(stageName, BuildResult.SUCCESS)
+        setStageResult(stageName, BuildResult.SUCCESS)
         updateContent(context)
     }
 
     void markStageFailed(final context, final String stageName) {
-        final StageInfo stage = setStageResult(stageName, BuildResult.FAILURE)
+        setStageResult(stageName, BuildResult.FAILURE)
         updateContent(context)
     }
 
-    void setStageDetails(final context, final String stageName) {
-        setStageDetails(context, stageName, context.env.NODE_NAME, context.env.WORKSPACE)
+    void setStageDetails(final context, final String stageName, final boolean resetTimer = true) {
+        setStageDetails(context, stageName, context.env.NODE_NAME, context.env.WORKSPACE, resetTimer)
     }
 
-    void setStageDetails(final context, final String stageName, final String nodeName, final String workspacePath) {
+    void setStageDetails(final context, final String stageName, final String nodeName, final String workspacePath, final boolean resetTimer) {
         final StageInfo stage = findStageInfoWithNameOrThrow(stageName)
         stage.setNodeName(nodeName)
         stage.setWorkspace(workspacePath)
+        if (resetTimer) {
+            stage.setStartTime()
+        }
         updateContent(context)
     }
 
@@ -90,6 +96,7 @@ class StagesSummary extends SummaryInfo {
                     <td style="${TD_STYLE}">${stageSummary.getNodeNameText()}</td>
                     <td style="${TD_STYLE}">${stageSummary.getWorkspaceText()}</td>
                     <td style="${TD_STYLE}">${stageSummary.getArtifactsHTML(context)}</td>
+                    <td style="${TD_STYLE}">${stageSummary.getDuration()}</td>
                 </tr>
             """
         }
@@ -103,6 +110,7 @@ class StagesSummary extends SummaryInfo {
                     <th style="${TH_STYLE}">Node</th>
                     <th style="${TH_STYLE}">Workspace</th>
                     <th style="${TH_STYLE}">Artifacts</th>
+                    <th style="${TH_STYLE}">Duration</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -118,6 +126,8 @@ class StagesSummary extends SummaryInfo {
         private String nodeName
         private String workspace
         private BuildResult result
+        private long startTime
+        private long endTime
 
         StageInfo(String name, String stageDirName) {
             this.name = name
@@ -163,6 +173,23 @@ class StagesSummary extends SummaryInfo {
 
         void setResult(BuildResult result) {
             this.result = result
+            setEndTime()
+        }
+
+        void setStartTime() {
+            setStartTime(System.currentTimeMillis())
+        }
+
+        void setStartTime(long startTime) {
+            this.startTime = startTime
+        }
+
+        void setEndTime() {
+            setEndTime(System.currentTimeMillis())
+        }
+
+        void setEndTime(long endTime) {
+            this.endTime = endTime
         }
 
         String getArtifactsHTML(final context) {
@@ -170,6 +197,13 @@ class StagesSummary extends SummaryInfo {
                 return 'Not yet available'
             }
             return "<a href=\"${context.currentBuild.rawBuild.getAbsoluteUrl()}artifact/${stageDirName}/\" target=\"_blank\" style=\"color: black;\">Artifacts</a>"
+        }
+
+        String getDuration() {
+            if (result == BuildResult.PENDING) {
+                return 'In progress...'
+            }
+            return "${Util.getTimeSpanString(endTime - startTime)}"
         }
     }
 }
