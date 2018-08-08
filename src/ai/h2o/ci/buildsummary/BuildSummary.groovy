@@ -1,7 +1,6 @@
 package ai.h2o.ci.buildsummary
 
 import com.cloudbees.groovy.cps.NonCPS
-import org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildSummaryAction
 
 /**
  * Helper class to create build summaries shown for example on build details page or sent via email.
@@ -135,9 +134,14 @@ class BuildSummary implements BuildSummaryManager {
     void publish(final context) {
         context.manager.removeSummaries()
         for (SummaryInfo summaryInfo : summaries) {
-            final GroovyPostbuildSummaryAction summaryAction = context.manager.createSummary(summaryInfo.getIcon())
-            summaryAction.appendText(summaryInfo.toHtml(), false)
+            def summary = context.manager.createSummary(summaryInfo.getIcon())
+            appendText(summary, summaryInfo.toHtml())
         }
+    }
+
+    @NonCPS
+    def appendText(final summary, final html) {
+        summary.appendText(html, false)
     }
 
     /**
