@@ -3,7 +3,7 @@
 import static ai.h2o.ci.ColorUtils.*
 
 /**
- * s3up 
+ * s3up
  *  - groupId: String
  *  - artifactId: String
  *  - version: String
@@ -17,8 +17,8 @@ import static ai.h2o.ci.ColorUtils.*
 def call(body) {
     def config = [
         groupId              : "ai/h2o",
-        remoteArtifactBucket : "s3://artifacts.h2o.ai/releases", 
-        keepPrivate          : true, 
+        remoteArtifactBucket : "s3://artifacts.h2o.ai/releases",
+        keepPrivate          : true,
         credentialsId        : "awsArtifactsUploader",
         isRelease            : true,
         platform: null
@@ -43,13 +43,18 @@ def call(body) {
         targetObject += config.platform + '/'
     }
     withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: config.credentialsId]]) {
-        sh """
+        def awscliAvailable = sh(script: 'which aws', returnCode: true) == 0
         echo "Uploading artifacts: ${config}"
-        s3cmd --recursive --no-progres --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} ${targetObject}
-        """
+        if (awscliAvailable) {
+            def aclFlag = config.keepPrivate ? "private" : "public-read"
+            sh "aws s3 cp ${config.localArtifact} ${targetObject} --recursive --no-progres --acl ${aclFlag}"
+        } else {
+            echo yellow("WARNING! Using s3cmd, please upgrade shared lib to test-shared-library@1.7 or install awscli, so faster awscli can be used.")
+            def aclPrivate = config.keepPrivate ? "--acl-private" : "--acl-public"
+            sh "s3cmd --recursive --no-progres --access_key=${AWS_ACCESS_KEY_ID} --secret_key=${AWS_SECRET_ACCESS_KEY} ${aclPrivate} put ${config.localArtifact} ${targetObject}"
+        }
         echo green("S3UP: ${config.localArtifact} --> ${targetObject}")
 
     }
     return targetObject
 }
-
