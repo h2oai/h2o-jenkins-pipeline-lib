@@ -135,13 +135,9 @@ class BuildSummary implements BuildSummaryManager {
         context.manager.removeSummaries()
         for (SummaryInfo summaryInfo : summaries) {
             def summary = context.manager.createSummary(summaryInfo.getIcon())
-            appendText(summary, summaryInfo.toHtml())
+            summary.appendText(summaryInfo.toHtml(), false)
+            summary = null
         }
-    }
-
-    @NonCPS
-    def appendText(final summary, final html) {
-        summary.appendText(html, false)
     }
 
     /**
