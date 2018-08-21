@@ -20,5 +20,5 @@ def call(String registry, String image, body) {
  * @return
  */
 def call(body) {
-    call('docker.h2o.ai', 'awscli', body)
+    call('docker.h2o.ai', 's3cmd', body)
 }
