@@ -132,11 +132,9 @@ class BuildSummary implements BuildSummaryManager {
      * @param context
      */
     void publish(final context) {
-        context.manager.removeSummaries()
+        clearSummaries(context)
         for (SummaryInfo summaryInfo : summaries) {
-            def summary = context.manager.createSummary(summaryInfo.getIcon())
-            summary.appendText(summaryInfo.toHtml(), false)
-            summary = null
+            setSummaryText(context.manager.createSummary(summaryInfo.getIcon()), summaryInfo.toHtml())
         }
     }
 
@@ -180,5 +178,15 @@ class BuildSummary implements BuildSummaryManager {
         if (autoPublish) {
             publish(context)
         }
+    }
+    
+    @NonCPS
+    private void clearSummaries(final context) {
+        context.manager.removeSummaries()
+    }
+    
+    @NonCPS
+    private void setSummaryText(final summary, final html) {
+        summary.appendText(html, false)
     }
 }
