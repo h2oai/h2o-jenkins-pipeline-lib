@@ -1,6 +1,7 @@
 package ai.h2o.ci.buildsummary
 
 import com.cloudbees.groovy.cps.NonCPS
+import com.jenkinsci.plugins.badge.action.BadgeSummaryAction
 
 /**
  * Helper class to create build summaries shown for example on build details page or sent via email.
@@ -182,7 +183,9 @@ class BuildSummary implements BuildSummaryManager {
     
     @NonCPS
     private void clearSummaries(final context) {
-        context.manager.removeSummaries()
+        List actions = context.currentBuild.rawBuild.getActions()
+        List summaryActions = context.currentBuild.rawBuild.getActions(BadgeSummaryAction.class)
+        actions.removeAll(summaryActions)
     }
     
     @NonCPS
