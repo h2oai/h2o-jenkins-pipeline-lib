@@ -183,8 +183,8 @@ class BuildSummary implements BuildSummaryManager {
     
     @NonCPS
     private void clearSummaries(final context) {
-        List actions = currentBuild.rawBuild.getActions()
-        List summaryActions = currentBuild.rawBuild.getActions(BadgeSummaryAction.class)
+        List actions = context.currentBuild.rawBuild.getActions()
+        List summaryActions = context.currentBuild.rawBuild.getActions(BadgeSummaryAction.class)
         actions.removeAll(summaryActions)
     }
     
