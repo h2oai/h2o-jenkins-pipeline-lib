@@ -182,7 +182,7 @@ class BuildSummary implements BuildSummaryManager {
     
     @NonCPS
     private void clearSummaries(final context) {
-        context.manager.removeSummaries()
+        context.manager.removeBadges()
     }
     
     @NonCPS
