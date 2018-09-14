@@ -30,6 +30,9 @@ def call(scm, final String credentialsId, final String context, closure) {
 }
 
 def getHeadSHA(scm, credentialsId) {
+  if (env.GIT_SHA) {
+    return env.GIT_SHA
+  }
   withCredentials([string(credentialsId: credentialsId, variable: 'GITHUB_TOKEN')]) {
     def relevantHEADRef = scm.getUserRemoteConfigs().get(0).getRefspec().split(':')[0].replaceAll('\\+', '')
     def commitSHARequest = ['curl', '-XGET', '-v', '-H', "Authorization: token ${GITHUB_TOKEN}", "https://api.github.com/repos/h2oai/${getRepoName(scm)}/git/${relevantHEADRef}"]
