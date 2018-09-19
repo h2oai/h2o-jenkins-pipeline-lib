@@ -7,7 +7,7 @@ def call(final int retries, final int delay, final Closure body) {
             if (i == (retries - 1)) {
                 throw e
             }
-            script.sleep(delay)
+            sleep(delay)
         }
     }
 }
