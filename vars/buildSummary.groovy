@@ -28,3 +28,11 @@ def stageWithSummary(final String name, final Closure body) {
 def refreshStage(final String name, final boolean resetTimer = true) {
     _buildSummary.getStagesSummary().setStageDetails(this, name, resetTimer)
 }
+
+def setStageUrl(final String name) {
+    _buildSummary.getStagesSummary().setStageUrl(this, name, null)
+}
+
+def setStageUrl(final String name, final String url) {
+    _buildSummary.getStagesSummary().setStageUrl(this, name, url)
+}
