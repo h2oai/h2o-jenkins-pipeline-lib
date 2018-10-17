@@ -37,7 +37,7 @@ class StagesSummary extends SummaryInfo {
             throw e
         }
     }
-
+    
     void markStageSuccessful(final context, final String stageName) {
         setStageResult(stageName, BuildResult.SUCCESS)
         updateContent(context)
@@ -60,6 +60,40 @@ class StagesSummary extends SummaryInfo {
             stage.setStartTime()
         }
         updateContent(context)
+    }
+
+    void setStageUrl(final context, final String stageName, String url) {
+        if (!url) {
+            url = getStageDefaultUrl(context, stageName)
+        }
+        final StageInfo stage = findStageInfoWithNameOrThrow(stageName)
+        stage.setUrl(url)
+        updateContent(context)
+    }
+
+    @NonCPS
+    private String getStageDefaultUrl(final context, final String stageName) {
+        def node = context.currentBuild.rawBuild.getAction(org.jenkinsci.plugins.workflow.job.views.FlowGraphAction.class).getNodes().find{ it.getDisplayName() == stageName }
+        
+        // check if there is node with Branch prefix
+        def branchNode = node
+        while (branchNode != null) {
+            if (branchNode.getDisplayName().startsWith('Branch: ')) {
+                break
+            }
+            def parents = branchNode.getParents()
+            if (parents) {
+                branchNode = parents[0]
+            } else {
+                branchNode = null
+            }
+        }
+        node = branchNode ?: node
+        
+        if (node) {
+            return "${context.env.JENKINS_URL}/blue/rest/organizations/jenkins/pipelines/${context.env.JOB_NAME.split('/').join('/branches/')}/runs/${context.currentBuild.number}/nodes/${node.getId()}/log"
+        }
+        return null
     }
 
     private StageInfo findStageInfoWithName(final String stageName) {
@@ -92,7 +126,7 @@ class StagesSummary extends SummaryInfo {
             stagesTableBody += """
                 <tr>
                     <td style="${TD_STYLE}"><img src="${result.getImageUrl(context, BuildSummaryUtils.ImageSize.LARGE)}" /></td>
-                    <td style="${TD_STYLE}">${stageSummary.getName()}</td>
+                    <td style="${TD_STYLE}">${stageSummary.getNameForOverview()}</td>
                     <td style="${TD_STYLE}">${stageSummary.getNodeNameText()}</td>
                     <td style="${TD_STYLE}">${stageSummary.getWorkspaceText()}</td>
                     <td style="${TD_STYLE}">${stageSummary.getArtifactsHTML(context)}</td>
@@ -128,6 +162,7 @@ class StagesSummary extends SummaryInfo {
         private BuildResult result
         private long startTime
         private long endTime
+        private String url
 
         StageInfo(String name, String stageDirName) {
             this.name = name
@@ -137,6 +172,13 @@ class StagesSummary extends SummaryInfo {
 
         String getName() {
             return name
+        }
+
+        String getNameForOverview() {
+            if (url) {
+                return "<a href=\"${url}\">${name}</a>"
+            }
+            return getName()
         }
 
         String getStageDirName() {
@@ -190,6 +232,10 @@ class StagesSummary extends SummaryInfo {
 
         void setEndTime(long endTime) {
             this.endTime = endTime
+        }
+
+        void setUrl(String url) {
+            this.url = url
         }
 
         String getArtifactsHTML(final context) {
