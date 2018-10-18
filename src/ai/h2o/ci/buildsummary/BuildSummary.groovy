@@ -30,7 +30,7 @@ class BuildSummary implements BuildSummaryManager {
      * @return {@link SummaryInfo} with given id or null if no such {@link SummaryInfo} exists.
      */
     SummaryInfo findSummary(final String id) {
-        return summaries.find({it.getId() == id})
+        return summaries.find({ it.getId() == id })
     }
 
     /**
@@ -42,7 +42,7 @@ class BuildSummary implements BuildSummaryManager {
         if (summaryInfo == null) {
             return null
         }
-        return summaries.find({it.getId() == summaryInfo.getId()})
+        return summaries.find({ it.getId() == summaryInfo.getId() })
     }
 
     /**
@@ -157,7 +157,7 @@ class BuildSummary implements BuildSummaryManager {
     String toHtml(final context, final boolean includeEmailsOnly) {
         String result = ''
         for (SummaryInfo summaryInfo : summaries) {
-            if (includeEmailsOnly || !summaryInfo.isEmailOnly() ) {
+            if (includeEmailsOnly || !summaryInfo.isEmailOnly()) {
                 if (includeEmailsOnly) {
                     result += "<h1 style=\"display: inline-block\"><img src=\"${BuildSummaryUtils.imageLink(context, summaryInfo.getIcon(), BuildSummaryUtils.ImageSize.MEDIUM)}\" /></h1>"
                 }
@@ -180,14 +180,21 @@ class BuildSummary implements BuildSummaryManager {
             publish(context)
         }
     }
-    
-    @NonCPS
+
+//    @NonCPS
     private void clearSummaries(final context) {
-        List actions = context.currentBuild.rawBuild.getActions()
-        List summaryActions = context.currentBuild.rawBuild.getActions(BadgeSummaryAction.class)
-        actions.removeAll(summaryActions)
+        List allActions = context.currentBuild.rawBuild.getActions()
+        List badgeSummaryActions = context.currentBuild.rawBuild.getActions(BadgeSummaryAction.class)
+        context.echo "badgeSummaryActions: ${badgeSummaryActions}"
+        context.echo "summaries: ${summaries}"
+        for (SummaryInfo summary : summaries) {
+            context.echo "Processing: ${summary.getTitle()}"
+            def summaryActions = badgeSummaryActions.findAll({ it.getRawText().contains(summary.getTitle()) })
+            context.echo "About to remove: ${summaryActions}"
+            allActions.removeAll(summaryActions)
+        }
     }
-    
+
     @NonCPS
     private void setSummaryText(final summary, final html) {
         summary.appendText(html, false)
