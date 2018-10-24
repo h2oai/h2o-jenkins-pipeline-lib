@@ -1,4 +1,4 @@
-def call(int timeoutSeconds, int retries, block) {
+def call(int timeoutSeconds, int retries, body) {
     // DOES NOT WORK BECAUSE OF BUG IN JENKINS.
     // https://issues.jenkins-ci.org/browse/JENKINS-51454
     //
@@ -8,11 +8,15 @@ def call(int timeoutSeconds, int retries, block) {
     //     }
     // }
     
+    def finished = false
     for (def i = 0; i < retries; i++) {
+        if (finished) {
+            break
+        }
         try {
             timeout(time: timeoutSeconds, unit: 'SECONDS') {
-                block()
-                break
+                body()
+                finished = true
             }
         } catch (Exception e) {
             if (i == (retries - 1)) {
