@@ -22,7 +22,7 @@ enum BuildResult {
      * Indicates that stage has been successful HOWEVER the result needs attention.
      * For example the benchmarks are not in an expected interval/
      */
-    WARNING('Warning', 'red.gif')
+    WARNING('Warning', 'warning.gif')
 
     private final String text
     private final String imageName

@@ -125,7 +125,7 @@ class StagesSummary extends SummaryInfo {
             final BuildResult result = stageSummary.getResult() ?: BuildResult.PENDING
             stagesTableBody += """
                 <tr>
-                    <td style="${TD_STYLE}"><img src="${result.getImageUrl(context, BuildSummaryUtils.ImageSize.LARGE)}" /></td>
+                    <td style="${TD_STYLE}"><img src="${result.getImageUrl(context, BuildSummaryUtils.ImageSize.LARGE)}" alt="${result.getText()}"/></td>
                     <td style="${TD_STYLE}">${stageSummary.getNameForOverview()}</td>
                     <td style="${TD_STYLE}">${stageSummary.getNodeNameText()}</td>
                     <td style="${TD_STYLE}">${stageSummary.getWorkspaceText()}</td>
