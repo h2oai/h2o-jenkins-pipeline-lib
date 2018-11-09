@@ -22,9 +22,15 @@ def call(int timeoutSeconds, int retries, body) {
             if (i == (retries - 1)) {
                 throw e
             }
-            def sw = new StringWriter()
-            e.printStackTrace(new PrintWriter(sw))
-            echo sw.toString()
+            printTrace(e)
+            e = null
         }
     }
+}
+
+@NonCPS
+def printTrace(Exception e) {
+    def sw = new StringWriter()
+    e.printStackTrace(new PrintWriter(sw))
+    echo sw.toString
 }
