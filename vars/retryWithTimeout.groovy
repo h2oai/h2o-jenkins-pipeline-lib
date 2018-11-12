@@ -7,7 +7,7 @@ def call(int timeoutSeconds, int retries, body) {
     //         block()
     //     }
     // }
-    
+
     def finished = false
     for (def i = 0; i < retries; i++) {
         if (finished) {
@@ -32,5 +32,5 @@ def call(int timeoutSeconds, int retries, body) {
 def printTrace(Exception e) {
     def sw = new StringWriter()
     e.printStackTrace(new PrintWriter(sw))
-    echo sw.toString
+    echo sw.toString()
 }
