@@ -134,8 +134,11 @@ class BuildSummary implements BuildSummaryManager {
      */
     void publish(final context) {
         clearSummaries(context)
-        for (SummaryInfo summaryInfo : summaries) {
-            setSummaryText(context.manager.createSummary(summaryInfo.getIcon()), summaryInfo.toHtml())
+        for (def i = 0; i < summaries.size(); i++) {
+            def summary = context.manager.createSummary(summaries[i].getIcon())
+            summary.appendText(summaries[i].toHtml(), false)
+            summary = null
+            sleep 1
         }
     }
 
@@ -183,22 +186,17 @@ class BuildSummary implements BuildSummaryManager {
 
     private void clearSummaries(final context) {
         for (SummaryInfo summary : summaries) {
-            clearSummary(context, summary)
+            clearSummary(context, summary.getTitle())
         }
     }
 
     @NonCPS
-    private void setSummaryText(final summary, final html) {
-        summary.appendText(html, false)
-    }
-
-    @NonCPS
-    private void clearSummary(final context, final summary) {
+    private void clearSummary(final context, final title) {
         List<BadgeSummaryAction> summaryActions = context.currentBuild.rawBuild.getActions(BadgeSummaryAction.class)
-        for (BadgeSummaryAction a : summaryActions) {
-            if (a.getRawText().contains(summary.getTitle())) {
-                context.currentBuild.rawBuild.removeAction(a)
+		for (BadgeSummaryAction action : summaryActions) {
+            if (action.getRawText().contains(title)) {
+                context.currentBuild.rawBuild.removeAction(action)
             }
-        }
+		}
     }
 }
