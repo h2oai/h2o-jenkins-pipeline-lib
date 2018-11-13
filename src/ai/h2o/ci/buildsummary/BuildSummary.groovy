@@ -134,12 +134,15 @@ class BuildSummary implements BuildSummaryManager {
      */
     void publish(final context) {
         clearSummaries(context)
-        for (def i = 0; i < summaries.size(); i++) {
-            def summary = context.manager.createSummary(summaries[i].getIcon())
-            summary.appendText(summaries[i].toHtml(), false)
-            summary = null
-            sleep 1
+        for (SummaryInfo summaryInfo : summaries) {
+            createSummary(context, summaryInfo.getIcon(), summaryInfo.toHtml())
         }
+    }
+
+    @NonCPS
+    private void createSummary(final context, final icon, final text) {
+        def summary = context.manager.createSummary(icon)
+        summary.appendText(text, false)
     }
 
     /**
