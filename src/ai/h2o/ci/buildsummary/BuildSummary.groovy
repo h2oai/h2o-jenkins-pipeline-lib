@@ -195,11 +195,14 @@ class BuildSummary implements BuildSummaryManager {
 
     @NonCPS
     private void clearSummary(final context, final title) {
-        List<BadgeSummaryAction> summaryActions = context.currentBuild.rawBuild.getActions(BadgeSummaryAction.class)
-		for (BadgeSummaryAction action : summaryActions) {
-            if (action.getRawText().contains(title)) {
-                context.currentBuild.rawBuild.removeAction(action)
-            }
-		}
+        // List<BadgeSummaryAction> summaryActions = context.currentBuild.rawBuild.getActions(BadgeSummaryAction.class)
+		// for (BadgeSummaryAction action : summaryActions) {
+        //     if (action.getRawText().contains(title)) {
+        //         context.currentBuild.rawBuild.removeAction(action)
+        //     }
+		// }
+        def build = context.currentBuild.rawBuild
+        context.echo "${(build.getActions(BadgeSummaryAction.class).findAll { it.getRawText().contains(title) }).getClass().toString}"
+        build.removeActions(build.getActions(BadgeSummaryAction.class).findAll { it.getRawText().contains(title) })
     }
 }
