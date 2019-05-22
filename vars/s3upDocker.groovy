@@ -20,5 +20,5 @@ def call(String registry, String image, body) {
  * @return
  */
 def call(body) {
-    call('harbor.h2o.ai', 's3cmd', body)
+    call('harbor.h2o.ai', 'library/s3cmd', body)
 }
