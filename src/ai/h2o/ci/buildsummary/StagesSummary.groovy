@@ -247,7 +247,7 @@ class StagesSummary extends SummaryInfo {
 
         String getDuration() {
             if (result == BuildResult.PENDING) {
-                return 'In progress...'
+                return "In progress" + (startTime ? " since ${new Date(startTime).format('hh:mm aa (z)')}" : "...")
             }
             return "${Util.getTimeSpanString(endTime - startTime)}"
         }
