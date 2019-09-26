@@ -131,6 +131,7 @@ class StagesSummary extends SummaryInfo {
                     <td style="${TD_STYLE}">${stageSummary.getWorkspaceText()}</td>
                     <td style="${TD_STYLE}">${stageSummary.getArtifactsHTML(context)}</td>
                     <td style="${TD_STYLE}">${stageSummary.getDuration()}</td>
+                    <td style="${TD_STYLE}">${stageSummary.getQueueTime()}</td>
                 </tr>
             """
         }
@@ -145,6 +146,7 @@ class StagesSummary extends SummaryInfo {
                     <th style="${TH_STYLE}">Workspace</th>
                     <th style="${TH_STYLE}">Artifacts</th>
                     <th style="${TH_STYLE}">Duration</th>
+                    <th style="${TH_STYLE}">Queue Time</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -162,12 +164,15 @@ class StagesSummary extends SummaryInfo {
         private BuildResult result
         private long startTime
         private long endTime
+        private long stageInit
+        private long outOfQueueTime = 0L
         private String url
 
         StageInfo(String name, String stageDirName) {
             this.name = name
             this.stageDirName = stageDirName
             this.result = BuildResult.PENDING
+            this.stageInit = System.currentTimeMillis()
         }
 
         String getName() {
@@ -195,6 +200,7 @@ class StagesSummary extends SummaryInfo {
 
         void setNodeName(String nodeName) {
             this.nodeName = nodeName
+            updateOutOfQueueTime(System.currentTimeMillis())
         }
 
         String getWorkspace() {
@@ -238,6 +244,13 @@ class StagesSummary extends SummaryInfo {
             this.url = url
         }
 
+
+        void updateOutOfQueueTime(long outOfQueueTime){
+            if (this.outOfQueueTime == 0L) {
+                this.outOfQueueTime = outOfQueueTime
+            }
+        }
+
         String getArtifactsHTML(final context) {
             if (result == BuildResult.PENDING) {
                 return 'Not yet available'
@@ -250,6 +263,15 @@ class StagesSummary extends SummaryInfo {
                 return "In progress" + (startTime ? " since ${new Date(startTime).format('hh:mm aa dd/MMM (z)')}" : "...")
             }
             return "${Util.getTimeSpanString(endTime - startTime)}"
+        }
+
+        String getQueueTime() {
+            if (this.outOfQueueTime == 0L) {
+                return 'Not yet available'
+            }
+            else {
+                return "${Util.getTimeSpanString(outOfQueueTime - stageInit)}"
+            }
         }
     }
 }
