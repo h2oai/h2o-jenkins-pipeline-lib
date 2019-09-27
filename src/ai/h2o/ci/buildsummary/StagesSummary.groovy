@@ -172,7 +172,7 @@ class StagesSummary extends SummaryInfo {
             this.name = name
             this.stageDirName = stageDirName
             this.result = BuildResult.PENDING
-            this.lastStageStartTime = System.currentTimeMillis()
+            this.lastNodeStartTime = System.currentTimeMillis()
         }
 
         String getName() {
