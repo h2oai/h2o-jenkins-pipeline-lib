@@ -16,7 +16,7 @@ def call() {
   item.getBuilds().each{ build ->
     def exec = build.getExecutor()
 
-    if (build.number != currentBuild.number && exec != null) {
+    if (build.number < currentBuild.number && exec != null) {
       exec.doStop()
       println("Aborted previous running build #${build.number}")
     } else {
