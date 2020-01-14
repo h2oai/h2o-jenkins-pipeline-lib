@@ -199,7 +199,7 @@ class StagesSummary extends SummaryInfo {
         }
 
         void setNodeName(String nodeName) {
-            newNodeName = nodeName ?: 'Not yet allocated'
+            def newNodeName = nodeName ?: 'Not yet allocated'
             if (this.getNodeNameText() == 'Not yet allocated' && newNodeName != 'Not yet allocated') {
                 this.totalTimeInQueue += System.currentTimeMillis() - this.lastNodeStartTime
             }
