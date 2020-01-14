@@ -164,15 +164,15 @@ class StagesSummary extends SummaryInfo {
         private BuildResult result
         private long startTime
         private long endTime
-        private long stageInit
-        private long outOfQueueTime = 0L
+        private long totalTimeInQueue = 0L
+        private long lastNodeStartTime = 0L
         private String url
 
         StageInfo(String name, String stageDirName) {
             this.name = name
             this.stageDirName = stageDirName
             this.result = BuildResult.PENDING
-            this.stageInit = System.currentTimeMillis()
+            this.lastNodeStartTime = System.currentTimeMillis()
         }
 
         String getName() {
@@ -199,8 +199,15 @@ class StagesSummary extends SummaryInfo {
         }
 
         void setNodeName(String nodeName) {
+            newNodeName = nodeName ?: 'Not yet allocated'
+            if (this.getNodeNameText() == 'Not yet allocated' && newNodeName != 'Not yet allocated') {
+                this.totalTimeInQueue += System.currentTimeMillis() - this.lastNodeStartTime
+            }
+            if (this.getNodeNameText() != 'Not yet allocated' && newNodeName == 'Not yet allocated') {
+                this.lastNodeStartTime = System.currentTimeMillis()
+            }
+
             this.nodeName = nodeName
-            updateOutOfQueueTime(System.currentTimeMillis())
         }
 
         String getWorkspace() {
@@ -244,13 +251,6 @@ class StagesSummary extends SummaryInfo {
             this.url = url
         }
 
-
-        void updateOutOfQueueTime(long outOfQueueTime){
-            if (this.outOfQueueTime == 0L) {
-                this.outOfQueueTime = outOfQueueTime
-            }
-        }
-
         String getArtifactsHTML(final context) {
             if (result == BuildResult.PENDING) {
                 return 'Not yet available'
@@ -266,12 +266,7 @@ class StagesSummary extends SummaryInfo {
         }
 
         String getQueueTime() {
-            if (this.outOfQueueTime == 0L) {
-                return 'Not yet available'
-            }
-            else {
-                return "${Util.getTimeSpanString(outOfQueueTime - stageInit)}"
-            }
+            return "${Util.getTimeSpanString(totalTimeInQueue)}"
         }
     }
 }
