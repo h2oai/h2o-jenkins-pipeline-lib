@@ -25,8 +25,8 @@ class StagesSummary extends SummaryInfo {
         updateContent(context)
     }
 
-    void stage(final context, final String name, final String stageDirName, final Closure body) {
-        final StageInfo stageInfo = new StageInfo(name, stageDirName)
+    void stage(final context, final String name, final String stageDirName, final String rerunCommand, final Closure body) {
+        final StageInfo stageInfo = new StageInfo(name, stageDirName, rerunCommand)
         addStage(context, stageInfo)
         try {
             setStageDetails(context, name, true)
@@ -127,11 +127,12 @@ class StagesSummary extends SummaryInfo {
                 <tr>
                     <td style="${TD_STYLE}"><img src="${result.getImageUrl(context, BuildSummaryUtils.ImageSize.LARGE)}" alt="${result.getText()}"/></td>
                     <td style="${TD_STYLE}">${stageSummary.getNameForOverview()}</td>
-                    <td style="${TD_STYLE}">${stageSummary.getNodeNameText()}</td>
+                    <td style="${TD_STYLE}">${stageSummary.getNodeNameText(context)}</td>
                     <td style="${TD_STYLE}">${stageSummary.getWorkspaceText()}</td>
                     <td style="${TD_STYLE}">${stageSummary.getArtifactsHTML(context)}</td>
                     <td style="${TD_STYLE}">${stageSummary.getDuration()}</td>
                     <td style="${TD_STYLE}">${stageSummary.getQueueTime()}</td>
+                    <td style="${TD_STYLE}">${stageSummary.getRestartStatus(context)}</td>
                 </tr>
             """
         }
@@ -147,6 +148,7 @@ class StagesSummary extends SummaryInfo {
                     <th style="${TH_STYLE}">Artifacts</th>
                     <th style="${TH_STYLE}">Duration</th>
                     <th style="${TH_STYLE}">Queue Time</th>
+                    <th style="${TH_STYLE}"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -167,12 +169,14 @@ class StagesSummary extends SummaryInfo {
         private long totalTimeInQueue = 0L
         private long lastNodeStartTime = 0L
         private String url
+        private String rerunCommand
 
-        StageInfo(String name, String stageDirName) {
+        StageInfo(String name, String stageDirName, String rerunCommand) {
             this.name = name
             this.stageDirName = stageDirName
             this.result = BuildResult.PENDING
             this.lastNodeStartTime = System.currentTimeMillis()
+            this.rerunCommand = rerunCommand
         }
 
         String getName() {
@@ -194,16 +198,20 @@ class StagesSummary extends SummaryInfo {
             return nodeName
         }
 
-        String getNodeNameText() {
-            return nodeName ?: 'Not yet allocated'
+        String getNodeNameText(final context) {
+            if (nodeName == null) {
+                return 'Not yet allocated'
+            } else {
+                return "<a href=\"${context.env.HUDSON_URL}computer/${nodeName}\" target=\"_blank\" style=\"color: black;\">${nodeName}</a>"
+            }
         }
 
         void setNodeName(String nodeName) {
             def newNodeName = nodeName ?: 'Not yet allocated'
-            if (this.getNodeNameText() == 'Not yet allocated' && newNodeName != 'Not yet allocated') {
+            if (this.nodeName == null && newNodeName != 'Not yet allocated') {
                 this.totalTimeInQueue += System.currentTimeMillis() - this.lastNodeStartTime
             }
-            if (this.getNodeNameText() != 'Not yet allocated' && newNodeName == 'Not yet allocated') {
+            if (this.nodeName != null && newNodeName == 'Not yet allocated') {
                 this.lastNodeStartTime = System.currentTimeMillis()
             }
 
@@ -267,6 +275,14 @@ class StagesSummary extends SummaryInfo {
 
         String getQueueTime() {
             return "${Util.getTimeSpanString(totalTimeInQueue)}"
+        }
+
+        String getRestartStatus(final context) {
+            if (rerunCommand != '' && result == BuildResult.FAILURE) {
+                return "<a href=\"${context.env.JOB_URL}buildWithParameters?more_tests=${rerunCommand}\" target=\"_blank\" style=\"color: black;\">rerun</a>"
+            } else {
+                return '-'
+            }
         }
     }
 }

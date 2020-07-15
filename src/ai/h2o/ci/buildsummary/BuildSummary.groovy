@@ -94,7 +94,6 @@ class BuildSummary implements BuildSummaryManager {
      * @param context
      * @param detailsSummary instance of the {@link DetailsSummary} to be added
      */
-    @NonCPS
     void addDetailsSummary(final context, final DetailsSummary detailsSummary) {
         this.detailsSummary = detailsSummary
         addSummary(context, detailsSummary)
@@ -114,7 +113,6 @@ class BuildSummary implements BuildSummaryManager {
      * @param context
      * @param stagesSummary instance of the {@link StagesSummary} to be added
      */
-    @NonCPS
     void addStagesSummary(final context, final StagesSummary stagesSummary) {
         this.stagesSummary = stagesSummary
         addSummary(context, stagesSummary)

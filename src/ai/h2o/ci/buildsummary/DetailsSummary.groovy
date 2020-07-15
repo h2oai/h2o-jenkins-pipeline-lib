@@ -32,7 +32,6 @@ class DetailsSummary extends SummaryInfo implements Serializable {
      * @param name name of the entry, if this name already exists, value is overwritten
      * @param value value to store
      */
-    @NonCPS
     void setEntry(final context, final String name, final String value) {
         entries[name] = value
         setContent(buildContent())
