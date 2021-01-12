@@ -90,6 +90,7 @@ class SummaryInfo implements Comparable<SummaryInfo>, Serializable {
      *
      * @return order of this {@link SummaryInfo}
      */
+    @NonCPS
     int getOrder() {
         return order
     }
@@ -113,6 +114,7 @@ class SummaryInfo implements Comparable<SummaryInfo>, Serializable {
         """
     }
 
+    @NonCPS
     @Override
     int compareTo(SummaryInfo o) {
         return Integer.compare(o.getOrder(), getOrder())

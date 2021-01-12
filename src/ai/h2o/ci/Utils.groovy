@@ -2,6 +2,7 @@ package ai.h2o.ci
 
 import com.cloudbees.groovy.cps.NonCPS
 
+@NonCPS
 def getShell() {
     new shell()
 }
@@ -37,6 +38,19 @@ def gitBranch() {
 
 def gitHeadSha() {
     return getShell().pipe("git rev-parse HEAD").trim()
+}
+
+def gitHeadCommit(){
+    return getShell().pipe("git log --format=%B -n 1 ${gitHeadSha()}").trim()
+}
+
+
+def gitHeadCommitAuthorName(){
+    return getShell().pipe("git show -s --format='%an -n 1 ' ${gitHeadSha()}").trim()
+}
+
+def gitHeadCommitWithAuthor(){
+    return getShell().pipe("git log --format=\'[%an] %s\' -n 1 ${gitHeadSha()}").trim()
 }
 
 def gitVersion() {
@@ -170,6 +184,32 @@ static def ex2str(Exception e) {
     StringWriter sw = new StringWriter()
     e.printStackTrace(new PrintWriter(sw))
     return sw.toString()
+}
+
+
+/**
+ * Determines whether the current build is a PR build or not
+ * @return isPR boolean
+ */
+def isPrBranch() {
+    return (env.CHANGE_BRANCH != null && env.CHANGE_BRANCH != '') ||
+            (env.BRANCH_NAME != null && env.BRANCH_NAME.startsWith("PR-"))
+}
+
+
+/**
+ * Returns a list of modified files from this build PR or changeset
+ * @return string list of files that have been modified to start this build
+ */
+def getDiffList() {
+    if (isPrBranch()){
+        // for PRs get all the changed files
+        diff_cmd = "git --no-pager diff origin/${env.CHANGE_TARGET} --name-only"
+    } else {
+        // for non PRs only retrieve changes from last commit
+        diff_cmd = "git --no-pager diff HEAD~1 HEAD --name-only"
+    }
+    return getShell().pipe(diff_cmd).trim().split("\r?\n")
 }
 
 return this

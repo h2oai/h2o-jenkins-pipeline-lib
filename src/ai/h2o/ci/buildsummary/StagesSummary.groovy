@@ -202,7 +202,11 @@ class StagesSummary extends SummaryInfo {
             if (nodeName == null) {
                 return 'Not yet allocated'
             } else {
-                return "<a href=\"${context.env.HUDSON_URL}computer/${nodeName}\" target=\"_blank\" style=\"color: black;\">${nodeName}</a>"
+                def formattedNodeName = nodeName.replaceAll("^\\(|\\)\$", "")
+                if (formattedNodeName == 'master') {
+                    formattedNodeName = '(master)'
+                }
+                return "<a href=\"${context.env.HUDSON_URL}computer/${formattedNodeName}\" target=\"_blank\" style=\"color: black;\">${formattedNodeName}</a>"
             }
         }
 

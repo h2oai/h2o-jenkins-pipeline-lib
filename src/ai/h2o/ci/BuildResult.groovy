@@ -13,11 +13,11 @@ enum BuildResult {
     /**
      * Indicates that stage has been successful
      */
-    SUCCESS('Success', 'green.gif'),
+    SUCCESS('Success', 'blue.png'),
     /**
      * Indicates that stage has failed
      */
-    FAILURE('Failure', 'red.gif'),
+    FAILURE('Failure', 'red.png'),
     /**
      * Indicates that stage has been successful HOWEVER the result needs attention.
      * For example the benchmarks are not in an expected interval/
