@@ -73,22 +73,10 @@ class StagesSummary extends SummaryInfo {
 
     @NonCPS
     private String getStageDefaultUrl(final context, final String stageName) {
+        def nodeWithBranch = context.currentBuild.rawBuild.getAction(org.jenkinsci.plugins.workflow.job.views.FlowGraphAction.class).getNodes().find{ it.getDisplayName() == "Branch: ${stageName}" }
         def node = context.currentBuild.rawBuild.getAction(org.jenkinsci.plugins.workflow.job.views.FlowGraphAction.class).getNodes().find{ it.getDisplayName() == stageName }
-        
-        // check if there is node with Branch prefix
-        def branchNode = node
-        while (branchNode != null) {
-            if (branchNode.getDisplayName().startsWith('Branch: ')) {
-                break
-            }
-            def parents = branchNode.getParents()
-            if (parents) {
-                branchNode = parents[0]
-            } else {
-                branchNode = null
-            }
-        }
-        node = branchNode ?: node
+
+        node = nodeWithBranch ?: node
         
         if (node) {
             return "${context.env.JENKINS_URL}/blue/rest/organizations/jenkins/pipelines/${context.env.JOB_NAME.split('/').join('/branches/')}/runs/${context.currentBuild.number}/nodes/${node.getId()}/log"
