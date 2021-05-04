@@ -187,6 +187,7 @@ class BuildSummary implements BuildSummaryManager {
         }
     }
 
+    @NonCPS
     private void clearSummaries(final context) {
         for (SummaryInfo summary : summaries) {
             clearSummary(context, summary.getTitle())
