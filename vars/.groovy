@@ -3,7 +3,8 @@ import org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject
 
 def call(def jobName, def branchName) {
     def job = Jenkins.get().getItem(jobName)
-    job = job as org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject
+    
+    job = job as org.jenkinsci.plugins.workflow.multibranch.WorkflowJob
     print job.getBranch(branchName)
     return true
 }
