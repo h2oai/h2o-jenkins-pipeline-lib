@@ -3,8 +3,5 @@ import org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject
 
 def call(def jobName, def branchName) {
     def job = Jenkins.get().getItem(jobName)
-    if (job instanceof WorkflowMultiBranchProject){
-       def exists = job.getItemByBranchName(branchName)
-       return exists as boolean
-    }
+    print(job)
 }
