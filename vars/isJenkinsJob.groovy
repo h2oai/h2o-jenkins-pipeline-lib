@@ -6,7 +6,12 @@ def call(def multiBranchJobName, def branchName) {
     if(job){
         try {
             job = job as WorkflowMultiBranchProject
-            print job.getBranch(branchName)
+            def branchFound = job.getBranch(branchName) as boolean
+            if(branchFound){
+                info("Branch ${branchName} exists for job ${multiBranchJobName}")
+                return true
+            }
+            return false
         } catch (org.codehaus.groovy.runtime.typehandling.GroovyCastException ex){
             error("The job is not MultibranchJob " + ex)
         }
