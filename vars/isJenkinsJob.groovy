@@ -7,8 +7,8 @@ def call(def jobName, def branchName) {
     try {
         job = job as WorkflowJob
         print job.getBranch(branchName)
-    } except (org.codehaus.groovy.runtime.typehandling.GroovyCastException exc){
-        error("The job is not MultibranchJob")
+    } catch (org.codehaus.groovy.runtime.typehandling.GroovyCastException ex){
+        error("The job is not MultibranchJob " + ex)
     }
     return false
 }
