@@ -4,8 +4,11 @@ import org.jenkinsci.plugins.workflow.job.WorkflowJob
 
 def call(def jobName, def branchName) {
     def job = Jenkins.get().getItem(jobName)
-    
-    job = job as WorkflowJob
-    print job.getBranch(branchName)
-    return true
+    try {
+        job = job as WorkflowJob
+        print job.getBranch(branchName)
+    } except (org.codehaus.groovy.runtime.typehandling.GroovyCastException exc){
+        error("The job is not MultibranchJob")
+    }
+    return false
 }
