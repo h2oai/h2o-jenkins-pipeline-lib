@@ -5,6 +5,6 @@ def call(def jobName, def branchName) {
     def job = Jenkins.get().getItem(jobName)
     if (job instanceof WorkflowMultiBranchProject){
        def exists = (WorkflowMultiBranchProject) job.getItemByBranchName(branchName)
-       return exist as boolean
+       return exists as boolean
     }
 }
