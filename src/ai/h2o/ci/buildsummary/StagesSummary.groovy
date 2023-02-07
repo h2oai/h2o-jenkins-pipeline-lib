@@ -79,7 +79,7 @@ class StagesSummary extends SummaryInfo {
         node = nodeWithBranch ?: node
         
         if (node) {
-            return "${context.env.JENKINS_URL}/blue/rest/organizations/jenkins/pipelines/${context.env.JOB_NAME.split('/').join('/branches/')}/runs/${context.currentBuild.number}/nodes/${node.getId()}/log"
+            return "${context.env.JENKINS_URL}/blue/rest/organizations/jenkins/pipelines/${context.env.JOB_NAME.split('/').join('/pipelines/')}/runs/${context.currentBuild.number}/nodes/${node.getId()}/log"
         }
         return null
     }
@@ -120,7 +120,6 @@ class StagesSummary extends SummaryInfo {
                     <td style="${TD_STYLE}">${stageSummary.getArtifactsHTML(context)}</td>
                     <td style="${TD_STYLE}">${stageSummary.getDuration()}</td>
                     <td style="${TD_STYLE}">${stageSummary.getQueueTime()}</td>
-                    <td style="${TD_STYLE}">${stageSummary.getRestartStatus(context)}</td>
                 </tr>
             """
         }
@@ -136,7 +135,6 @@ class StagesSummary extends SummaryInfo {
                     <th style="${TH_STYLE}">Artifacts</th>
                     <th style="${TH_STYLE}">Duration</th>
                     <th style="${TH_STYLE}">Queue Time</th>
-                    <th style="${TH_STYLE}"></th>
                 </tr>
                 </thead>
                 <tbody>
